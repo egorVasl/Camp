@@ -1,4 +1,4 @@
-package com.example.singupactivity
+package com.example.singupactivity.ui.main.Activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

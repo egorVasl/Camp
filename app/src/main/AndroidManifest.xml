@@ -12,10 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SingUpActivity">
         <activity
-            android:name=".NavigationActivity"
+            android:name=".ui.main.Activity.NavigationActivity"
             android:exported="true" />
         <activity
-            android:name=".LoginSignupActivity"
+            android:name=".ui.main.Activity.CampMainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.SingUpActivity.NoActionBar">

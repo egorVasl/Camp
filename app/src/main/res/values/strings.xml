@@ -1,12 +1,20 @@
 <resources>
-    <string name="app_name">TestTask</string>
+    <string name="app_name">Camp</string>
     <string name="tab_text_1">Login</string>
     <string name="tab_text_2">Register</string>
     <string name="login">Login</string>
     <string name="signup">Signup</string>
     <string name="password">Password</string>
     <string name="repeatPassword">Repeat Password</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="phone">Phone</string>
+    <string name="squad">Squad</string>
+    <string name="notification">Уведомление</string>
+    <string name="no_data_massage">Вы не ввели данные для авторизации</string>
+    <string name="close">Закрыть</string>
+    <string name="successful_authorization">Вы успешно авторизавались</string>
+    <string name="unsuccessful_authorization">Вы не зарегистрированы или данные введины не коректно</string>
+    <string name="alredy_registered">Вы уже зарегистрированы</string>
+    <string name="uncorrect_password">Пароли не совпадают</string>
+    <string name="successful_authorization_and_login">Вы успешно зарегестрированы и авторизованы</string>
 </resources>

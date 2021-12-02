@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.main.SignupFragment">
+    tools:context=".ui.main.Fragment.SignupFragment">
 
     <EditText
         android:id="@+id/etLogin"
@@ -16,10 +16,10 @@
         android:minHeight="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.304" />
+        app:layout_constraintVertical_bias="0.208" />
 
     <EditText
         android:id="@+id/etPassword"
@@ -49,14 +49,29 @@
         app:layout_constraintTop_toBottomOf="@+id/etPassword"
         tools:ignore="SpeakableTextPresentCheck" />
 
+    <EditText
+        android:id="@+id/etSquad"
+        android:layout_width="350dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="@string/squad"
+        android:inputType="number"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="@+id/etRepeatPasswors"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/etRepeatPasswors"
+        app:layout_constraintTop_toBottomOf="@+id/etRepeatPasswors"
+        tools:ignore="SpeakableTextPresentCheck" />
+
     <Button
         android:id="@+id/btSignup"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="@string/signup"
-        app:layout_constraintEnd_toEndOf="@+id/etRepeatPasswors"
+        app:layout_constraintEnd_toEndOf="@+id/etSquad"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/etRepeatPasswors"
-        app:layout_constraintTop_toBottomOf="@+id/etRepeatPasswors" />
+        app:layout_constraintStart_toStartOf="@+id/etSquad"
+        app:layout_constraintTop_toBottomOf="@+id/etSquad" />
 </androidx.constraintlayout.widget.ConstraintLayout>

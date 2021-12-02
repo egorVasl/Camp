@@ -7,8 +7,9 @@ import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.CREATE_TABLE_
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.DATABASE_NAME
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.DATABASE_VERSION
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.DELETE_TABLE
+import com.example.singupactivity.ui.main.Fragment.LoginFragment
 
-class CampDbHelper(context : Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+class CampDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL(CREATE_TABLE_AUTHORIZATION)
