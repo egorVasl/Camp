@@ -4,11 +4,12 @@ import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
+import java.sql.SQLException
 
 class CampDbManager(context: Context) {
 
-    val campDbHelper = CampDbHelper(context)
-    var db: SQLiteDatabase? = null
+    private val campDbHelper = CampDbHelper(context)
+    private lateinit var db: SQLiteDatabase
 
     fun openDb() {
         db = campDbHelper.writableDatabase
@@ -20,16 +21,25 @@ class CampDbManager(context: Context) {
             put(CampDbNameClass.COLUMN_NAME_PASSWORD, password)
             put(CampDbNameClass.COLUMN_NAME_SQUAD, squad)
         }
+//        val str = "INSERT INTO ${CampDbNameClass.TABLE_NAME} (${CampDbNameClass.COLUMN_NAME_LOGIN}," +
+//                "${CampDbNameClass.COLUMN_NAME_PASSWORD}, ${CampDbNameClass.COLUMN_NAME_SQUAD}) values" +
+//                "('$login', '$password','$squad')"
+//        db.execSQL(str)
+        try {
+            val rowID = db.insert(CampDbNameClass.TABLE_NAME, null, cv)
+        } catch (e: SQLException) {
+            e.printStackTrace()
+        }
 
-        db?.insertOrThrow(CampDbNameClass.TABLE_NAME, null, cv)
     }
 
-    @SuppressLint("Range", "Recycle")
+    @SuppressLint("Range")
     fun selectToTableAuthorization(const: String) : ArrayList<String> {
+        openDb()
         val dataList = ArrayList<String>()
 //        val cursor = db?.query(CampDbNameClass.TABLE_NAME, arrayOf(const),null,
 //            null,null,null,null)
-        val cursor = db?.rawQuery("select $const from ${CampDbNameClass.TABLE_NAME}", null)
+        val cursor = db.rawQuery("select $const from ${CampDbNameClass.TABLE_NAME}", null)
 
         while(cursor?.moveToNext()!!){
             val dataText = cursor.getString(cursor.getColumnIndex(const))

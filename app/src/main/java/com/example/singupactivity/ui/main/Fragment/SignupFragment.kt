@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,29 +16,24 @@ import com.example.singupactivity.ui.main.Activity.NavigationActivity
 import com.example.singupactivity.R
 import com.example.singupactivity.ui.main.DataBase.CampDbManager
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+
 
 class SignupFragment : Fragment() {
-    private var param1: String? = null
-    private var param2: String? = null
+
 
     val campDbManager = activity?.let { CampDbManager(it) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
-        val view:View = inflater.inflate(R.layout.fragment_signup, container, false)
+        val view: View = inflater.inflate(R.layout.fragment_signup, container, false)
         val btSignup = view.findViewById<Button>(R.id.btSignup)
         val etLogin = view.findViewById<EditText>(R.id.etLogin)
         val etPassword = view.findViewById<EditText>(R.id.etPassword)
@@ -47,18 +43,15 @@ class SignupFragment : Fragment() {
         var passwordIsTrue = false
         var squadIsTrue = false
 
-        btSignup.setOnClickListener{
-
-            //попробовать
-            // equals
-
+        btSignup.setOnClickListener {
 
 
 
             if (etLogin.text.isNullOrEmpty() or
                 etPassword.text.isNullOrEmpty() or
                 etRepeatPassword.text.isNullOrEmpty() or
-                etSquad.text.isNullOrEmpty()){
+                etSquad.text.isNullOrEmpty()
+            ) {
 
                 alert(R.string.no_data_massage)
 
@@ -98,11 +91,18 @@ class SignupFragment : Fragment() {
 
                     } else {
 
-                        campDbManager?.insertToTableAuthorization(etLogin.text.toString(),
-                           etPassword.text.toString(),etSquad.text.toString().toInt())
+                        campDbManager?.insertToTableAuthorization(
+                            login = etLogin.text.toString(),
+                            password = etPassword.text.toString(),
+                            squad = etSquad.text.toString().toInt()
+                        )
 
                         startActivity(Intent(activity, NavigationActivity::class.java))
-                        Toast.makeText(activity, R.string.successful_authorization_and_login, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(
+                            activity,
+                            R.string.successful_authorization_and_login,
+                            Toast.LENGTH_SHORT
+                        ).show();
 
 
                     }
@@ -117,29 +117,17 @@ class SignupFragment : Fragment() {
         return view
     }
 
-    fun alert(massage: Int){
+    fun alert(massage: Int) {
         val builder = AlertDialog.Builder(activity!!)
         builder.setTitle(R.string.notification)
             .setMessage(massage)
             .setCancelable(false)
-            .setPositiveButton(R.string.close, DialogInterface.OnClickListener {
-                    dialog, id ->
+            .setPositiveButton(R.string.close, DialogInterface.OnClickListener { dialog, id ->
                 dialog.dismiss()
 
             })
 
         val alert = builder.create()
         alert.show()
-    }
-
-
-    companion object {
-        fun newInstance(param1: String, param2: String) =
-            SignupFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
     }
 }

@@ -24,7 +24,7 @@ class LoginFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
-    val campDbManager = activity?.let { CampDbManager(it) }
+    private val campDbManager = activity?.let { CampDbManager(it) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
