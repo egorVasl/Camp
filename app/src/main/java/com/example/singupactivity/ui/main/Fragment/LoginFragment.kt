@@ -11,9 +11,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.ActionBarDrawerToggle
 import com.example.singupactivity.R
 import com.example.singupactivity.ui.main.Activity.NavigationActivity
 import com.example.singupactivity.ui.main.DataBase.CampDbManager
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass
 
 
 private const val ARG_PARAM1 = "param1"
@@ -24,10 +26,12 @@ class LoginFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
-    private val campDbManager = activity?.let { CampDbManager(it) }
+
+    private lateinit var campDbManager : CampDbManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        campDbManager = activity?.let { CampDbManager(it) }!!
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
@@ -60,27 +64,21 @@ class LoginFragment : Fragment() {
                alert(R.string.no_data_massage)
 
            } else {
-              val loginList = campDbManager?.selectToTableAuthorization(etLogin.text.toString())
-               if (loginList != null) {
-                   for ((i, item) in loginList.withIndex()){
-                       if(loginList[i]  == etLogin.text.toString()){
-                           loginIsTrue = true
-                       }
+              val loginList = campDbManager.selectToTableAuthorization(CampDbNameClass.COLUMN_NAME_LOGIN)
+               for ((i, item) in loginList.withIndex()){
+                   if(loginList[i]  == etLogin.text.toString()){
+                       loginIsTrue = true
                    }
                }
-               val passwordList = campDbManager?.selectToTableAuthorization(etPassword.text.toString())
-               if (passwordList != null) {
-                   for ((i, item) in passwordList.withIndex()){
-                       if(passwordList[i]  == etPassword.text.toString()){
-                           passwordIsTrue = true
-                       }
+               val passwordList = campDbManager.selectToTableAuthorization(CampDbNameClass.COLUMN_NAME_PASSWORD)
+               for ((i, item) in passwordList.withIndex()){
+                   if(passwordList[i]  == etPassword.text.toString()){
+                       passwordIsTrue = true
                    }
                }
-               val squadList = campDbManager?.selectToTableAuthorization(etSquad.text.toString())
-               if (squadList != null) {
-                   for ((i, item) in squadList.withIndex()){
-                       squadIsTrue = squadList[i]  == etSquad.text.toString()
-                   }
+               val squadList = campDbManager.selectToTableAuthorization(CampDbNameClass.COLUMN_NAME_SQUAD)
+               for ((i, item) in squadList.withIndex()){
+                   squadIsTrue = squadList[i]  == etSquad.text.toString()
                }
 
                if (squadIsTrue and passwordIsTrue and loginIsTrue) {
@@ -92,7 +90,6 @@ class LoginFragment : Fragment() {
                    alert(R.string.unsuccessful_authorization)
                }
            }
-
         }
         return view
     }

@@ -14,7 +14,7 @@
     <string name="close">Закрыть</string>
     <string name="successful_authorization">Вы успешно авторизавались</string>
     <string name="unsuccessful_authorization">Вы не зарегистрированы или данные введины не коректно</string>
-    <string name="alredy_registered">Вы уже зарегистрированы</string>
+    <string name="alredy_registered">Пользователь с таким именем уже зарегистрированы</string>
     <string name="uncorrect_password">Пароли не совпадают</string>
     <string name="successful_authorization_and_login">Вы успешно зарегестрированы и авторизованы</string>
 </resources>

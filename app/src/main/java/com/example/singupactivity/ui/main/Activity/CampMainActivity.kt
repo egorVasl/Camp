@@ -14,15 +14,18 @@ import com.example.singupactivity.ui.main.Fragment.SignupFragment
 class CampMainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private val campDbManager = CampDbManager(this)
+    lateinit var campDbManager: CampDbManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        campDbManager = CampDbManager(this)
         campDbManager.openDb()
 
         setUpTabs()
+
+
     }
 
     private fun setUpTabs() {

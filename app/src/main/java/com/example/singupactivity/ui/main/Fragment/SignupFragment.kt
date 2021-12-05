@@ -15,17 +15,17 @@ import android.widget.Toast
 import com.example.singupactivity.ui.main.Activity.NavigationActivity
 import com.example.singupactivity.R
 import com.example.singupactivity.ui.main.DataBase.CampDbManager
-
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass
 
 
 class SignupFragment : Fragment() {
 
 
-    val campDbManager = activity?.let { CampDbManager(it) }
+    private lateinit var campDbManager : CampDbManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        campDbManager = activity?.let { CampDbManager(it) }!!
     }
 
     override fun onCreateView(
@@ -60,49 +60,56 @@ class SignupFragment : Fragment() {
                 if (etPassword.text.toString() == etRepeatPassword.text.toString()) {
 
                     val loginList =
-                        campDbManager?.selectToTableAuthorization(etLogin.text.toString())
-                    if (loginList != null) {
-                        for ((i, item) in loginList.withIndex()) {
-                            if (loginList[i] == etLogin.text.toString()) {
-                                loginIsTrue = true
-                            }
+                        campDbManager.selectToTableAuthorization(CampDbNameClass.COLUMN_NAME_LOGIN)
+                    for ((i, item) in loginList.withIndex()) {
+                        if (loginList[i] == etLogin.text.toString()) {
+                            loginIsTrue = true
                         }
                     }
                     val passwordList =
-                        campDbManager?.selectToTableAuthorization(etPassword.text.toString())
-                    if (passwordList != null) {
-                        for ((i, item) in passwordList.withIndex()) {
-                            if (passwordList[i] == etPassword.text.toString()) {
-                                passwordIsTrue = true
-                            }
+                        campDbManager.selectToTableAuthorization(CampDbNameClass.COLUMN_NAME_PASSWORD)
+                    for ((i, item) in passwordList.withIndex()) {
+                        if (passwordList[i] == etPassword.text.toString()) {
+                            passwordIsTrue = true
                         }
                     }
                     val squadList =
-                        campDbManager?.selectToTableAuthorization(etSquad.text.toString())
-                    if (squadList != null) {
-                        for ((i, item) in squadList.withIndex()) {
-                            squadIsTrue = squadList[i] == etSquad.text.toString()
+                        campDbManager.selectToTableAuthorization(CampDbNameClass.COLUMN_NAME_SQUAD)
+                    for ((i, item) in squadList.withIndex()) {
+                         if (squadList[i] == etSquad.text.toString()) {
+                            squadIsTrue = true
                         }
                     }
 
-                    if (squadIsTrue and passwordIsTrue and loginIsTrue) {
+                    if(loginIsTrue){
 
                         alert(R.string.alredy_registered)
 
+
+
                     } else {
 
-                        campDbManager?.insertToTableAuthorization(
-                            login = etLogin.text.toString(),
-                            password = etPassword.text.toString(),
-                            squad = etSquad.text.toString().toInt()
-                        )
+                        if (squadIsTrue and passwordIsTrue and loginIsTrue) {
 
-                        startActivity(Intent(activity, NavigationActivity::class.java))
-                        Toast.makeText(
-                            activity,
-                            R.string.successful_authorization_and_login,
-                            Toast.LENGTH_SHORT
-                        ).show();
+                            alert(R.string.alredy_registered)
+
+                        } else {
+
+                            campDbManager.insertToTableAuthorization(
+                                login = etLogin.text.toString(),
+                                password = etPassword.text.toString(),
+                                squad = etSquad.text.toString().toInt()
+                            )
+
+                            startActivity(Intent(activity, NavigationActivity::class.java))
+                            Toast.makeText(
+                                activity,
+                                R.string.successful_authorization_and_login,
+                                Toast.LENGTH_SHORT
+                            ).show();
+
+
+                        }
 
 
                     }

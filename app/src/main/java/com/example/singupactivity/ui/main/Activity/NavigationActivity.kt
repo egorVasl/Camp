@@ -6,7 +6,8 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.singupactivity.databinding.ActivityNavigtionBinding
 
-class NavigationActivity : AppCompatActivity() {
+class
+NavigationActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityNavigtionBinding
 
