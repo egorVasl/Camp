@@ -10,8 +10,17 @@
         <entry key="..\:/TestTask/app/src/main/res/layout/fragment_signup.xml" value="0.5" />
         <entry key="..\:/TestTask/app/src/main/res/menu-v26/navigation_menu.xml" value="0.275" />
         <entry key="..\:/TestTask/app/src/main/res/menu/navigation_menu.xml" value="0.1265625" />
+        <entry key="..\:/Users/vaslavenok_e/StudioProjects/SingUpActivity/app/src/main/res/drawable/ic_baseline_arrow_back_24.xml" value="0.15185185185185185" />
+        <entry key="..\:/Users/vaslavenok_e/StudioProjects/SingUpActivity/app/src/main/res/drawable/ic_baseline_child_24.xml" value="0.334375" />
+        <entry key="..\:/Users/vaslavenok_e/StudioProjects/SingUpActivity/app/src/main/res/drawable/ic_baseline_event_24.xml" value="0.334375" />
+        <entry key="..\:/Users/vaslavenok_e/StudioProjects/SingUpActivity/app/src/main/res/drawable/ic_baseline_room_24.xml" value="0.334375" />
+        <entry key="..\:/Users/vaslavenok_e/StudioProjects/SingUpActivity/app/src/main/res/drawable/ic_baseline_squad_24.xml" value="0.334375" />
+        <entry key="..\:/Users/vaslavenok_e/StudioProjects/SingUpActivity/app/src/main/res/layout/activity_navigtion.xml" value="0.35104166666666664" />
         <entry key="..\:/Users/vaslavenok_e/StudioProjects/SingUpActivity/app/src/main/res/layout/fragment_login.xml" value="0.2826086956521739" />
         <entry key="..\:/Users/vaslavenok_e/StudioProjects/SingUpActivity/app/src/main/res/layout/fragment_signup.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/vaslavenok_e/StudioProjects/SingUpActivity/app/src/main/res/layout/navigation_header.xml" value="0.1" />
+        <entry key="..\:/Users/vaslavenok_e/StudioProjects/SingUpActivity/app/src/main/res/menu-v26/navigation_menu.xml" value="0.19722222222222222" />
+        <entry key="..\:/Users/vaslavenok_e/StudioProjects/SingUpActivity/app/src/main/res/menu/navigation_menu.xml" value="0.33" />
       </map>
     </option>
   </component>

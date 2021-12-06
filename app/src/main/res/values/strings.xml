@@ -17,4 +17,14 @@
     <string name="alredy_registered">Пользователь с таким именем уже зарегистрированы</string>
     <string name="uncorrect_password">Пароли не совпадают</string>
     <string name="successful_authorization_and_login">Вы успешно зарегестрированы и авторизованы</string>
+    <string name="counselor">Профиль</string>
+    <string name="squad_menu">Отряды</string>
+    <string name="achievements">Нагарады</string>
+    <string name="child">Дети</string>
+    <string name="childList">Список детей</string>
+    <string name="room">Комнаты</string>
+    <string name="events">Мероприятия</string>
+    <string name="name_default">Арина Мазуренко</string>
+    <string name="verified">В сети</string>
+    <string name="back">Назад</string>
 </resources>

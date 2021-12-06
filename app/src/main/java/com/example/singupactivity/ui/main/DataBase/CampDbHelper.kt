@@ -24,7 +24,8 @@ import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.DELETE_TABLE_
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.DELETE_TABLE_SQUAD
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.DELETE_TABLE_WEEK_EVENT
 
-class CampDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+class CampDbHelper(context: Context) :
+    SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL(CREATE_TABLE_AUTHORIZATION)

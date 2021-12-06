@@ -21,7 +21,7 @@ import com.example.singupactivity.ui.main.DataBase.CampDbNameClass
 class SignupFragment : Fragment() {
 
 
-    private lateinit var campDbManager : CampDbManager
+    private lateinit var campDbManager: CampDbManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,9 +44,6 @@ class SignupFragment : Fragment() {
         var squadIsTrue = false
 
         btSignup.setOnClickListener {
-
-
-
             if (etLogin.text.isNullOrEmpty() or
                 etPassword.text.isNullOrEmpty() or
                 etRepeatPassword.text.isNullOrEmpty() or
@@ -76,16 +73,14 @@ class SignupFragment : Fragment() {
                     val squadList =
                         campDbManager.selectToTableAuthorization(CampDbNameClass.COLUMN_NAME_SQUAD)
                     for ((i, item) in squadList.withIndex()) {
-                         if (squadList[i] == etSquad.text.toString()) {
+                        if (squadList[i] == etSquad.text.toString()) {
                             squadIsTrue = true
                         }
                     }
 
-                    if(loginIsTrue){
+                    if (loginIsTrue) {
 
                         alert(R.string.alredy_registered)
-
-
 
                     } else {
 
@@ -107,11 +102,7 @@ class SignupFragment : Fragment() {
                                 R.string.successful_authorization_and_login,
                                 Toast.LENGTH_SHORT
                             ).show();
-
-
                         }
-
-
                     }
                 } else {
 

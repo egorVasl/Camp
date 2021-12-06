@@ -27,7 +27,7 @@ class LoginFragment : Fragment() {
     private var param2: String? = null
 
 
-    private lateinit var campDbManager : CampDbManager
+    private lateinit var campDbManager: CampDbManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,8 +44,7 @@ class LoginFragment : Fragment() {
     ): View {
 
 
-
-        val view:View = inflater.inflate(R.layout.fragment_login, container, false)
+        val view: View = inflater.inflate(R.layout.fragment_login, container, false)
         val btLogin = view.findViewById<Button>(R.id.btLogin)
         val etLogin = view.findViewById<EditText>(R.id.etLogin)
         val etPassword = view.findViewById<EditText>(R.id.etPassword)
@@ -54,53 +53,57 @@ class LoginFragment : Fragment() {
         var passwordIsTrue = false
         var squadIsTrue = false
 
-       btLogin.setOnClickListener{
+        btLogin.setOnClickListener {
 
 //           campDbManager?.insertToTableAuthorization(etLogin.text.toString(),
 //               etPassword.text.toString(),etSquad.text.toString().toInt())
-           if (etLogin.text.isNullOrEmpty() or etPassword.text.isNullOrEmpty() or
-               etSquad.text.isNullOrEmpty()){
+            if (etLogin.text.isNullOrEmpty() or etPassword.text.isNullOrEmpty() or
+                etSquad.text.isNullOrEmpty()
+            ) {
 
-               alert(R.string.no_data_massage)
+                alert(R.string.no_data_massage)
 
-           } else {
-              val loginList = campDbManager.selectToTableAuthorization(CampDbNameClass.COLUMN_NAME_LOGIN)
-               for ((i, item) in loginList.withIndex()){
-                   if(loginList[i]  == etLogin.text.toString()){
-                       loginIsTrue = true
-                   }
-               }
-               val passwordList = campDbManager.selectToTableAuthorization(CampDbNameClass.COLUMN_NAME_PASSWORD)
-               for ((i, item) in passwordList.withIndex()){
-                   if(passwordList[i]  == etPassword.text.toString()){
-                       passwordIsTrue = true
-                   }
-               }
-               val squadList = campDbManager.selectToTableAuthorization(CampDbNameClass.COLUMN_NAME_SQUAD)
-               for ((i, item) in squadList.withIndex()){
-                   squadIsTrue = squadList[i]  == etSquad.text.toString()
-               }
+            } else {
+                val loginList =
+                    campDbManager.selectToTableAuthorization(CampDbNameClass.COLUMN_NAME_LOGIN)
+                for ((i, item) in loginList.withIndex()) {
+                    if (loginList[i] == etLogin.text.toString()) {
+                        loginIsTrue = true
+                    }
+                }
+                val passwordList =
+                    campDbManager.selectToTableAuthorization(CampDbNameClass.COLUMN_NAME_PASSWORD)
+                for ((i, item) in passwordList.withIndex()) {
+                    if (passwordList[i] == etPassword.text.toString()) {
+                        passwordIsTrue = true
+                    }
+                }
+                val squadList =
+                    campDbManager.selectToTableAuthorization(CampDbNameClass.COLUMN_NAME_SQUAD)
+                for ((i, item) in squadList.withIndex()) {
+                    squadIsTrue = squadList[i] == etSquad.text.toString()
+                }
 
-               if (squadIsTrue and passwordIsTrue and loginIsTrue) {
+                if (squadIsTrue and passwordIsTrue and loginIsTrue) {
 
-                   startActivity(Intent(activity, NavigationActivity::class.java))
-                   Toast.makeText(activity, R.string.successful_authorization, Toast.LENGTH_SHORT).show();
+                    startActivity(Intent(activity, NavigationActivity::class.java))
+                    Toast.makeText(activity, R.string.successful_authorization, Toast.LENGTH_SHORT)
+                        .show();
 
-               } else {
-                   alert(R.string.unsuccessful_authorization)
-               }
-           }
+                } else {
+                    alert(R.string.unsuccessful_authorization)
+                }
+            }
         }
         return view
     }
 
-    fun alert(massage: Int){
+    fun alert(massage: Int) {
         val builder = AlertDialog.Builder(activity!!)
         builder.setTitle(R.string.notification)
             .setMessage(massage)
             .setCancelable(false)
-            .setPositiveButton(R.string.close, DialogInterface.OnClickListener {
-                    dialog, id ->
+            .setPositiveButton(R.string.close, DialogInterface.OnClickListener { dialog, id ->
                 dialog.dismiss()
 
             })

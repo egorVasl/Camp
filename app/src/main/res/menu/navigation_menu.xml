@@ -2,18 +2,37 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/menuPerson"
+        android:id="@+id/menuCounselor"
         android:icon="@drawable/ic_baseline_person_24"
         android:iconTint="@color/black"
-        android:title="@string/phone">
-    </item>
-
+        android:title="@string/counselor" />
     <item
-        android:id="@+id/menuMap"
-        android:icon="@drawable/ic_baseline_map_24"
+        android:id="@+id/menuWeekEvent"
+        android:icon="@drawable/ic_baseline_event_24"
         android:iconTint="@color/black"
-        android:title="@string/phone">
+        android:title="@string/events" />
+    <item android:title="@string/child">
+        <menu>
+            <item
+                android:id="@+id/menuSquad"
+                android:icon="@drawable/ic_baseline_squad_24"
+                android:iconTint="@color/black"
+                android:title="@string/squad_menu" />
+            <item
+                android:id="@+id/menuAchievements"
+                android:icon="@drawable/ic_baseline_achievements_24"
+                android:iconTint="@color/black"
+                android:title="@string/achievements" />
+            <item
+                android:id="@+id/menuChildList"
+                android:icon="@drawable/ic_baseline_child_24"
+                android:iconTint="@color/black"
+                android:title="@string/childList" />
+            <item
+                android:id="@+id/menuRoom"
+                android:icon="@drawable/ic_baseline_room_24"
+                android:iconTint="@color/black"
+                android:title="@string/room" />
+        </menu>
     </item>
-
-
 </menu>
