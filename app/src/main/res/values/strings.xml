@@ -25,6 +25,6 @@
     <string name="room">Комнаты</string>
     <string name="events">Мероприятия</string>
     <string name="name_default">Арина Мазуренко</string>
-    <string name="verified">В сети</string>
+    <string name="verified">Активен</string>
     <string name="back">Назад</string>
 </resources>
