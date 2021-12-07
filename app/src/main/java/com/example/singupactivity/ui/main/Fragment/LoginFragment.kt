@@ -18,13 +18,8 @@ import com.example.singupactivity.ui.main.DataBase.CampDbManager
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass
 
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
 
 class LoginFragment : Fragment() {
-    private var param1: String? = null
-    private var param2: String? = null
 
 
     private lateinit var campDbManager: CampDbManager
@@ -32,10 +27,7 @@ class LoginFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         campDbManager = activity?.let { CampDbManager(it) }!!
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
     }
 
     override fun onCreateView(
@@ -55,8 +47,6 @@ class LoginFragment : Fragment() {
 
         btLogin.setOnClickListener {
 
-//           campDbManager?.insertToTableAuthorization(etLogin.text.toString(),
-//               etPassword.text.toString(),etSquad.text.toString().toInt())
             if (etLogin.text.isNullOrEmpty() or etPassword.text.isNullOrEmpty() or
                 etSquad.text.isNullOrEmpty()
             ) {
@@ -89,6 +79,9 @@ class LoginFragment : Fragment() {
                     startActivity(Intent(activity, NavigationActivity::class.java))
                     Toast.makeText(activity, R.string.successful_authorization, Toast.LENGTH_SHORT)
                         .show();
+                    etLogin.text.clear()
+                    etPassword.text.clear()
+                    etSquad.text.clear()
 
                 } else {
                     alert(R.string.unsuccessful_authorization)
@@ -103,24 +96,13 @@ class LoginFragment : Fragment() {
         builder.setTitle(R.string.notification)
             .setMessage(massage)
             .setCancelable(false)
-            .setPositiveButton(R.string.close, DialogInterface.OnClickListener { dialog, id ->
+            .setPositiveButton(R.string.close) { dialog, _ ->
                 dialog.dismiss()
 
-            })
+            }
 
         val alert = builder.create()
         alert.show()
     }
 
-
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            LoginFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
 }

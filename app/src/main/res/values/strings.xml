@@ -27,4 +27,12 @@
     <string name="name_default">Арина Мазуренко</string>
     <string name="verified">Активен</string>
     <string name="back">Назад</string>
+    <string name="daily_schedule">Расписание дня</string>
+    <string name="data">Дата :</string>
+    <string name="new_day">Новый день</string>
+    <string name="name_event">Название мероприятия :</string>
+    <string name="time_event">Время :</string>
+    <string name="enter_name_event">Введите название мероприятия</string>
+    <string name="enter_data_event">Введите дату мероприятия</string>
+    <string name="enter_time_event">Введите время мероприятия</string>
 </resources>

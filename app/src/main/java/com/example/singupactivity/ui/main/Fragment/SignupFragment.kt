@@ -102,6 +102,10 @@ class SignupFragment : Fragment() {
                                 R.string.successful_authorization_and_login,
                                 Toast.LENGTH_SHORT
                             ).show();
+                            etLogin.text.clear()
+                            etPassword.text.clear()
+                            etSquad.text.clear()
+                            etRepeatPassword.text.clear()
                         }
                     }
                 } else {
@@ -120,10 +124,10 @@ class SignupFragment : Fragment() {
         builder.setTitle(R.string.notification)
             .setMessage(massage)
             .setCancelable(false)
-            .setPositiveButton(R.string.close, DialogInterface.OnClickListener { dialog, id ->
+            .setPositiveButton(R.string.close) { dialog, _ ->
                 dialog.dismiss()
 
-            })
+            }
 
         val alert = builder.create()
         alert.show()

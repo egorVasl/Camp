@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.Navigation
+import androidx.navigation.ui.NavigationUI
 import com.example.singupactivity.R
 import com.example.singupactivity.databinding.ActivityNavigtionBinding
 
@@ -14,6 +16,7 @@ NavigationActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportActionBar?.hide();
         binding = ActivityNavigtionBinding.inflate(layoutInflater)
         setContentView(binding.root)
         var drawerLayout: DrawerLayout = binding.drawerLayout
@@ -23,6 +26,13 @@ NavigationActivity : AppCompatActivity() {
         }
 
         binding.navigationView.itemIconTintList
+
+        val navController = Navigation.findNavController(this, R.id.navHostFragment)
+        NavigationUI.setupWithNavController(binding.navigationView, navController )
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            binding.textTitle.text = destination.label
+        }
 
     }
 
