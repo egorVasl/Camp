@@ -8,10 +8,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.singupactivity.R
 import com.example.singupactivity.databinding.DailySceduleListItemBinding
 import com.example.singupactivity.ui.main.Data.DailyScheduleDataClass
+import com.example.singupactivity.ui.main.Fragment.DailyScheduleFragment
 
 class DailyScheduleAdapter : RecyclerView.Adapter<DailyScheduleAdapter.DailyScheduleHolder>() {
 
     val dailyScheduleList = ArrayList<DailyScheduleDataClass>()
+
+
 
     class DailyScheduleHolder(item : View) : RecyclerView.ViewHolder(item) {
 
@@ -40,7 +43,10 @@ class DailyScheduleAdapter : RecyclerView.Adapter<DailyScheduleAdapter.DailySche
 
         holder.bind(dailyScheduleList[position])
 
+        val dailyScheduleDataClass: DailyScheduleDataClass = dailyScheduleList[position]
+
         holder.itemView.setOnClickListener{
+            DailyScheduleFragment().addAndEditSchedule(true, dailyScheduleDataClass, position)
 
         }
 
@@ -59,4 +65,5 @@ class DailyScheduleAdapter : RecyclerView.Adapter<DailyScheduleAdapter.DailySche
         notifyDataSetChanged()
 
     }
+
 }

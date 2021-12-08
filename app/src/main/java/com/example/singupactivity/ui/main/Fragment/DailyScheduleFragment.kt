@@ -24,16 +24,23 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.recyclerview.widget.DefaultItemAnimator
 
-import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import com.example.singupactivity.ui.main.Data.DailyScheduleDataClass
+import com.example.singupactivity.ui.main.DataBase.CampDbManager
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_DATE_EVENT
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_NAME_EVENT
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_TIME_EVENT
 
 
 class DailyScheduleFragment : Fragment() {
 
-    lateinit var adapter : DailyScheduleAdapter
+    lateinit var adapter: DailyScheduleAdapter
+    lateinit var dailyScheduleDataClass: DailyScheduleDataClass
+    lateinit var campDbManager: CampDbManager
+    var dailyScheduleList = ArrayList<DailyScheduleDataClass>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        campDbManager = activity?.let { CampDbManager(it) }!!
         adapter = DailyScheduleAdapter()
     }
 
@@ -47,37 +54,60 @@ class DailyScheduleFragment : Fragment() {
         val rv = view.findViewById<RecyclerView>(R.id.rcDailySchedule)
         val fabDailySchedule = view.findViewById<FloatingActionButton>(R.id.fabDailySchedule)
 
-        rv.layoutManager = GridLayoutManager(requireContext(), 3)
-        rv.itemAnimator = DefaultItemAnimator()
-        rv.adapter = adapter
 
-        fabDailySchedule.setOnClickListener{
-            addAndEditCars(false, null, -1)
+        rv.layoutManager = GridLayoutManager(activity, 3)
+        rv.itemAnimator = DefaultItemAnimator()
+
+
+        val eventTimeList = campDbManager.selectToTableDailySchedule(COLUMN_NAME_TIME_EVENT)
+        val eventNameList = campDbManager.selectToTableDailySchedule(COLUMN_NAME_NAME_EVENT)
+        val eventDateList = campDbManager.selectToTableDailySchedule(COLUMN_NAME_DATE_EVENT)
+
+        for ((i, elm) in eventTimeList.withIndex()) {
+            adapter.addDailySchedule(
+                DailyScheduleDataClass(
+                    eventTimeList[i],
+                    eventNameList[i], eventDateList[i]
+                )
+            )
+
         }
 
+
+        fabDailySchedule.setOnClickListener {
+            addAndEditSchedule(false, null, -1)
+        }
+
+
+        rv.adapter = adapter
         return view
     }
 
-    @SuppressLint("InflateParams")
-    fun addAndEditCars(isUpdate: Boolean, dailyScheduleDataClass: DailyScheduleDataClass?, position: Int) {
+   // @SuppressLint("InflateParams")
+    fun addAndEditSchedule(
+        isUpdate: Boolean,
+        dailyScheduleDataClass: DailyScheduleDataClass?,
+        position: Int
+    ) {
 //        val layoutInflaterAndroid =
 //            LayoutInflater.from(getApplicationContext())
 //
 //        val view: View = layoutInflaterAndroid.inflate(R.layout.add_daily_schedule, null)
 
-        val view = LayoutInflater.from(requireContext()).inflate(R.layout.daily_scedule_list_item, null)
+        val view = LayoutInflater.from(context).inflate(R.layout.add_daily_schedule, null)
 
 
-        val alertDialogBuilderUserInput: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+        val alertDialogBuilderUserInput: AlertDialog.Builder =
+            AlertDialog.Builder(requireActivity())
         alertDialogBuilderUserInput.setView(view)
 
-        var newDayTitle = view.findViewById<TextView>(R.id.newDayTitle)
+        val newDayTitle = view.findViewById<TextView>(R.id.newDayTitle)
         val etName = view.findViewById<EditText>(R.id.etName)
         val etData = view.findViewById<EditText>(R.id.etData)
         val etTime = view.findViewById<EditText>(R.id.etTime)
 
 
-        newDayTitle.text = if (isUpdate) "Добавить" else "Редактировать"
+        newDayTitle.text = if (!isUpdate) "Добавить" else "Редактировать"
 
         if (isUpdate && dailyScheduleDataClass != null) {
             etName.setText(dailyScheduleDataClass.nameEvent)
@@ -91,7 +121,7 @@ class DailyScheduleFragment : Fragment() {
             .setNegativeButton(if (isUpdate) "Удалить" else "Закрыть",
                 DialogInterface.OnClickListener { dialogBox, id ->
                     if (isUpdate) {
-//                        deleteCar(dailyScheduleDataClass, position) delite
+                        deleteDailySchedule(position)
                     } else {
                         dialogBox.cancel()
                     }
@@ -101,23 +131,86 @@ class DailyScheduleFragment : Fragment() {
         alertDialog.show()
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(View.OnClickListener {
             if (TextUtils.isEmpty(etName.text.toString())) {
-                Toast.makeText(activity, R.string.enter_name_event, Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireActivity(), R.string.enter_name_event, Toast.LENGTH_SHORT)
+                    .show()
                 return@OnClickListener
             } else if (TextUtils.isEmpty(etData.text.toString())) {
-                Toast.makeText(activity,  R.string.enter_data_event, Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireActivity(), R.string.enter_data_event, Toast.LENGTH_SHORT)
+                    .show()
                 return@OnClickListener
             } else if (TextUtils.isEmpty(etTime.text.toString())) {
-                Toast.makeText(activity, R.string.enter_time_event, Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireActivity(), R.string.enter_time_event, Toast.LENGTH_SHORT)
+                    .show()
                 return@OnClickListener
             } else {
                 alertDialog.dismiss()
             }
             if (isUpdate && dailyScheduleDataClass != null) {
-               // updateCar(nameEditText.text.toString(), priceEditText.text.toString(), position)
+                updateDailySchedule(
+                    nameEventUpdate = etName.text.toString(),
+                    dateEventUpdate = etData.text.toString(),
+                    timeEventUpdate = etTime.text.toString(),
+                    position = position
+                )
+
             } else {
-               // createCar(nameEditText.text.toString(), priceEditText.text.toString())
+                createDailySchedule(
+                    nameEventCreate = etName.text.toString(),
+                    dateEventCreate = etData.text.toString(),
+                    timeEventCreate = etTime.text.toString()
+                )
             }
         })
+    }
+
+    private fun deleteDailySchedule(position: Int) {
+
+        dailyScheduleList.removeAt(position)
+
+        campDbManager.deleteRawToTableDailySchedule(position)
+
+    }
+
+    private fun updateDailySchedule(
+        timeEventUpdate: String, nameEventUpdate: String,
+        dateEventUpdate: String, position: Int
+    ) {
+
+        dailyScheduleDataClass = dailyScheduleList[position]
+
+        dailyScheduleDataClass.timeEvent = timeEventUpdate
+        dailyScheduleDataClass.dateEvent = dateEventUpdate
+        dailyScheduleDataClass.nameEvent = nameEventUpdate
+
+        dailyScheduleList[position] = dailyScheduleDataClass
+
+        campDbManager.updateRawToTableDailySchedule(
+            nameEvent = nameEventUpdate,
+            dateEvent = dateEventUpdate,
+            timeEvent = timeEventUpdate,
+            position = position
+        )
+    }
+
+    private fun createDailySchedule(
+        timeEventCreate: String, nameEventCreate: String,
+        dateEventCreate: String
+    ) {
+
+        val dailyScheduleDataClassCreate = DailyScheduleDataClass(
+            timeEvent = timeEventCreate,
+            nameEvent = nameEventCreate,
+            dateEvent = dateEventCreate
+        )
+        dailyScheduleList.add(dailyScheduleDataClassCreate)
+        for ((i, elm) in dailyScheduleList.withIndex()) {
+            adapter.addDailySchedule(dailyScheduleList[i])
+        }
+        campDbManager.insertToTableDailySchedule(
+            nameEvent = nameEventCreate,
+            dateEvent = dateEventCreate,
+            timeEvent = timeEventCreate
+        )
     }
 
 

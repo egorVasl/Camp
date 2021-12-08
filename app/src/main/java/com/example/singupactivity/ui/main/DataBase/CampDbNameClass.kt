@@ -71,7 +71,7 @@ object CampDbNameClass : BaseColumns{
                 "$COLUMN_NAME_COUNSELOR_NAME  TEXT," +
                 "$COLUMN_NAME_COUNSELOR_SURNAME TEXT,"+
                 "$COLUMN_NAME_COUNSELOR_PATRONYMIC TEXT,"+
-                "$COLUMN_NAME_COUNSELOR_BIRTHDAY DATETIME,"+
+                "$COLUMN_NAME_COUNSELOR_BIRTHDAY TEXT,"+
                 "$COLUMN_NAME_COUNSELOR_NUMBER INTEGER," +
                 "$COLUMN_NAME_ID_SQUAD_COUNSELOR INTEGER," +
                 "$COLUMN_NAME_ID_AUTHORIZATION_COUNSELOR INTEGER," +
@@ -95,8 +95,8 @@ object CampDbNameClass : BaseColumns{
     const val CREATE_TABLE_WEEK_EVENT =
         "CREATE TABLE IF NOT EXISTS $TABLE_NAME_WEEK_EVENT (" +
                 "$COLUMN_NAME_ID_EVENT  INTEGER PRIMARY KEY AUTOINCREMENT ," +
-                "$COLUMN_NAME_DATE DATETIME," +
-                "$COLUMN_NAME_TIME DATETIME,"+
+                "$COLUMN_NAME_DATE TEXT," +
+                "$COLUMN_NAME_TIME TEXT,"+
                 "$COLUMN_NAME_EVENT_NAME TEXT"+
                 ")"
 
@@ -208,9 +208,9 @@ object CampDbNameClass : BaseColumns{
     const val CREATE_TABLE_DAILY_SCHEDULE =
         "CREATE TABLE IF NOT EXISTS $TABLE_NAME_DAILY_SCHEDULE (" +
                 "$COLUMN_NAME_ID_DAY  INTEGER PRIMARY KEY AUTOINCREMENT ," +
-                "$COLUMN_NAME_TIME_EVENT  DATETIME," +
+                "$COLUMN_NAME_TIME_EVENT  TEXT," +
                 "$COLUMN_NAME_NAME_EVENT TEXT,"+
-                "$COLUMN_NAME_DATE_EVENT DATETIME)"
+                "$COLUMN_NAME_DATE_EVENT TEXT)"
 
     const val DELETE_TABLE_DAILY_SCHEDULE = "DROP TABLE IF EXISTS $TABLE_NAME_DAILY_SCHEDULE"
 
