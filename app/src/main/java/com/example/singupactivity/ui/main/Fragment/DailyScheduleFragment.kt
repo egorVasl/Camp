@@ -16,7 +16,6 @@ import android.text.TextUtils
 import android.content.DialogInterface
 
 import com.example.singupactivity.R
-import android.annotation.SuppressLint
 import android.app.AlertDialog
 
 import android.widget.EditText
@@ -36,12 +35,12 @@ class DailyScheduleFragment : Fragment() {
     lateinit var adapter: DailyScheduleAdapter
     lateinit var dailyScheduleDataClass: DailyScheduleDataClass
     lateinit var campDbManager: CampDbManager
-    var dailyScheduleList = ArrayList<DailyScheduleDataClass>()
+    var dailyScheduleListFrag = ArrayList<DailyScheduleDataClass>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         campDbManager = activity?.let { CampDbManager(it) }!!
-        adapter = DailyScheduleAdapter()
+        adapter = DailyScheduleAdapter(this@DailyScheduleFragment)
     }
 
     override fun onCreateView(
@@ -70,6 +69,10 @@ class DailyScheduleFragment : Fragment() {
                     eventNameList[i], eventDateList[i]
                 )
             )
+            dailyScheduleListFrag.add( DailyScheduleDataClass(
+                eventTimeList[i],
+                eventNameList[i], eventDateList[i]
+            ))
 
         }
 
@@ -165,9 +168,12 @@ class DailyScheduleFragment : Fragment() {
 
     private fun deleteDailySchedule(position: Int) {
 
-        dailyScheduleList.removeAt(position)
+        dailyScheduleListFrag.removeAt(position)
+        for ((i, elm) in dailyScheduleListFrag.withIndex()) {
+            adapter.addDailySchedule(dailyScheduleListFrag[i])
+        }
 
-        campDbManager.deleteRawToTableDailySchedule(position)
+        campDbManager.deleteRawToTableDailySchedule(position+1)
 
     }
 
@@ -176,13 +182,13 @@ class DailyScheduleFragment : Fragment() {
         dateEventUpdate: String, position: Int
     ) {
 
-        dailyScheduleDataClass = dailyScheduleList[position]
+        dailyScheduleDataClass = dailyScheduleListFrag[position]
 
         dailyScheduleDataClass.timeEvent = timeEventUpdate
         dailyScheduleDataClass.dateEvent = dateEventUpdate
         dailyScheduleDataClass.nameEvent = nameEventUpdate
 
-        dailyScheduleList[position] = dailyScheduleDataClass
+        dailyScheduleListFrag[position] = dailyScheduleDataClass
 
         campDbManager.updateRawToTableDailySchedule(
             nameEvent = nameEventUpdate,
@@ -202,9 +208,9 @@ class DailyScheduleFragment : Fragment() {
             nameEvent = nameEventCreate,
             dateEvent = dateEventCreate
         )
-        dailyScheduleList.add(dailyScheduleDataClassCreate)
-        for ((i, elm) in dailyScheduleList.withIndex()) {
-            adapter.addDailySchedule(dailyScheduleList[i])
+        dailyScheduleListFrag.add(dailyScheduleDataClassCreate)
+        for ((i, elm) in dailyScheduleListFrag.withIndex()) {
+            adapter.addDailySchedule(dailyScheduleListFrag[i])
         }
         campDbManager.insertToTableDailySchedule(
             nameEvent = nameEventCreate,

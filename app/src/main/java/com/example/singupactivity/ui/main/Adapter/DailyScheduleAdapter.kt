@@ -1,6 +1,7 @@
 package com.example.singupactivity.ui.main.Adapter
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,13 +11,14 @@ import com.example.singupactivity.databinding.DailySceduleListItemBinding
 import com.example.singupactivity.ui.main.Data.DailyScheduleDataClass
 import com.example.singupactivity.ui.main.Fragment.DailyScheduleFragment
 
-class DailyScheduleAdapter : RecyclerView.Adapter<DailyScheduleAdapter.DailyScheduleHolder>() {
+class DailyScheduleAdapter(fragment1: DailyScheduleFragment) : RecyclerView.Adapter<DailyScheduleAdapter.DailyScheduleHolder>() {
 
     val dailyScheduleList = ArrayList<DailyScheduleDataClass>()
 
-
+    val fragment :DailyScheduleFragment = fragment1
 
     class DailyScheduleHolder(item : View) : RecyclerView.ViewHolder(item) {
+
 
         private val binding = DailySceduleListItemBinding.bind(item)
 
@@ -46,7 +48,8 @@ class DailyScheduleAdapter : RecyclerView.Adapter<DailyScheduleAdapter.DailySche
         val dailyScheduleDataClass: DailyScheduleDataClass = dailyScheduleList[position]
 
         holder.itemView.setOnClickListener{
-            DailyScheduleFragment().addAndEditSchedule(true, dailyScheduleDataClass, position)
+
+            fragment.addAndEditSchedule(true, dailyScheduleDataClass, position)
 
         }
 
