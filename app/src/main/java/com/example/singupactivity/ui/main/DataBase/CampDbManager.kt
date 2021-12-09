@@ -38,9 +38,6 @@ import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.TABLE_NAME_LI
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.TABLE_NAME_ROOM
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.TABLE_NAME_SQUAD
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.TABLE_NAME_WEEK_EVENT
-import android.R.id
-
-
 
 
 class CampDbManager(context: Context) {
@@ -348,14 +345,14 @@ class CampDbManager(context: Context) {
         return dataList
     }
 
-    fun deleteRawToTableDailySchedule(position: Int) {
+    fun deleteRawToTableDailySchedule(const: String) {
         openDb()
-        val delCount = db.delete(TABLE_NAME_DAILY_SCHEDULE, "id_day = $position", null)
+        val delCount = db.delete(TABLE_NAME_DAILY_SCHEDULE, "name_event = '$const'", null)
         closeDb()
     }
 
     fun updateRawToTableDailySchedule(timeEvent: String, nameEvent: String,
-                                      dateEvent: String, position: Int) {
+                                      dateEvent: String, nameEventUpdatePosition: String) {
         openDb()
         val cv = ContentValues().apply {
             put(COLUMN_NAME_TIME_EVENT, timeEvent)
@@ -363,8 +360,8 @@ class CampDbManager(context: Context) {
             put(COLUMN_NAME_DATE_EVENT, dateEvent)
         }
 
-        val updCount = db.update(TABLE_NAME_DAILY_SCHEDULE, cv, "id = ?",
-            arrayOf(arrayOf(position).toString())
+        val updCount = db.update(TABLE_NAME_DAILY_SCHEDULE, cv, "name_event = ?",
+            arrayOf(nameEventUpdatePosition)
         )
         closeDb()
     }

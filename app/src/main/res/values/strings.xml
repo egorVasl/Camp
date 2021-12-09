@@ -31,7 +31,7 @@
     <string name="data">Дата :</string>
     <string name="new_day">Новый день</string>
     <string name="data_event_add_schedule">дата :</string>
-    <string name="name_event_add_schedule">название мероприятия :</string>
+    <string name="name_event_add_schedule">название события :</string>
     <string name="time_event_add_schedule">время :</string>
     <string name="enter_name_event">Введите название мероприятия</string>
     <string name="enter_data_event">Введите дату мероприятия</string>

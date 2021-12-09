@@ -11,22 +11,24 @@ import com.example.singupactivity.databinding.DailySceduleListItemBinding
 import com.example.singupactivity.ui.main.Data.DailyScheduleDataClass
 import com.example.singupactivity.ui.main.Fragment.DailyScheduleFragment
 
-class DailyScheduleAdapter(fragment1: DailyScheduleFragment) : RecyclerView.Adapter<DailyScheduleAdapter.DailyScheduleHolder>() {
+class DailyScheduleAdapter(fragment1: DailyScheduleFragment) :
+    RecyclerView.Adapter<DailyScheduleAdapter.DailyScheduleHolder>() {
 
-    val dailyScheduleList = ArrayList<DailyScheduleDataClass>()
+    var dailyScheduleList = ArrayList<DailyScheduleDataClass>()
 
-    val fragment :DailyScheduleFragment = fragment1
+    val fragment: DailyScheduleFragment = fragment1
 
-    class DailyScheduleHolder(item : View) : RecyclerView.ViewHolder(item) {
+    class DailyScheduleHolder(item: View) : RecyclerView.ViewHolder(item) {
 
 
         private val binding = DailySceduleListItemBinding.bind(item)
 
-        fun bind(dailyScheduleDataClass: DailyScheduleDataClass) = with(binding){
+        @SuppressLint("SetTextI18n")
+        fun bind(dailyScheduleDataClass: DailyScheduleDataClass) = with(binding) {
 
-            tvNameEvent.text = dailyScheduleDataClass.nameEvent
+            tvNameEvent.text = "Название: ${dailyScheduleDataClass.nameEvent}"
             tvData.text = dailyScheduleDataClass.dateEvent
-            tvTime.text = dailyScheduleDataClass.timeEvent
+            tvTime.text = "Время: ${dailyScheduleDataClass.timeEvent}"
 
         }
 
@@ -35,7 +37,8 @@ class DailyScheduleAdapter(fragment1: DailyScheduleFragment) : RecyclerView.Adap
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DailyScheduleHolder {
 
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.daily_scedule_list_item, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.daily_scedule_list_item, parent, false)
 
         return DailyScheduleHolder(view)
 
@@ -47,7 +50,7 @@ class DailyScheduleAdapter(fragment1: DailyScheduleFragment) : RecyclerView.Adap
 
         val dailyScheduleDataClass: DailyScheduleDataClass = dailyScheduleList[position]
 
-        holder.itemView.setOnClickListener{
+        holder.itemView.setOnClickListener {
 
             fragment.addAndEditSchedule(true, dailyScheduleDataClass, position)
 
@@ -65,6 +68,22 @@ class DailyScheduleAdapter(fragment1: DailyScheduleFragment) : RecyclerView.Adap
     fun addDailySchedule(dailyScheduleDataClass: DailyScheduleDataClass) {
 
         dailyScheduleList.add(dailyScheduleDataClass)
+        notifyDataSetChanged()
+
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun removeDailySchedule(position: Int) {
+
+        dailyScheduleList.removeAt(position)
+        notifyDataSetChanged()
+
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateDailySchedule(position: Int, dailyScheduleDataClass: DailyScheduleDataClass) {
+
+        dailyScheduleList[position] = dailyScheduleDataClass
         notifyDataSetChanged()
 
     }
