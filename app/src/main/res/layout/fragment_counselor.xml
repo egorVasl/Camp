@@ -1,14 +1,208 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.main.Fragment.CounselorFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/consLayoutCounselor"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/counselor" />
+        android:background="@color/teal_700">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            app:cardCornerRadius="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.015">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/navigationHeader"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="20dp">
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/imageProfile"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/img_header"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:riv_oval="true" />
+
+                <View
+                    android:id="@+id/viewSupporter"
+                    android:layout_width="1dp"
+                    android:layout_height="1dp"
+                    app:layout_constraintBottom_toBottomOf="@id/imageProfile"
+                    app:layout_constraintEnd_toEndOf="@id/imageProfile"
+                    app:layout_constraintStart_toStartOf="@id/imageProfile"
+                    app:layout_constraintTop_toTopOf="@id/imageProfile" />
+
+                <TextView
+                    android:id="@+id/textProfile"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:text="@string/name_default"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/viewSupporter"
+                    app:layout_constraintStart_toEndOf="@id/imageProfile" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:text="@string/verified"
+                    android:textColor="@color/verified"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    app:layout_constraintStart_toEndOf="@id/imageProfile"
+                    app:layout_constraintTop_toBottomOf="@id/viewSupporter" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_marginTop="270dp"
+            android:layout_marginBottom="208dp"
+            app:cardCornerRadius="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/cardView"
+            app:layout_constraintStart_toStartOf="@+id/cardView"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="306dp">
+
+                <TextView
+                    android:id="@+id/tvNameCounselor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:drawablePadding="5dp"
+                    android:text="@string/name"
+                    android:textColor="@color/black"
+                    android:textSize="22sp"
+                    app:drawableLeftCompat="@drawable/ic_baseline_perm_contact_calendar_24"
+                    app:drawableTint="@color/black"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.119" />
+
+                <TextView
+                    android:id="@+id/tvSurnameCounselor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="10dp"
+                    android:drawablePadding="5dp"
+                    android:text="@string/surname"
+                    android:textColor="@color/black"
+                    android:textSize="22sp"
+                    app:drawableLeftCompat="@drawable/ic_baseline_perm_contact_calendar_24"
+                    app:drawableTint="@color/black"
+                    app:layout_constraintEnd_toEndOf="@+id/tvNameCounselor"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/tvNameCounselor"
+                    app:layout_constraintTop_toBottomOf="@+id/tvNameCounselor" />
+
+                <TextView
+                    android:id="@+id/tvPatronamycCounselor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="10dp"
+                    android:drawablePadding="5dp"
+                    android:text="@string/patronamyc"
+                    android:textColor="@color/black"
+                    android:textSize="22sp"
+                    app:drawableLeftCompat="@drawable/ic_baseline_perm_contact_calendar_24"
+                    app:drawableTint="@color/black"
+                    app:layout_constraintEnd_toEndOf="@+id/tvSurnameCounselor"
+                    app:layout_constraintStart_toStartOf="@+id/tvSurnameCounselor"
+                    app:layout_constraintTop_toBottomOf="@+id/tvSurnameCounselor" />
+
+                <TextView
+                    android:id="@+id/tvBirthdayCounselor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="10dp"
+                    android:drawablePadding="5dp"
+                    android:text="@string/birthday"
+                    android:textColor="@color/black"
+                    android:textSize="22sp"
+                    app:drawableLeftCompat="@drawable/ic_baseline_celebration_24"
+                    app:drawableTint="@color/black"
+                    app:layout_constraintEnd_toEndOf="@+id/tvPatronamycCounselor"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/tvPatronamycCounselor"
+                    app:layout_constraintTop_toBottomOf="@+id/tvPatronamycCounselor" />
+
+                <TextView
+                    android:id="@+id/tvPhoneNumberCounselor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/phone_number"
+                    android:textColor="@color/black"
+                    android:textSize="22sp"
+                    app:drawableLeftCompat="@drawable/ic_baseline_phone_in_talk_24"
+                    app:drawableTint="@color/black"
+                    app:layout_constraintEnd_toEndOf="@+id/tvBirthdayCounselor"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="@+id/tvBirthdayCounselor"
+                    app:layout_constraintTop_toBottomOf="@+id/tvBirthdayCounselor" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabCounselor"
+            android:layout_width="64dp"
+            android:layout_height="57dp"
+            android:layout_marginTop="16dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_baseline_edit_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.918"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView3" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

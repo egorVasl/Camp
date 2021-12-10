@@ -18,6 +18,8 @@ import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_D
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_DATE_EVENT
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_EVENT_NAME
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_FLOOR
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_ID_AUTHORIZATION_COUNSELOR
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_ID_SQUAD_COUNSELOR
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_LOGIN
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_NAME_EVENT
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_PARENTS_NUMBER
@@ -60,6 +62,18 @@ class CampDbManager(context: Context) {
             put(COLUMN_NAME_SQUAD, squad)
         }
         val rowID = db.insert(TABLE_NAME_AUTHORIZATION, null, cv)
+
+        val cvCounselor = ContentValues().apply {
+            put(COLUMN_NAME_COUNSELOR_NAME, "null")
+            put(COLUMN_NAME_COUNSELOR_SURNAME, "null")
+            put(COLUMN_NAME_COUNSELOR_PATRONYMIC, "null")
+            put(COLUMN_NAME_COUNSELOR_BIRTHDAY, "null")
+            put(COLUMN_NAME_COUNSELOR_NUMBER, "null")
+            put(COLUMN_NAME_ID_AUTHORIZATION_COUNSELOR, rowID)
+            put(COLUMN_NAME_ID_SQUAD_COUNSELOR, "null")
+        }
+
+        val rowIDCounselor = db.insert(TABLE_NAME_COUNSELOR, null, cvCounselor)
     }
 
     @SuppressLint("Range")

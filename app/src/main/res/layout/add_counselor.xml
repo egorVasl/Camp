@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/newCounselorTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="10sp"
+        android:text="@string/edit_data"
+        android:textColor="@color/black"
+        android:textSize="21sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.051"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.045" />
+
+    <EditText
+        android:id="@+id/etNameCounselor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="15dp"
+        android:background="@android:color/transparent"
+        android:gravity="top"
+        android:hint="@string/name"
+        android:textSize="18sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="@+id/newCounselorTitle"
+        app:layout_constraintHorizontal_bias="0.047"
+        app:layout_constraintStart_toStartOf="@+id/newCounselorTitle"
+        app:layout_constraintTop_toBottomOf="@+id/newCounselorTitle" />
+
+    <EditText
+        android:id="@+id/etSurnameCounselor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="15dp"
+        android:background="@android:color/transparent"
+        android:gravity="top"
+        android:hint="@string/surname"
+        android:textSize="18sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="@+id/etNameCounselor"
+        app:layout_constraintStart_toStartOf="@+id/etNameCounselor"
+        app:layout_constraintTop_toBottomOf="@+id/etNameCounselor" />
+
+    <EditText
+        android:id="@+id/etPatronamycCounselor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="15dp"
+        android:background="@android:color/transparent"
+        android:gravity="top"
+        android:hint="@string/patronamyc"
+        android:textSize="18sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="@+id/etSurnameCounselor"
+        app:layout_constraintStart_toStartOf="@+id/etSurnameCounselor"
+        app:layout_constraintTop_toBottomOf="@+id/etSurnameCounselor" />
+
+    <EditText
+        android:id="@+id/etBirthdayCounselor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="15dp"
+        android:background="@android:color/transparent"
+        android:gravity="top"
+        android:hint="@string/birthday"
+        android:textSize="18sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="@+id/etPatronamycCounselor"
+        app:layout_constraintStart_toStartOf="@+id/etPatronamycCounselor"
+        app:layout_constraintTop_toBottomOf="@+id/etPatronamycCounselor" />
+
+    <EditText
+        android:id="@+id/etPhoneNumberCounselor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="15dp"
+        android:background="@android:color/transparent"
+        android:gravity="top"
+        android:hint="@string/phone_number"
+        android:textSize="18sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="@+id/etBirthdayCounselor"
+        app:layout_constraintStart_toStartOf="@+id/etBirthdayCounselor"
+        app:layout_constraintTop_toBottomOf="@+id/etBirthdayCounselor" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

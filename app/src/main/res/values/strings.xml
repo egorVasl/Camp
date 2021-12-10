@@ -36,4 +36,12 @@
     <string name="enter_name_event">Введите название мероприятия</string>
     <string name="enter_data_event">Введите дату мероприятия</string>
     <string name="enter_time_event">Введите время мероприятия</string>
+    <string name="name">Имя</string>
+    <string name="surname">Фамилия</string>
+    <string name="patronamyc">Отчество</string>
+    <string name="birthday">Дата рождения</string>
+    <string name="phone_number">Номер телефона</string>
+    <string name="edit_data">Редактировать данные</string>
+
+
 </resources>

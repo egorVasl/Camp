@@ -1,20 +1,13 @@
 package com.example.singupactivity.ui.main.Activity
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
-import android.content.DialogInterface
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
-import android.text.TextUtils
 import android.view.LayoutInflater
-import android.view.View
-import android.widget.EditText
 import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -22,19 +15,25 @@ import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import com.example.singupactivity.R
 import com.example.singupactivity.databinding.ActivityNavigtionBinding
-import com.example.singupactivity.ui.main.Data.DailyScheduleDataClass
 import com.example.singupactivity.ui.main.DataBase.CampDbManager
-import java.util.jar.Manifest
-import javax.xml.transform.OutputKeys.VERSION
+import android.graphics.BitmapFactory
+
+import android.graphics.Bitmap
+import android.net.Uri
+import android.view.View
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass
+import java.io.FileNotFoundException
+import java.io.InputStream
+
 
 class
 NavigationActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityNavigtionBinding
     lateinit var campDbManager: CampDbManager
+    lateinit var imageProfile: ImageView
 
-    private val IMAGE_PICK_CODE = 1000
-    private val PERMISSION_CODE = 1001
+    private val pickImage = 1
 
 
     @SuppressLint("InflateParams")
@@ -56,34 +55,58 @@ NavigationActivity : AppCompatActivity() {
         val navController = Navigation.findNavController(this, R.id.navHostFragment)
         NavigationUI.setupWithNavController(binding.navigationView, navController)
 
+
         navController.addOnDestinationChangedListener { _, destination, _ ->
             binding.textTitle.text = destination.label
         }
-        val view = LayoutInflater.from(this).inflate(R.layout.navigation_header, null)
-        val imageProfile = view.findViewById<ImageView>(R.id.imageHeaderProfile)
+
+//        val loginList =
+//            campDbManager.selectToTableAuthorization(CampDbNameClass.COLUMN_NAME_LOGIN)
+//        for ((i, item) in loginList.withIndex()) {
+//            if (loginList[i] == etLogin.text.toString()) {
+//                loginIsTrue = true
+//            }
+//        }
+        val headerLayout: View = binding.navigationView.getHeaderView(0)
+
+        imageProfile = headerLayout.findViewById<ImageView>(R.id.imageHeaderProfile)
 
         imageProfile.setOnClickListener {
-            if (checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) ==
-                PackageManager.PERMISSION_DENIED
-            ) {
 
-                val permissions = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
-                requestPermissions(permissions, PERMISSION_CODE)
+            val photoPickerIntent: Intent = Intent(Intent.ACTION_PICK)
 
-            } else {
-                selectImageFromGallery()
+            photoPickerIntent.type = "image/*"
+
+            startActivityForResult(photoPickerIntent, pickImage);
+
+        }
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            pickImage -> {
+                if (resultCode === RESULT_OK) {
+                    try {
+                        val imageUri: Uri = data?.data!!
+                        val imageStream: InputStream? =
+                            contentResolver.openInputStream(imageUri)
+                        val selectedImage = BitmapFactory.decodeStream(imageStream)
+                        imageProfile.setImageBitmap(selectedImage)
+                    } catch (e: FileNotFoundException) {
+                        e.printStackTrace()
+                    }
+                }
             }
-
         }
+    }
 
-
-
-
-        override fun onDestroy() {
-            campDbManager.closeDb()
-            super.onDestroy()
-        }
-
+    override fun onDestroy() {
+        campDbManager.closeDb()
+        super.onDestroy()
+    }
+}
 //    override fun setupToolbar() = with((act as BaseActivity).toolbar) {
 //        title = "Camp"
 //        setNavigationIcon(R.drawable.ic_baseline_arrow_back_24)
@@ -98,28 +121,3 @@ NavigationActivity : AppCompatActivity() {
 //            }
 //        }
 //    }
-    }
-
-    private fun selectImageFromGallery() {
-
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        when(requestCode) {
-            PERMISSION_CODE -> {
-                if (grantResults.isNotEmpty() && grantResults[0] ==
-                        PackageManager.PERMISSION_DENIED) {
-                    selectImageFromGallery()
-                } else {
-                    Toast.
-                }
-            }
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-    }
-}
