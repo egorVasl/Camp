@@ -1,14 +1,10 @@
 package com.example.singupactivity.ui.main.Activity
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
-import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.Navigation
@@ -18,10 +14,10 @@ import com.example.singupactivity.databinding.ActivityNavigtionBinding
 import com.example.singupactivity.ui.main.DataBase.CampDbManager
 import android.graphics.BitmapFactory
 
-import android.graphics.Bitmap
 import android.net.Uri
 import android.view.View
-import com.example.singupactivity.ui.main.DataBase.CampDbNameClass
+import androidx.core.os.bundleOf
+import com.example.singupactivity.ui.main.Fragment.CounselorFragment
 import java.io.FileNotFoundException
 import java.io.InputStream
 
@@ -32,6 +28,8 @@ NavigationActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNavigtionBinding
     lateinit var campDbManager: CampDbManager
     lateinit var imageProfile: ImageView
+
+    var message : String? = null
 
     private val pickImage = 1
 
@@ -44,6 +42,16 @@ NavigationActivity : AppCompatActivity() {
         setContentView(binding.root)
         campDbManager = CampDbManager(this)
         campDbManager.openDb()
+
+
+        val intent = intent
+         message = getIntent().extras?.get("KEY").toString()
+
+
+//        val frag= CounselorFragment()
+//        frag.arguments = bundleOf("message" to message.toString())
+
+
         val drawerLayout: DrawerLayout = binding.drawerLayout
 
         binding.imageMenu.setOnClickListener {
@@ -81,6 +89,10 @@ NavigationActivity : AppCompatActivity() {
 
         }
 
+    }
+
+    fun getMyData(): String? {
+        return message
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

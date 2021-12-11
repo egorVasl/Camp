@@ -1,7 +1,6 @@
 package com.example.singupactivity.ui.main.Fragment
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,16 +9,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
-import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.fragment.app.activityViewModels
 import com.example.singupactivity.R
 import com.example.singupactivity.ui.main.Activity.NavigationActivity
 import com.example.singupactivity.ui.main.DataBase.CampDbManager
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass
 
 
-
 class LoginFragment : Fragment() {
+
+
 
 
     private lateinit var campDbManager: CampDbManager
@@ -72,17 +71,23 @@ class LoginFragment : Fragment() {
                     campDbManager.selectToTableAuthorization(CampDbNameClass.COLUMN_NAME_SQUAD)
                 for ((i, item) in squadList.withIndex()) {
                     squadIsTrue = squadList[i] == etSquad.text.toString()
+                    squadIsTrue = true
                 }
 
                 if (squadIsTrue and passwordIsTrue and loginIsTrue) {
 
-                    startActivity(Intent(activity, NavigationActivity::class.java))
-                    Toast.makeText(activity, R.string.successful_authorization, Toast.LENGTH_SHORT)
-                        .show();
+                    val result = etLogin.text.toString()
+
+
+                    val intent = Intent(
+                        activity?.baseContext,
+                        NavigationActivity::class.java
+                    )
+                    intent.putExtra("KEY", result)
+                    startActivity(intent)
                     etLogin.text.clear()
                     etPassword.text.clear()
                     etSquad.text.clear()
-
                 } else {
                     alert(R.string.unsuccessful_authorization)
                 }
@@ -90,6 +95,7 @@ class LoginFragment : Fragment() {
         }
         return view
     }
+
 
     fun alert(massage: Int) {
         val builder = AlertDialog.Builder(activity!!)

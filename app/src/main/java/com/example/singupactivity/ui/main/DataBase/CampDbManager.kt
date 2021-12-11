@@ -142,13 +142,17 @@ class CampDbManager(context: Context) {
     }
 
     @SuppressLint("Range")
-    fun selectToTableCounselor(const: String): ArrayList<String> {
+    fun selectToTableCounselor(const: String, title: String): ArrayList<String> {
         openDb()
         val dataList = ArrayList<String>()
-        val cursor = db.query(
-            TABLE_NAME_COUNSELOR, null, null,
-            null, null, null, null
-        )
+
+        val sqlQuery = ("select c.counselor_name , c.counselor_surname, "
+                + "c.counselor_patronymic, c.counselor_birthday, c.counselor_number, c.id_authorization "
+                + "from counselor as c "
+                + "inner join authorization as a "
+                + "on c.id_authorization = a.id_authorization "
+                + "where a.login = ?")
+        val cursor = db.rawQuery(sqlQuery, arrayOf(title));
 
         while (cursor?.moveToNext()!!) {
             val dataText = cursor.getString(cursor.getColumnIndex(const))
@@ -156,6 +160,26 @@ class CampDbManager(context: Context) {
         }
         cursor.close()
         return dataList
+    }
+
+    fun updateRawToTableCounselor(counselorName: String, counselorSurname: String,
+                                  counselorPatronymic: String, counselorBirthday: String,
+                                  counselorNumber: String, id: String) {
+        openDb()
+        val cv = ContentValues().apply {
+            put(COLUMN_NAME_COUNSELOR_NAME, counselorName)
+            put(COLUMN_NAME_COUNSELOR_SURNAME, counselorSurname)
+            put(COLUMN_NAME_COUNSELOR_PATRONYMIC, counselorPatronymic)
+            put(COLUMN_NAME_COUNSELOR_BIRTHDAY, counselorBirthday)
+            put(COLUMN_NAME_COUNSELOR_NUMBER, counselorNumber)
+            put(COLUMN_NAME_ID_SQUAD_COUNSELOR, "null")
+        }
+
+        val updCount = db.update(
+            TABLE_NAME_COUNSELOR, cv, "id_authorization = ?",
+            arrayOf(id)
+        )
+        closeDb()
     }
 
     /**

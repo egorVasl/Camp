@@ -42,6 +42,7 @@
     <string name="birthday">Дата рождения</string>
     <string name="phone_number">Номер телефона</string>
     <string name="edit_data">Редактировать данные</string>
+    <string name="child_list_title">Ребёнок :</string>
 
 
 </resources>

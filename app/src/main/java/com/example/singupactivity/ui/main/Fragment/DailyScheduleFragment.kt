@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.singupactivity.ui.main.Adapter.DailyScheduleAdapter
+import com.example.singupactivity.ui.main.Adapter.ChildListAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import android.widget.Toast
 
@@ -33,7 +33,7 @@ import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_T
 
 class DailyScheduleFragment : Fragment() {
 
-    lateinit var adapter: DailyScheduleAdapter
+    lateinit var adapter: ChildListAdapter
     lateinit var dailyScheduleDataClass: DailyScheduleDataClass
     lateinit var campDbManager: CampDbManager
     var dailyScheduleListFrag = ArrayList<DailyScheduleDataClass>()
@@ -42,7 +42,7 @@ class DailyScheduleFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         campDbManager = activity?.let { CampDbManager(it) }!!
-        adapter = DailyScheduleAdapter(this@DailyScheduleFragment)
+        adapter = ChildListAdapter(this@DailyScheduleFragment)
         val eventTimeList = campDbManager.selectToTableDailySchedule(COLUMN_NAME_TIME_EVENT)
         val eventNameList = campDbManager.selectToTableDailySchedule(COLUMN_NAME_NAME_EVENT)
         val eventDateList = campDbManager.selectToTableDailySchedule(COLUMN_NAME_DATE_EVENT)
