@@ -19,6 +19,7 @@ import com.example.singupactivity.R
 import com.example.singupactivity.ui.main.Adapter.ChildListAdapter
 import com.example.singupactivity.ui.main.Data.ChildListDataClass
 import com.example.singupactivity.ui.main.DataBase.CampDbManager
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
@@ -35,7 +36,24 @@ ChildListFragment : Fragment() {
 
         campDbManager = activity?.let { CampDbManager(it) }!!
         adapter = ChildListAdapter(this@ChildListFragment)
+        val nameChildList = campDbManager.selectToTableChild(CampDbNameClass.COLUMN_NAME_CHILD_NAME)
+        val surnameChildList = campDbManager.selectToTableChild(CampDbNameClass.COLUMN_NAME_CHILD_SURNAME)
+        val patronamycChildList = campDbManager.selectToTableChild(CampDbNameClass.COLUMN_NAME_CHILD_PATRONYMIC)
+        val parentsPhoneNumberList = campDbManager.selectToTableChild(CampDbNameClass.COLUMN_NAME_PARENTS_NUMBER)
+        val birthdayChildList = campDbManager.selectToTableChild(CampDbNameClass.COLUMN_NAME_CHILD_BIRTHDAY)
 
+        for ((i, elm) in nameChildList.withIndex()) {
+            adapter.addChildList(
+                ChildListDataClass(
+                    nameChild = nameChildList[i],
+                    surnameChild = surnameChildList[i],
+                    birthdayChild =  birthdayChildList[i],
+                    patronamycChild = patronamycChildList[i],
+                    parentsNumberChild = parentsPhoneNumberList[i]
+                )
+            )
+
+        }
     }
 
     override fun onCreateView(
@@ -147,11 +165,11 @@ ChildListFragment : Fragment() {
 
             } else {
                 createChildList(
-                    nameChildUpdate = etNameChild.text.toString(),
-                    surnameChildUpdate = etSurnameChild.text.toString(),
-                    patronamycChildUpdate = etPatronamycChild.text.toString(),
-                    birthdayChildUpdate = etBirthdayChild.text.toString(),
-                    parentsPhoneNumberUpdate = etParentsPhoneNumber.text.toString()
+                    nameChild = etNameChild.text.toString(),
+                    surnameChild = etSurnameChild.text.toString(),
+                    patronamycChild = etPatronamycChild.text.toString(),
+                    birthdayChild = etBirthdayChild.text.toString(),
+                    parentsPhoneNumber = etParentsPhoneNumber.text.toString()
                 )
             }
         })
@@ -160,7 +178,7 @@ ChildListFragment : Fragment() {
     @SuppressLint("NotifyDataSetChanged")
     private fun deleteChildList(const: String, position: Int) {
 
-//        campDbManager.deleteRawToTableDailySchedule(const)
+        campDbManager.deleteRawToTableChild(const)
 
         adapter.removeChildList(position)
 
@@ -175,12 +193,14 @@ ChildListFragment : Fragment() {
         nameChildUpdatePosition: String,
         position: Int
     ) {
-//        campDbManager.updateRawToTableDailySchedule(
-//            nameEvent = SurnameChildUpdate,
-//            dateEvent = PatronamycChildUpdate,
-//            timeEvent = NameChildUpdate,
-//            NameChildUpdatePosition = NameChildUpdatePosition
-//        )
+        campDbManager.updateRawToTableChild(
+            nameChildUpdate = nameChildUpdate,
+            surnameChildUpdate = surnameChildUpdate,
+            patronamycChildUpdate = patronamycChildUpdate,
+            parentsPhoneNumberUpdate = parentsPhoneNumberUpdate,
+            birthdayChildUpdate = birthdayChildUpdate,
+            nameChildUpdatePosition = nameChildUpdatePosition
+        )
 
         val childListDataClass = ChildListDataClass(
             nameChild = nameChildUpdate,
@@ -196,24 +216,26 @@ ChildListFragment : Fragment() {
     }
 
     private fun createChildList(
-        nameChildUpdate: String,
-        surnameChildUpdate: String,
-        patronamycChildUpdate: String,
-        parentsPhoneNumberUpdate: String,
-        birthdayChildUpdate: String
+        nameChild: String,
+        surnameChild: String,
+        patronamycChild: String,
+        parentsPhoneNumber: String,
+        birthdayChild: String
     ) {
-//        campDbManager.insertToTableDailySchedule(
-//            nameEvent = nameEventCreate,
-//            dateEvent = dateEventCreate,
-//            timeEvent = timeEventCreate
-//        )
+        campDbManager.insertToTableChild(
+            childName = nameChild,
+            childSurname = surnameChild,
+            childPatronymic = patronamycChild,
+            childBirthday = birthdayChild,
+            parentsNumber = parentsPhoneNumber
+        )
 
         val childListDataClass = ChildListDataClass(
-            nameChild = nameChildUpdate,
-            surnameChild = surnameChildUpdate,
-            patronamycChild = patronamycChildUpdate,
-            birthdayChild = birthdayChildUpdate,
-            parentsNumberChild = parentsPhoneNumberUpdate
+            nameChild = nameChild,
+            surnameChild = surnameChild,
+            patronamycChild = patronamycChild,
+            birthdayChild = birthdayChild,
+            parentsNumberChild = parentsPhoneNumber
         )
 
         adapter.addChildList(childListDataClass)

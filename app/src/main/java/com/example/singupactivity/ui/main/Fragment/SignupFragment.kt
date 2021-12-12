@@ -93,7 +93,7 @@ class SignupFragment : Fragment() {
                             campDbManager.insertToTableAuthorization(
                                 login = etLogin.text.toString(),
                                 password = etPassword.text.toString(),
-                                squad = etSquad.text.toString().toInt()
+                                squad = etSquad.text.toString()
                             )
 
                             startActivity(Intent(activity, NavigationActivity::class.java))

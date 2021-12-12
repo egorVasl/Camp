@@ -16,6 +16,7 @@ import android.graphics.BitmapFactory
 
 import android.net.Uri
 import android.view.View
+import android.widget.TextView
 import androidx.core.os.bundleOf
 import com.example.singupactivity.ui.main.Fragment.CounselorFragment
 import java.io.FileNotFoundException
@@ -78,6 +79,8 @@ NavigationActivity : AppCompatActivity() {
         val headerLayout: View = binding.navigationView.getHeaderView(0)
 
         imageProfile = headerLayout.findViewById<ImageView>(R.id.imageHeaderProfile)
+
+
 
         imageProfile.setOnClickListener {
 

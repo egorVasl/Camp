@@ -38,7 +38,7 @@ class AchievementsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         val view: View = inflater.inflate(R.layout.fragment_achievements, container, false)
 
@@ -140,7 +140,7 @@ class AchievementsFragment : Fragment() {
     @SuppressLint("NotifyDataSetChanged")
     private fun deleteAchievements(const: String, position: Int) {
 
-//        campDbManager.deleteRawToTableDailySchedule(const)
+        campDbManager.deleteRawToTableAchievements(const)
 
         adapter.removeAchievements(position)
 
@@ -153,12 +153,10 @@ class AchievementsFragment : Fragment() {
         placeUpdatePosition: String,
         position: Int
     ) {
-//        campDbManager.updateRawToTableDailySchedule(
-//            nameEvent = nameEventUpdate,
-//            dateEvent = dateEventUpdate,
-//            timeEvent = timeEventUpdate,
-//            placeUpdatePosition = placeUpdatePosition
-//        )
+        campDbManager.updateRawToTableAchievements(
+            place = placeUpdate,
+            placeUpdatePosition = placeUpdatePosition
+        )
 
         val achievementsDataClass = AchievementsDataClass(
             squadName = squadNameUpdate,
@@ -175,11 +173,9 @@ class AchievementsFragment : Fragment() {
         place: String,
         eventName: String
     ) {
-//        campDbManager.insertToTableDailySchedule(
-//            nameEvent = place,
-//            dateEvent = eventName,
-//            timeEvent = squadName
-//        )
+        campDbManager.insertToTableAchievements(
+            achievementsPlace = place
+        )
 
         val achievementsDataClass = AchievementsDataClass(
             squadName = squadName,

@@ -145,7 +145,7 @@ object CampDbNameClass : BaseColumns{
                 "$COLUMN_NAME_CHILD_NAME  TEXT," +
                 "$COLUMN_NAME_CHILD_SURNAME TEXT,"+
                 "$COLUMN_NAME_CHILD_PATRONYMIC TEXT,"+
-                "$COLUMN_NAME_CHILD_BIRTHDAY DATETIME,"+
+                "$COLUMN_NAME_CHILD_BIRTHDAY TEXT,"+
                 "$COLUMN_NAME_PARENTS_NUMBER INTEGER," +
                 "$COLUMN_NAME_ID_SQUAD_CHILD INTEGER," +
                 "FOREIGN KEY ($COLUMN_NAME_ID_SQUAD_CHILD) REFERENCES $TABLE_NAME_SQUAD($COLUMN_NAME_ID_SQUAD)"+
@@ -213,5 +213,23 @@ object CampDbNameClass : BaseColumns{
                 "$COLUMN_NAME_DATE_EVENT TEXT)"
 
     const val DELETE_TABLE_DAILY_SCHEDULE = "DROP TABLE IF EXISTS $TABLE_NAME_DAILY_SCHEDULE"
+
+    /**
+     * Table Trigger Result
+     */
+
+    const val TABLE_NAME_TRIGGER_RESULT = "trigger_result"
+
+    const val COLUMN_NAME_ID_TRIGGER_RESULT = "id_trigger_result"
+    const val COLUMN_NAME_TRIGGER_RESULT = "resultTrigger"
+
+    const val CREATE_TABLE_TRIGGER_RESULT =
+        "CREATE TABLE IF NOT EXISTS $TABLE_NAME_TRIGGER_RESULT (" +
+
+                "$COLUMN_NAME_TRIGGER_RESULT TEXT)"
+
+    const val DELETE_TABLE_TRIGGER_RESULT = "DROP TABLE IF EXISTS $TABLE_NAME_TRIGGER_RESULT"
+
+
 
 }

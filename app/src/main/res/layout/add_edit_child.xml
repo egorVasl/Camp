@@ -36,22 +36,6 @@
         app:layout_constraintTop_toBottomOf="@+id/tvTitleChildList" />
 
     <EditText
-        android:id="@+id/etSurnameChild"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="16dp"
-        android:textColor="@color/gray"
-        android:textStyle="italic"
-        android:textSize="14sp"
-        android:hint="@string/surname"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etNameChild"
-         />
-
-    <EditText
         android:id="@+id/etPatronamycChild"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -64,7 +48,24 @@
         android:hint="@string/patronamyc"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etSurnameChild" />
+        app:layout_constraintTop_toBottomOf="@+id/etNameChild" />
+
+
+    <EditText
+        android:id="@+id/etSurnameChild"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
+        android:textColor="@color/gray"
+        android:textStyle="italic"
+        android:textSize="14sp"
+        android:hint="@string/surname"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etPatronamycChild"
+        />
     <EditText
         android:id="@+id/etBirthdayChild"
         android:layout_width="0dp"
@@ -78,7 +79,8 @@
         android:hint="@string/birthday"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etPatronamycChild" />
+        app:layout_constraintTop_toBottomOf="@+id/etSurnameChild" />
+
     <EditText
         android:id="@+id/etParentsPhoneNumber"
         android:layout_width="0dp"
@@ -86,13 +88,15 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="16dp"
-        android:textColor="@color/gray"
-        android:textStyle="italic"
-        android:textSize="14sp"
         android:hint="@string/parents_phone_number"
+        android:inputType="number"
+        android:textColor="@color/gray"
+        android:textSize="14sp"
+        android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etBirthdayChild" />
+        app:layout_constraintTop_toBottomOf="@+id/etBirthdayChild"
+        tools:ignore="TextFields" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

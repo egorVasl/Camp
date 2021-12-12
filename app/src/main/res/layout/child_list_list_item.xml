@@ -43,6 +43,21 @@
             tools:text="имя" />
 
         <TextView
+        android:id="@+id/tvPatronamycChild"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvNameChild"
+        tools:text="отчество" />
+
+        <TextView
             android:id="@+id/tvSurnameChild"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -54,23 +69,10 @@
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvNameChild"
+            app:layout_constraintTop_toBottomOf="@+id/tvPatronamycChild"
             tools:text="фамилия" />
 
-        <TextView
-            android:id="@+id/tvPatronamycChild"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="16dp"
-            android:fontFamily="sans-serif"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvSurnameChild"
-            tools:text="отчество" />
+
         <TextView
             android:id="@+id/tvBirthdayChild"
             android:layout_width="0dp"
@@ -83,7 +85,7 @@
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvPatronamycChild"
+            app:layout_constraintTop_toBottomOf="@+id/tvSurnameChild"
             tools:text="дата рождения" />
         <TextView
             android:id="@+id/tvParentsPhoneNumber"

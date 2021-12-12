@@ -3,14 +3,19 @@ package com.example.singupactivity.ui.main.Fragment
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.content.Intent
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.singupactivity.R
 import com.example.singupactivity.ui.main.Activity.NavigationActivity
 import com.example.singupactivity.ui.main.DataBase.CampDbManager
@@ -19,21 +24,24 @@ import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_C
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_COUNSELOR_NUMBER
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_COUNSELOR_PATRONYMIC
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_COUNSELOR_SURNAME
-import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_ID_AUTHORIZATION_COUNSELOR
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.io.FileNotFoundException
+import java.io.InputStream
 
 
 class CounselorFragment : Fragment() {
 
     lateinit var campDbManager: CampDbManager
+    private val pickImage = 1
+    lateinit var image: ImageView
 
-    val nameCounselor: String = ""
-    val surnameCounselor: String = ""
-    val patronamycCounselor: String = ""
-    val birthdayCounselor: String = ""
-    val phoneNumberCounselor: String = ""
-    val idAuthorization: String = ""
 
+    var idAuthorization: String = ""
+    var nameCounselor: String = "Арина"
+    var surnameCounselor: String = "Викторовна"
+    var patronamycCounselor: String = "Мазуренко"
+    var birthdayCounselor: String = "05.01.2003"
+    var phoneNumberCounselor: String = "375291764532"
     var result: String? = null
 
 
@@ -54,77 +62,105 @@ class CounselorFragment : Fragment() {
         val tvPhoneNumberCounselor = view.findViewById<TextView>(R.id.tvPhoneNumberCounselor)
         val fabCounselor = view.findViewById<FloatingActionButton>(R.id.fabCounselor)
 
+         image = view.findViewById<ImageView>(R.id.imageProfile)
+
+        image.setOnClickListener {
+
+            val photoPickerIntent: Intent = Intent(Intent.ACTION_PICK)
+
+            photoPickerIntent.type = "image/*"
+
+            startActivityForResult(photoPickerIntent, pickImage);
+
+        }
+
 
         val activity: NavigationActivity? = activity as NavigationActivity?
         result = activity?.getMyData()
 
-        val nameCounselorList =
-            result?.let {
-                campDbManager.selectToTableCounselor(
-                    const = COLUMN_NAME_COUNSELOR_NAME, title = it
-                )
-            }
-        if (nameCounselorList != null) {
-            for ((i, item) in nameCounselorList.withIndex()) {
-                nameCounselorList[i] = nameCounselor
-            }
-        }
-        val surnameCounselorList =
-            result?.let {
-                campDbManager.selectToTableCounselor(
-                    const = COLUMN_NAME_COUNSELOR_SURNAME, title = it
-                )
-            }
-        if (surnameCounselorList != null) {
-            for ((i, item) in surnameCounselorList.withIndex()) {
-                surnameCounselorList[i] = surnameCounselor
-            }
-        }
-        val patronamycCounselorList =
-            result?.let {
-                campDbManager.selectToTableCounselor(
-                    const = COLUMN_NAME_COUNSELOR_PATRONYMIC, title = it
-                )
-            }
-        if (patronamycCounselorList != null) {
-            for ((i, item) in patronamycCounselorList.withIndex()) {
-                patronamycCounselorList[i] = patronamycCounselor
-            }
-        }
-        val birthdayCounselorList =
-            result?.let {
-                campDbManager.selectToTableCounselor(
-                    const = COLUMN_NAME_COUNSELOR_BIRTHDAY, title = it
-                )
-            }
-        if (birthdayCounselorList != null) {
-            for ((i, item) in birthdayCounselorList.withIndex()) {
-                birthdayCounselorList[i] = birthdayCounselor
-            }
-        }
-        val phoneNumberCounselorList =
-            result?.let {
-                campDbManager.selectToTableCounselor(
-                    const = COLUMN_NAME_COUNSELOR_NUMBER, title = it
-                )
-            }
-        if (phoneNumberCounselorList != null) {
-            for ((i, item) in phoneNumberCounselorList.withIndex()) {
-                phoneNumberCounselorList[i] = phoneNumberCounselor
-            }
-        }
-        val idAuthorizationList =
-            result?.let {
-                campDbManager.selectToTableCounselor(
-                    const = COLUMN_NAME_ID_AUTHORIZATION_COUNSELOR, title = it
-                )
-            }
-        if (idAuthorizationList != null) {
-            for ((i, item) in idAuthorizationList.withIndex()) {
-                idAuthorizationList[i] = idAuthorization
-            }
-        }
+        fabCounselor.setOnClickListener {
+            val view1 = LayoutInflater.from(context).inflate(R.layout.add_counselor, null)
 
+            val alertDialogBuilderUserInput: AlertDialog.Builder =
+                AlertDialog.Builder(requireActivity())
+            alertDialogBuilderUserInput.setView(view1)
+
+            val etNameCounselor = view1.findViewById<TextView>(R.id.etNameCounselor)
+            val etSurnameCounselor = view1.findViewById<TextView>(R.id.etSurnameCounselor)
+            val etPatronamycCounselor = view1.findViewById<TextView>(R.id.etPatronamycCounselor)
+            val etBirthdayCounselor = view1.findViewById<TextView>(R.id.etBirthdayCounselor)
+            val etPhoneNumberCounselor = view1.findViewById<TextView>(R.id.etPhoneNumberCounselor)
+//
+//            etNameCounselor.text = nameCounselor
+//            etSurnameCounselor.text = surnameCounselor
+//            etPatronamycCounselor.text = patronamycCounselor
+//            etBirthdayCounselor.text = birthdayCounselor
+//            etPhoneNumberCounselor.text = phoneNumberCounselor
+
+            alertDialogBuilderUserInput
+                .setCancelable(false)
+                .setPositiveButton(if (true) "Добавить" else "",
+                    DialogInterface.OnClickListener { dialogBox, id ->
+
+
+                         nameCounselor= etNameCounselor.text.toString()
+                         surnameCounselor = etSurnameCounselor.text.toString()
+                         patronamycCounselor  = etPatronamycCounselor.text.toString()
+                         birthdayCounselor = etBirthdayCounselor.text.toString()
+                         phoneNumberCounselor =  etPhoneNumberCounselor.text.toString()
+
+
+
+//                        campDbManager.insertToTableCounselor(
+//                            counselorName = etNameCounselor.text.toString(),
+//                            counselorSurname = etSurnameCounselor.text.toString(),
+//                            counselorPatronymic = etPatronamycCounselor.text.toString(),
+//                            counselorBirthday = etBirthdayCounselor.text.toString(),
+//                            counselorNumber = etPhoneNumberCounselor.text.toString(),
+//                        )
+
+                    })
+                .setNegativeButton(if (true) "Закрыть" else "",
+                    DialogInterface.OnClickListener { dialogBox, id ->
+
+                    })
+
+            tvNameCounselor.text = nameCounselor
+            tvSurnameCounselor.text = surnameCounselor
+            tvPatronamycCounselor.text = patronamycCounselor
+            tvBirthdayCounselor.text = birthdayCounselor
+            tvPhoneNumberCounselor.text = phoneNumberCounselor
+
+            val alertDialog: AlertDialog = alertDialogBuilderUserInput.create()
+            with(alertDialog) {
+                show()
+                getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(View.OnClickListener {
+                    if (TextUtils.isEmpty(etNameCounselor.text.toString())) {
+                        Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
+                            .show()
+                        return@OnClickListener
+                    } else if (TextUtils.isEmpty(etSurnameCounselor.text.toString())) {
+                        Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
+                            .show()
+                        return@OnClickListener
+                    } else if (TextUtils.isEmpty(etPatronamycCounselor.text.toString())) {
+                        Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
+                            .show()
+                        return@OnClickListener
+                    } else if (TextUtils.isEmpty(etBirthdayCounselor.text.toString())) {
+                        Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
+                            .show()
+                        return@OnClickListener
+                    } else if (TextUtils.isEmpty(etPhoneNumberCounselor.text.toString())) {
+                        Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
+                            .show()
+                        return@OnClickListener
+                    } else {
+                        dismiss()
+                    }
+                })
+            }
+        }
 
         tvNameCounselor.text = nameCounselor
         tvSurnameCounselor.text = surnameCounselor
@@ -132,9 +168,78 @@ class CounselorFragment : Fragment() {
         tvBirthdayCounselor.text = birthdayCounselor
         tvPhoneNumberCounselor.text = phoneNumberCounselor
 
-        fabCounselor.setOnClickListener {
-            addAndEditCounselor(true)
-        }
+
+//        val nameCounselorList =
+//            result?.let {
+//                campDbManager.selectToTableCounselor(
+//                    const = COLUMN_NAME_COUNSELOR_NAME, title = it
+//                )
+//            }
+//        if (nameCounselorList != null) {
+//            for ((i, item) in nameCounselorList.withIndex()) {
+//                nameCounselorList[i] = nameCounselor
+//            }
+//        }
+//        val surnameCounselorList =
+//            result?.let {
+//                campDbManager.selectToTableCounselor(
+//                    const = COLUMN_NAME_COUNSELOR_SURNAME, title = it
+//                )
+//            }
+//        if (surnameCounselorList != null) {
+//            for ((i, item) in surnameCounselorList.withIndex()) {
+//                surnameCounselorList[i] = surnameCounselor
+//            }
+//        }
+//        val patronamycCounselorList =
+//            result?.let {
+//                campDbManager.selectToTableCounselor(
+//                    const = COLUMN_NAME_COUNSELOR_PATRONYMIC, title = it
+//                )
+//            }
+//        if (patronamycCounselorList != null) {
+//            for ((i, item) in patronamycCounselorList.withIndex()) {
+//                patronamycCounselorList[i] = patronamycCounselor
+//            }
+//        }
+//        val birthdayCounselorList =
+//            result?.let {
+//                campDbManager.selectToTableCounselor(
+//                    const = COLUMN_NAME_COUNSELOR_BIRTHDAY, title = it
+//                )
+//            }
+//        if (birthdayCounselorList != null) {
+//            for ((i, item) in birthdayCounselorList.withIndex()) {
+//                birthdayCounselorList[i] = birthdayCounselor
+//            }
+//        }
+//        val phoneNumberCounselorList =
+//            result?.let {
+//                campDbManager.selectToTableCounselor(
+//                    const = COLUMN_NAME_COUNSELOR_NUMBER, title = it
+//                )
+//            }
+//        if (phoneNumberCounselorList != null) {
+//            for ((i, item) in phoneNumberCounselorList.withIndex()) {
+//                phoneNumberCounselorList[i] = phoneNumberCounselor
+//            }
+//        }
+//        val idAuthorizationList =
+//            result?.let {
+//                campDbManager.selectToTableCounselor(
+//                    const = COLUMN_NAME_ID_AUTHORIZATION_COUNSELOR, title = it
+//                )
+//            }
+//        if (idAuthorizationList != null) {
+//            for ((i, item) in idAuthorizationList.withIndex()) {
+//                idAuthorizationList[i] = idAuthorization
+//            }
+//        }
+
+
+
+
+
 
         return view
 
@@ -143,74 +248,27 @@ class CounselorFragment : Fragment() {
     @SuppressLint("InflateParams")
     private fun addAndEditCounselor(isUpdate: Boolean) {
 
-        val view = LayoutInflater.from(context).inflate(R.layout.add_counselor, null)
 
-        val alertDialogBuilderUserInput: AlertDialog.Builder =
-            AlertDialog.Builder(requireActivity())
-        alertDialogBuilderUserInput.setView(view)
 
-        val etNameCounselor = view.findViewById<TextView>(R.id.etNameCounselor)
-        val etSurnameCounselor = view.findViewById<TextView>(R.id.etSurnameCounselor)
-        val etPatronamycCounselor = view.findViewById<TextView>(R.id.etPatronamycCounselor)
-        val etBirthdayCounselor = view.findViewById<TextView>(R.id.etBirthdayCounselor)
-        val etPhoneNumberCounselor = view.findViewById<TextView>(R.id.etPhoneNumberCounselor)
+    }
 
-        etNameCounselor.text = nameCounselor
-        etSurnameCounselor.text = surnameCounselor
-        etPatronamycCounselor.text = patronamycCounselor
-        etBirthdayCounselor.text = birthdayCounselor
-        etPhoneNumberCounselor.text = phoneNumberCounselor
 
-        alertDialogBuilderUserInput
-            .setCancelable(false)
-            .setPositiveButton(if (isUpdate) "Обновить" else "",
-                DialogInterface.OnClickListener { dialogBox, id -> })
-            .setNegativeButton(if (isUpdate) "Закрыть" else "",
-                DialogInterface.OnClickListener { dialogBox, id ->
-                    if (true) {
-
-                        campDbManager.updateRawToTableCounselor(
-                            counselorName = etNameCounselor.text.toString(),
-                            counselorSurname = etSurnameCounselor.text.toString(),
-                            counselorPatronymic = etPatronamycCounselor.text.toString(),
-                            counselorBirthday = etBirthdayCounselor.text.toString(),
-                            counselorNumber = etPhoneNumberCounselor.text.toString(),
-                            id = idAuthorization
-                        )
-                    } else {
-                        dialogBox.cancel()
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            pickImage -> {
+                if (resultCode === AppCompatActivity.RESULT_OK) {
+                    try {
+                        val imageUri: Uri = data?.data!!
+                        val imageStream: InputStream? =
+                            activity?.contentResolver?.openInputStream(imageUri)
+                        val selectedImage = BitmapFactory.decodeStream(imageStream)
+                        image.setImageBitmap(selectedImage)
+                    } catch (e: FileNotFoundException) {
+                        e.printStackTrace()
                     }
-                })
-
-        val alertDialog: AlertDialog = alertDialogBuilderUserInput.create()
-        with(alertDialog) {
-            show()
-            getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(View.OnClickListener {
-                if (TextUtils.isEmpty(etNameCounselor.text.toString())) {
-                    Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
-                        .show()
-                    return@OnClickListener
-                } else if (TextUtils.isEmpty(etSurnameCounselor.text.toString())) {
-                    Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
-                        .show()
-                    return@OnClickListener
-                } else if (TextUtils.isEmpty(etPatronamycCounselor.text.toString())) {
-                    Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
-                        .show()
-                    return@OnClickListener
-                } else if (TextUtils.isEmpty(etBirthdayCounselor.text.toString())) {
-                    Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
-                        .show()
-                    return@OnClickListener
-                } else if (TextUtils.isEmpty(etPhoneNumberCounselor.text.toString())) {
-                    Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
-                        .show()
-                    return@OnClickListener
-                } else {
-                    dismiss()
                 }
-            })
+            }
         }
-
     }
 }

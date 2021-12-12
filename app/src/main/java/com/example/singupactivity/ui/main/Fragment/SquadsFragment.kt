@@ -17,8 +17,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.singupactivity.R
 import com.example.singupactivity.ui.main.Adapter.SquadsAdapter
+import com.example.singupactivity.ui.main.Data.DailyScheduleDataClass
 import com.example.singupactivity.ui.main.Data.SquadsDataClass
 import com.example.singupactivity.ui.main.DataBase.CampDbManager
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
@@ -33,7 +35,18 @@ class SquadsFragment : Fragment() {
 
         campDbManager = activity?.let { CampDbManager(it) }!!
         adapter = SquadsAdapter(this@SquadsFragment)
-
+        campDbManager.openDb()
+        val squadNameList = campDbManager.selectToTableSquad(CampDbNameClass.COLUMN_NAME_SQUAD_NAME)
+        val squadNumberList =
+            campDbManager.selectToTableSquad(CampDbNameClass.COLUMN_NAME_SQUAD_NUMBER)
+        for ((i, elm) in squadNameList.withIndex()) {
+            adapter.addSquads(
+                SquadsDataClass(
+                    squadName = squadNameList[i],
+                    squadNumber =  squadNumberList[i]
+                )
+            )
+        }
     }
 
     override fun onCreateView(
@@ -116,15 +129,15 @@ class SquadsFragment : Fragment() {
                     updateSquads(
                         squadsNameUpdate = etSquadsName.text.toString(),
                         squadsNumberUpdate = etSquadsNumber.text.toString(),
-                        nameEventUpdatePosition = etNameUpdate,
+                        squadsNameUpdatePosition =  etNameUpdate,
                         position = position
                     )
                 }
 
             } else {
                 createSquads(
-                    squadsNameUpdate = etSquadsName.text.toString(),
-                    squadsNumberUpdate = etSquadsNumber.text.toString()
+                    squadsName = etSquadsName.text.toString(),
+                    squadsNumber = etSquadsNumber.text.toString()
                 )
             }
         })
@@ -133,7 +146,7 @@ class SquadsFragment : Fragment() {
     @SuppressLint("NotifyDataSetChanged")
     private fun deleteSquads(const: String, position: Int) {
 
-//        campDbManager.deleteRawToTableDailySchedule(const)
+        campDbManager.deleteRawToTableSquads(const)
 
         adapter.removeSquads(position)
 
@@ -142,15 +155,14 @@ class SquadsFragment : Fragment() {
     private fun updateSquads(
         squadsNameUpdate: String,
         squadsNumberUpdate: String,
-        nameEventUpdatePosition: String,
+        squadsNameUpdatePosition: String,
         position: Int
     ) {
-//        campDbManager.updateRawToTableDailySchedule(
-//            nameEvent = nameEventUpdate,
-//            dateEvent = dateEventUpdate,
-//            timeEvent = timeEventUpdate,
-//            nameEventUpdatePosition = nameEventUpdatePosition
-//        )
+        campDbManager.updateRawToTableSquads(
+            squadName = squadsNameUpdate,
+            squadNumber = squadsNumberUpdate,
+            squadsNameUpdatePosition = squadsNameUpdatePosition
+        )
 
         val squadsDataClass = SquadsDataClass(
             squadName = squadsNameUpdate,
@@ -162,24 +174,26 @@ class SquadsFragment : Fragment() {
     }
 
     private fun createSquads(
-        squadsNameUpdate: String,
-        squadsNumberUpdate: String
+        squadsName: String,
+        squadsNumber: String
     ) {
-//        campDbManager.insertToTableDailySchedule(
-//            nameEvent = nameEventCreate,
-//            dateEvent = dateEventCreate,
-//            timeEvent = timeEventCreate
-//        )
+        campDbManager.insertToTableSquad(
+            squadName = squadsName,
+            squadNumber = squadsNumber
+        )
 
         val squadsDataClass = SquadsDataClass(
-            squadName = squadsNameUpdate,
-            squadNumber = squadsNumberUpdate
+            squadName = squadsName,
+            squadNumber = squadsNumber
         )
 
 
         adapter.addSquads(squadsDataClass)
 
     }
-
+    override fun onDestroy() {
+        campDbManager.closeDb()
+        super.onDestroy()
+    }
 
 }

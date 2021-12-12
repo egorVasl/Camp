@@ -19,6 +19,9 @@ import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_D
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_EVENT_NAME
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_FLOOR
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_ID_AUTHORIZATION_COUNSELOR
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_ID_EVENT_ACHIEVEMENTS
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_ID_SQUAD_ACHIEVEMENTS
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_ID_SQUAD_CHILD
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_ID_SQUAD_COUNSELOR
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_LOGIN
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_NAME_EVENT
@@ -55,7 +58,8 @@ class CampDbManager(context: Context) {
      * Table Authorization
      */
 
-    fun insertToTableAuthorization(login: String, password: String, squad: Int) {
+    fun insertToTableAuthorization(login: String, password: String, squad: String) {
+        openDb()
         val cv = ContentValues().apply {
             put(COLUMN_NAME_LOGIN, login)
             put(COLUMN_NAME_PASSWORD, password)
@@ -63,17 +67,18 @@ class CampDbManager(context: Context) {
         }
         val rowID = db.insert(TABLE_NAME_AUTHORIZATION, null, cv)
 
-        val cvCounselor = ContentValues().apply {
-            put(COLUMN_NAME_COUNSELOR_NAME, "null")
-            put(COLUMN_NAME_COUNSELOR_SURNAME, "null")
-            put(COLUMN_NAME_COUNSELOR_PATRONYMIC, "null")
-            put(COLUMN_NAME_COUNSELOR_BIRTHDAY, "null")
-            put(COLUMN_NAME_COUNSELOR_NUMBER, "null")
-            put(COLUMN_NAME_ID_AUTHORIZATION_COUNSELOR, rowID)
-            put(COLUMN_NAME_ID_SQUAD_COUNSELOR, "null")
-        }
-
-        val rowIDCounselor = db.insert(TABLE_NAME_COUNSELOR, null, cvCounselor)
+//        val cvCounselor = ContentValues().apply {
+//            put(COLUMN_NAME_COUNSELOR_NAME, "null")
+//            put(COLUMN_NAME_COUNSELOR_SURNAME, "null")
+//            put(COLUMN_NAME_COUNSELOR_PATRONYMIC, "null")
+//            put(COLUMN_NAME_COUNSELOR_BIRTHDAY, "null")
+//            put(COLUMN_NAME_COUNSELOR_NUMBER, "null")
+//            put(COLUMN_NAME_ID_AUTHORIZATION_COUNSELOR, rowID)
+//            put(COLUMN_NAME_ID_SQUAD_COUNSELOR, "null")
+//        }
+//
+//        val rowIDCounselor = db.insert(TABLE_NAME_COUNSELOR, null, cvCounselor)
+        closeDb()
     }
 
     @SuppressLint("Range")
@@ -97,12 +102,14 @@ class CampDbManager(context: Context) {
      * Table Squad
      */
 
-    fun insertToTableSquad(squadName: String, squadNumber: Int) {
+    fun insertToTableSquad(squadName: String, squadNumber: String) {
+        openDb()
         val cv = ContentValues().apply {
             put(COLUMN_NAME_SQUAD_NAME, squadName)
             put(COLUMN_NAME_SQUAD_NUMBER, squadNumber)
         }
         val rowID = db.insert(TABLE_NAME_SQUAD, null, cv)
+        closeDb()
     }
 
     @SuppressLint("Range")
@@ -122,6 +129,30 @@ class CampDbManager(context: Context) {
         return dataList
     }
 
+
+    fun deleteRawToTableSquads(const: String) {
+        openDb()
+        val delCount = db.delete(TABLE_NAME_SQUAD, "squad_name = '$const'", null)
+        closeDb()
+    }
+
+    fun updateRawToTableSquads(
+        squadName: String, squadNumber: String,
+        squadsNameUpdatePosition: String
+    ) {
+        openDb()
+        val cv = ContentValues().apply {
+            put(COLUMN_NAME_SQUAD_NAME, squadName)
+            put(COLUMN_NAME_SQUAD_NUMBER, squadNumber)
+        }
+
+        val updCount = db.update(
+            TABLE_NAME_SQUAD, cv, "squad_name = ?",
+            arrayOf(squadsNameUpdatePosition)
+        )
+        closeDb()
+    }
+
     /**
      * Table Counselor
      */
@@ -131,14 +162,19 @@ class CampDbManager(context: Context) {
         counselorPatronymic: String, counselorBirthday: String,
         counselorNumber: String
     ) {
+        openDb()
         val cv = ContentValues().apply {
             put(COLUMN_NAME_COUNSELOR_NAME, counselorName)
             put(COLUMN_NAME_COUNSELOR_SURNAME, counselorSurname)
             put(COLUMN_NAME_COUNSELOR_PATRONYMIC, counselorPatronymic)
             put(COLUMN_NAME_COUNSELOR_BIRTHDAY, counselorBirthday)
             put(COLUMN_NAME_COUNSELOR_NUMBER, counselorNumber)
+            put(COLUMN_NAME_ID_SQUAD_COUNSELOR, "null")
+            put(COLUMN_NAME_ID_AUTHORIZATION_COUNSELOR, "null")
+
         }
         val rowID = db.insert(TABLE_NAME_COUNSELOR, null, cv)
+        closeDb()
     }
 
     @SuppressLint("Range")
@@ -151,7 +187,7 @@ class CampDbManager(context: Context) {
                 + "from counselor as c "
                 + "inner join authorization as a "
                 + "on c.id_authorization = a.id_authorization "
-                + "where a.login = ?")
+                + "where login = ?")
         val cursor = db.rawQuery(sqlQuery, arrayOf(title));
 
         while (cursor?.moveToNext()!!) {
@@ -162,9 +198,11 @@ class CampDbManager(context: Context) {
         return dataList
     }
 
-    fun updateRawToTableCounselor(counselorName: String, counselorSurname: String,
-                                  counselorPatronymic: String, counselorBirthday: String,
-                                  counselorNumber: String, id: String) {
+    fun updateRawToTableCounselor(
+        counselorName: String, counselorSurname: String,
+        counselorPatronymic: String, counselorBirthday: String,
+        counselorNumber: String, id: String
+    ) {
         openDb()
         val cv = ContentValues().apply {
             put(COLUMN_NAME_COUNSELOR_NAME, counselorName)
@@ -190,6 +228,7 @@ class CampDbManager(context: Context) {
         date: String, time: String,
         eventName: String
     ) {
+        openDb()
         val cv = ContentValues().apply {
             put(COLUMN_NAME_DATE, date)
             put(COLUMN_NAME_TIME, time)
@@ -197,6 +236,7 @@ class CampDbManager(context: Context) {
 
         }
         val rowID = db.insert(TABLE_NAME_WEEK_EVENT, null, cv)
+        closeDb()
     }
 
     @SuppressLint("Range")
@@ -216,15 +256,46 @@ class CampDbManager(context: Context) {
         return dataList
     }
 
+    fun deleteRawToTableWeekEvents(const: String) {
+        openDb()
+        val delCount = db.delete(TABLE_NAME_WEEK_EVENT, "event_name = '$const'", null)
+        closeDb()
+    }
+
+    fun updateRawToTableWeekEvents(
+        timeEvent: String,
+        nameEvent: String,
+        dateEvent: String,
+        nameEventUpdatePosition: String
+    ) {
+        openDb()
+        val cv = ContentValues().apply {
+            put(COLUMN_NAME_TIME, timeEvent)
+            put(COLUMN_NAME_EVENT_NAME, nameEvent)
+            put(COLUMN_NAME_DATE, dateEvent)
+        }
+
+        val updCount = db.update(
+            TABLE_NAME_WEEK_EVENT, cv, "name_event = ?",
+            arrayOf(nameEventUpdatePosition)
+        )
+        closeDb()
+    }
+
     /**
      *  Table Achievements
      */
 
-    fun insertToTableAchievements(achievements_place: Int) {
+    fun insertToTableAchievements(achievementsPlace: String) {
+        openDb()
         val cv = ContentValues().apply {
-            put(COLUMN_NAME_ACHIEVEMENTS_PLACE, achievements_place)
+            put(COLUMN_NAME_ACHIEVEMENTS_PLACE, achievementsPlace)
+            put(COLUMN_NAME_ID_SQUAD_ACHIEVEMENTS, "null")
+            put(COLUMN_NAME_ID_EVENT_ACHIEVEMENTS, "null")
+
         }
         val rowID = db.insert(TABLE_NAME_ACHIEVEMENTS, null, cv)
+        closeDb()
     }
 
     @SuppressLint("Range")
@@ -244,6 +315,29 @@ class CampDbManager(context: Context) {
         return dataList
     }
 
+    fun deleteRawToTableAchievements(const: String) {
+        openDb()
+        val delCount = db.delete(TABLE_NAME_ACHIEVEMENTS, "achievements_place = '$const'", null)
+        closeDb()
+    }
+
+    fun updateRawToTableAchievements(
+        place: String,
+        placeUpdatePosition: String
+    ) {
+        openDb()
+        val cv = ContentValues().apply {
+            put(COLUMN_NAME_ACHIEVEMENTS_PLACE, place)
+
+        }
+
+        val updCount = db.update(
+            TABLE_NAME_ACHIEVEMENTS, cv, "achievements_place = ?",
+            arrayOf(placeUpdatePosition)
+        )
+        closeDb()
+    }
+
     /**
      * Table Child
      */
@@ -253,6 +347,7 @@ class CampDbManager(context: Context) {
         childPatronymic: String, childBirthday: String,
         parentsNumber: String
     ) {
+        openDb()
         val cv = ContentValues().apply {
             put(COLUMN_NAME_CHILD_NAME, childName)
             put(COLUMN_NAME_CHILD_SURNAME, childSurname)
@@ -261,6 +356,7 @@ class CampDbManager(context: Context) {
             put(COLUMN_NAME_PARENTS_NUMBER, parentsNumber)
         }
         val rowID = db.insert(TABLE_NAME_CHILD, null, cv)
+        closeDb()
     }
 
     @SuppressLint("Range")
@@ -280,14 +376,48 @@ class CampDbManager(context: Context) {
         return dataList
     }
 
+    fun deleteRawToTableChild(const: String) {
+        openDb()
+        val delCount = db.delete(TABLE_NAME_CHILD, "child_name = '$const'", null)
+        closeDb()
+    }
+
+    fun updateRawToTableChild(
+        nameChildUpdate: String,
+        surnameChildUpdate: String,
+        patronamycChildUpdate: String,
+        parentsPhoneNumberUpdate: String,
+        birthdayChildUpdate: String,
+        nameChildUpdatePosition: String
+    ) {
+        openDb()
+        val cv = ContentValues().apply {
+            put(COLUMN_NAME_CHILD_NAME, nameChildUpdate)
+            put(COLUMN_NAME_CHILD_SURNAME, surnameChildUpdate)
+            put(COLUMN_NAME_CHILD_PATRONYMIC, patronamycChildUpdate)
+            put(COLUMN_NAME_CHILD_BIRTHDAY, parentsPhoneNumberUpdate)
+            put(COLUMN_NAME_PARENTS_NUMBER, birthdayChildUpdate)
+            put(COLUMN_NAME_ID_SQUAD_CHILD, "null")
+
+
+        }
+
+        val updCount = db.update(
+            TABLE_NAME_CHILD, cv, "child_name = ?",
+            arrayOf(nameChildUpdatePosition)
+        )
+        closeDb()
+    }
+
     /**
      * Table Room
      */
 
     fun insertToTableRoom(
-        floor: Int, roomNumber: Int,
-        quantityChild: Int
+        floor: String, roomNumber: String,
+        quantityChild: String
     ) {
+        openDb()
         val cv = ContentValues().apply {
             put(COLUMN_NAME_FLOOR, floor)
             put(COLUMN_NAME_ROOM_NUMBER, roomNumber)
@@ -295,6 +425,7 @@ class CampDbManager(context: Context) {
 
         }
         val rowID = db.insert(TABLE_NAME_ROOM, null, cv)
+        closeDb()
     }
 
     @SuppressLint("Range")
@@ -312,6 +443,33 @@ class CampDbManager(context: Context) {
         }
         cursor.close()
         return dataList
+    }
+
+    fun deleteRawToTableRoom(const: String) {
+        openDb()
+        val delCount = db.delete(TABLE_NAME_ROOM, "room_number = '$const'", null)
+        closeDb()
+    }
+
+    fun updateRawToTableRoom(
+        floorUpdate: String,
+        roomNumberUpdate: String,
+        quantityUpdate: String,
+        roomNumberUpdatePosition: String
+    ) {
+        openDb()
+        val cv = ContentValues().apply {
+            put(COLUMN_NAME_FLOOR, floorUpdate)
+            put(COLUMN_NAME_ROOM_NUMBER, roomNumberUpdate)
+            put(COLUMN_NAME_QUANTITY_CHILD, quantityUpdate)
+
+        }
+
+        val updCount = db.update(
+            TABLE_NAME_ROOM, cv, "room_number = ?",
+            arrayOf(roomNumberUpdatePosition)
+        )
+        closeDb()
     }
 
     /**
@@ -389,8 +547,10 @@ class CampDbManager(context: Context) {
         closeDb()
     }
 
-    fun updateRawToTableDailySchedule(timeEvent: String, nameEvent: String,
-                                      dateEvent: String, nameEventUpdatePosition: String) {
+    fun updateRawToTableDailySchedule(
+        timeEvent: String, nameEvent: String,
+        dateEvent: String, nameEventUpdatePosition: String
+    ) {
         openDb()
         val cv = ContentValues().apply {
             put(COLUMN_NAME_TIME_EVENT, timeEvent)
@@ -398,7 +558,8 @@ class CampDbManager(context: Context) {
             put(COLUMN_NAME_DATE_EVENT, dateEvent)
         }
 
-        val updCount = db.update(TABLE_NAME_DAILY_SCHEDULE, cv, "name_event = ?",
+        val updCount = db.update(
+            TABLE_NAME_DAILY_SCHEDULE, cv, "name_event = ?",
             arrayOf(nameEventUpdatePosition)
         )
         closeDb()
@@ -407,5 +568,6 @@ class CampDbManager(context: Context) {
     fun closeDb() {
         campDbHelper.close()
     }
+
 
 }

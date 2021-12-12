@@ -19,6 +19,7 @@ import com.example.singupactivity.R
 import com.example.singupactivity.ui.main.Adapter.RoomAdapter
 import com.example.singupactivity.ui.main.Data.RoomDataClass
 import com.example.singupactivity.ui.main.DataBase.CampDbManager
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
@@ -33,6 +34,19 @@ class RoomFragment : Fragment() {
         campDbManager = activity?.let { CampDbManager(it) }!!
         adapter = RoomAdapter(this@RoomFragment)
 
+        val floorList = campDbManager.selectToTableRoom(CampDbNameClass.COLUMN_NAME_FLOOR)
+        val roomNumberList = campDbManager.selectToTableRoom(CampDbNameClass.COLUMN_NAME_ROOM_NUMBER)
+        val quantityList = campDbManager.selectToTableRoom(CampDbNameClass.COLUMN_NAME_QUANTITY_CHILD)
+        for ((i, elm) in floorList.withIndex()) {
+            adapter.addRoom(
+                RoomDataClass(
+                    floor =  floorList[i],
+                    roomNumber = roomNumberList[i],
+                    quantity =  quantityList[i]
+                )
+            )
+        }
+
     }
 
     override fun onCreateView(
@@ -40,7 +54,7 @@ class RoomFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        val view:View = inflater.inflate(R.layout.fragment_room, container, false)
+        val view: View = inflater.inflate(R.layout.fragment_room, container, false)
 
         val rv = view.findViewById<RecyclerView>(R.id.rcRoom)
         val fabRoom = view.findViewById<FloatingActionButton>(R.id.fabRoom)
@@ -74,7 +88,7 @@ class RoomFragment : Fragment() {
         val etFloor = view.findViewById<EditText>(R.id.etFloor)
         val etRoomNumber = view.findViewById<EditText>(R.id.etRoomNumber)
         val etQuantity = view.findViewById<EditText>(R.id.etQuantity)
-        val etFloorUpdate: String? = roomDataClass?.floor
+        val etRoomNumberUpdate: String? = roomDataClass?.roomNumber
 
         newRoomTitle.text = if (!isUpdate) "Добавить" else "Редактировать"
 
@@ -92,7 +106,7 @@ class RoomFragment : Fragment() {
                     if (isUpdate) {
                         deleteRoom(
                             position = position,
-                            const = etFloor.text.toString()
+                            const = etRoomNumber.text.toString()
                         )
                     } else {
                         dialogBox.cancel()
@@ -118,12 +132,12 @@ class RoomFragment : Fragment() {
                 alertDialog.dismiss()
             }
             if (isUpdate && roomDataClass != null) {
-                if (etFloorUpdate != null) {
+                if (etRoomNumberUpdate != null) {
                     updateRoom(
                         roomNumberUpdate = etRoomNumber.text.toString(),
                         quantityUpdate = etQuantity.text.toString(),
                         floorUpdate = etFloor.text.toString(),
-                        floorUpdatePosition = etFloorUpdate,
+                        roomNumberUpdatePosition = etRoomNumberUpdate,
                         position = position
                     )
                 }
@@ -141,7 +155,7 @@ class RoomFragment : Fragment() {
     @SuppressLint("NotifyDataSetChanged")
     private fun deleteRoom(const: String, position: Int) {
 
-//        campDbManager.deleteRawToTableDailySchedule(const)
+        campDbManager.deleteRawToTableRoom(const)
 
         adapter.removeRoom(position)
 
@@ -151,15 +165,15 @@ class RoomFragment : Fragment() {
         floorUpdate: String,
         roomNumberUpdate: String,
         quantityUpdate: String,
-        floorUpdatePosition: String,
+        roomNumberUpdatePosition: String,
         position: Int
     ) {
-//        campDbManager.updateRawToTableDailySchedule(
-//            nameEvent = nameEventUpdate,
-//            dateEvent = dateEventUpdate,
-//            timeEvent = floorUpdate,
-//            nameEventUpdatePosition = nameEventUpdatePosition
-//        )
+        campDbManager.updateRawToTableRoom(
+            floorUpdate = floorUpdate,
+            roomNumberUpdate = roomNumberUpdate,
+            quantityUpdate = quantityUpdate,
+            roomNumberUpdatePosition = roomNumberUpdatePosition
+        )
 
         val roomDataClass = RoomDataClass(
             floor = floorUpdate,
@@ -167,7 +181,7 @@ class RoomFragment : Fragment() {
             quantity = quantityUpdate
         )
 
-        adapter.updateRoom(position,roomDataClass)
+        adapter.updateRoom(position, roomDataClass)
 
     }
 
@@ -176,11 +190,11 @@ class RoomFragment : Fragment() {
         roomNumber: String,
         quantity: String
     ) {
-//        campDbManager.insertToTableDailySchedule(
-//            nameEvent = nameEventCreate,
-//            dateEvent = dateEventCreate,
-//            timeEvent = timeEventCreate
-//        )
+        campDbManager.insertToTableRoom(
+            floor = floor,
+            roomNumber = roomNumber,
+            quantityChild = quantity
+        )
 
         val roomDataClass = RoomDataClass(
             floor = floor,

@@ -19,6 +19,7 @@ import com.example.singupactivity.R
 import com.example.singupactivity.ui.main.Adapter.EventsAdapter
 import com.example.singupactivity.ui.main.Data.EventsDataClass
 import com.example.singupactivity.ui.main.DataBase.CampDbManager
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
@@ -31,6 +32,19 @@ class EventsFragment : Fragment() {
         super.onCreate(savedInstanceState)
         campDbManager = activity?.let { CampDbManager(it) }!!
         adapter = EventsAdapter(this@EventsFragment)
+        val timeList = campDbManager.selectToTableWeekEvent(CampDbNameClass.COLUMN_NAME_TIME)
+        val eventNameList = campDbManager.selectToTableWeekEvent(CampDbNameClass.COLUMN_NAME_EVENT_NAME)
+        val dateList = campDbManager.selectToTableWeekEvent(CampDbNameClass.COLUMN_NAME_DATE)
+        for ((i, elm) in timeList.withIndex()) {
+            adapter.addEvents(
+                EventsDataClass(
+                    timeList[i],
+                    eventNameList[i],
+                    dateList[i]
+                )
+            )
+
+        }
     }
 
     override fun onCreateView(
@@ -137,7 +151,7 @@ class EventsFragment : Fragment() {
     @SuppressLint("NotifyDataSetChanged")
     private fun deleteEvents(const: String, position: Int) {
 
-//        campDbManager.deleteRawToTableDailySchedule(const)
+        campDbManager.deleteRawToTableWeekEvents(const)
 
         adapter.removeEvents(position)
 
@@ -150,12 +164,12 @@ class EventsFragment : Fragment() {
         eventNameUpdatePosition: String,
         position: Int
     ) {
-//        campDbManager.updateRawToTableDailySchedule(
-//            nameEvent = eventNameUpdate,
-//            dateEvent = dateUpdate,
-//            timeEvent = timeUpdate,
-//            nameEventUpdatePosition = eventNameUpdatePosition
-//        )
+        campDbManager.updateRawToTableWeekEvents(
+            nameEvent = eventNameUpdate,
+            dateEvent = dateUpdate,
+            timeEvent = timeUpdate,
+            nameEventUpdatePosition = eventNameUpdatePosition
+        )
 
         val eventsDataClassUpdate = EventsDataClass(
             time = timeUpdate,
@@ -172,11 +186,11 @@ class EventsFragment : Fragment() {
         eventName: String,
         date: String
     ) {
-//        campDbManager.insertToTableDailySchedule(
-//            nameEvent = nameEventCreate,
-//            dateEvent = dateEventCreate,
-//            timeEvent = timeEventCreate
-//        )
+        campDbManager.insertToTableWeekEvent(
+            eventName = eventName,
+            date = date,
+            time = time
+        )
 
         val eventsDataClassUpdate = EventsDataClass(
             time = time,
