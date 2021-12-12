@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <TextView
+        android:id="@+id/newAchievementTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="10sp"
+        android:text="@string/new_achievement"
+        android:textColor="@color/black"
+        android:textSize="21sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.051"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.045" />
+
+    <EditText
+        android:id="@+id/etAchievementSquad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="15dp"
+        android:background="@android:color/transparent"
+        android:gravity="top"
+        android:hint="@string/squads_name"
+        android:textSize="18sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="@+id/newAchievementTitle"
+        app:layout_constraintHorizontal_bias="0.047"
+        app:layout_constraintStart_toStartOf="@+id/newAchievementTitle"
+        app:layout_constraintTop_toBottomOf="@+id/newAchievementTitle" />
+
+    <EditText
+        android:id="@+id/etAchievementPlace"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="15dp"
+        android:background="@android:color/transparent"
+        android:gravity="top"
+        android:hint="@string/place"
+        android:inputType="number"
+        android:textSize="18sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="@+id/etAchievementSquad"
+        app:layout_constraintStart_toStartOf="@+id/etAchievementSquad"
+        app:layout_constraintTop_toBottomOf="@+id/etAchievementSquad" />
+
+    <EditText
+        android:id="@+id/etAchievementEvent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="15dp"
+        android:background="@android:color/transparent"
+        android:gravity="top"
+        android:hint="@string/name_event"
+        android:textSize="18sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="@+id/etAchievementPlace"
+        app:layout_constraintStart_toStartOf="@+id/etAchievementPlace"
+        app:layout_constraintTop_toBottomOf="@+id/etAchievementPlace" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

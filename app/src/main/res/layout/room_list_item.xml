@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -13,14 +15,14 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/tvTitle"
+            android:id="@+id/tvTitleRoom"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:fontFamily="sans-serif"
-            android:text="@string/child_list_title"
+            android:text="@string/data"
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -28,7 +30,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tvNameChild"
+            android:id="@+id/tvFloor"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -39,11 +41,11 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTitle"
-            tools:text="имя" />
+            app:layout_constraintTop_toBottomOf="@+id/tvTitleRoom"
+            tools:text="Этаж" />
 
         <TextView
-            android:id="@+id/tvSurnameChild"
+            android:id="@+id/tvRoomNumber"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -54,11 +56,11 @@
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvNameChild"
-            tools:text="фамилия" />
+            app:layout_constraintTop_toBottomOf="@+id/tvFloor"
+            tools:text="номер комнаты " />
 
         <TextView
-            android:id="@+id/tvPatronamycChild"
+            android:id="@+id/tvQuantity"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -69,46 +71,17 @@
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvSurnameChild"
-            tools:text="отчество" />
-        <TextView
-            android:id="@+id/tvBirthdayChild"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="16dp"
-            android:fontFamily="sans-serif"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvPatronamycChild"
-            tools:text="дата рождения" />
-        <TextView
-            android:id="@+id/tvParentsPhoneNumber"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="16dp"
-            android:fontFamily="sans-serif"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvBirthdayChild"
-            tools:text="номер родителей" />
-
+            app:layout_constraintTop_toBottomOf="@+id/tvRoomNumber"
+            tools:text="количество детей" />
 
         <View
             style="@style/HorizontalLine"
             android:layout_width="0dp"
             android:layout_marginTop="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/tvParentsPhoneNumber"
-            app:layout_constraintStart_toStartOf="@+id/tvParentsPhoneNumber"
-            app:layout_constraintTop_toBottomOf="@id/tvParentsPhoneNumber" />
+            app:layout_constraintEnd_toEndOf="@+id/tvQuantity"
+            app:layout_constraintStart_toStartOf="@+id/tvQuantity"
+            app:layout_constraintTop_toBottomOf="@id/tvQuantity" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

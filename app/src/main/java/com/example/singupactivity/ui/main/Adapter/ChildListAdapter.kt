@@ -31,7 +31,6 @@ class ChildListAdapter(fragment1: ChildListFragment) :
             tvPatronamycChild.text = childListDataClass.patronamycChild
             tvBirthdayChild.text = "Дата рождения: ${childListDataClass.birthdayChild}"
             tvParentsPhoneNumber.text = "Номер телефона родителей: ${childListDataClass.parentsNumberChild}"
-            tvNameSquad.text = "Название отряда: ${childListDataClass.nameSquad}"
         }
 
 
@@ -54,7 +53,7 @@ class ChildListAdapter(fragment1: ChildListFragment) :
 
         holder.itemView.setOnClickListener {
 
-          //  fragment.addAndEditSchedule(true, childListDataClass, position)
+            fragment.addAndEditChildList(true, childListDataClass, position)
 
         }
 

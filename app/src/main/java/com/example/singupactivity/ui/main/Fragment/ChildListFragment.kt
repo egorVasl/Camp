@@ -1,28 +1,223 @@
 package com.example.singupactivity.ui.main.Fragment
 
+import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
+import android.text.TextUtils
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.singupactivity.R
+import com.example.singupactivity.ui.main.Adapter.ChildListAdapter
+import com.example.singupactivity.ui.main.Data.ChildListDataClass
+import com.example.singupactivity.ui.main.DataBase.CampDbManager
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
-class ChildListFragment : Fragment() {
+class
+ChildListFragment : Fragment() {
+
+    lateinit var adapter: ChildListAdapter
+    lateinit var campDbManager: CampDbManager
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        campDbManager = activity?.let { CampDbManager(it) }!!
+        adapter = ChildListAdapter(this@ChildListFragment)
 
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
+
+        val view: View = inflater.inflate(R.layout.fragment_child_list, container, false)
+
+        val rv = view.findViewById<RecyclerView>(R.id.rcChildList)
+        val fabChildList = view.findViewById<FloatingActionButton>(R.id.fabChildList)
+
+        rv.layoutManager = LinearLayoutManager(activity)
+        rv.itemAnimator = DefaultItemAnimator()
+
+        fabChildList.setOnClickListener {
+            addAndEditChildList(false, null, -1)
+        }
+        rv.adapter = adapter
+
+        return view
+    }
+
+    @SuppressLint("InflateParams")
+    fun addAndEditChildList(
+        isUpdate: Boolean,
+        childListDataClass: ChildListDataClass?,
+        position: Int
+    ) {
+        val view = LayoutInflater.from(context).inflate(R.layout.add_edit_child, null)
 
 
+        val alertDialogBuilderUserInput: AlertDialog.Builder =
+            AlertDialog.Builder(requireActivity())
+        alertDialogBuilderUserInput.setView(view)
 
-        return inflater.inflate(R.layout.fragment_child_list, container, false)
+        val tvTitleChildList = view.findViewById<TextView>(R.id.tvTitleChildList)
+        val etNameChild = view.findViewById<EditText>(R.id.etNameChild)
+        val etSurnameChild = view.findViewById<EditText>(R.id.etSurnameChild)
+        val etPatronamycChild = view.findViewById<EditText>(R.id.etPatronamycChild)
+        val etBirthdayChild = view.findViewById<EditText>(R.id.etBirthdayChild)
+        val etParentsPhoneNumber = view.findViewById<EditText>(R.id.etParentsPhoneNumber)
+        val etNameUpdate: String? = childListDataClass?.nameChild
+
+        tvTitleChildList.text = if (!isUpdate) "Добавить ребёнка" else "Редактировать"
+
+        if (isUpdate && childListDataClass != null) {
+            etNameChild.setText(childListDataClass.nameChild)
+            etSurnameChild.setText(childListDataClass.surnameChild)
+            etPatronamycChild.setText(childListDataClass.patronamycChild)
+            etBirthdayChild.setText(childListDataClass.birthdayChild)
+            etParentsPhoneNumber.setText(childListDataClass.parentsNumberChild)
+        }
+        alertDialogBuilderUserInput
+            .setCancelable(false)
+            .setPositiveButton(if (isUpdate) "Обновить" else "Сохранить",
+                DialogInterface.OnClickListener { dialogBox, id -> })
+            .setNegativeButton(if (isUpdate) "Удалить ребёнка" else "Закрыть",
+                DialogInterface.OnClickListener { dialogBox, id ->
+                    if (isUpdate) {
+                        deleteChildList(
+                            position = position,
+                            const = etNameChild.text.toString()
+
+                        )
+                    } else {
+                        dialogBox.cancel()
+                    }
+                })
+
+        val alertDialog: AlertDialog = alertDialogBuilderUserInput.create()
+        alertDialog.show()
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(View.OnClickListener {
+            if (TextUtils.isEmpty(etNameChild.text.toString())) {
+                Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
+                    .show()
+                return@OnClickListener
+            } else if (TextUtils.isEmpty(etSurnameChild.text.toString())) {
+                Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
+                    .show()
+                return@OnClickListener
+            } else if (TextUtils.isEmpty(etPatronamycChild.text.toString())) {
+                Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
+                    .show()
+                return@OnClickListener
+            } else if (TextUtils.isEmpty(etBirthdayChild.text.toString())) {
+                Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
+                    .show()
+                return@OnClickListener
+            } else if (TextUtils.isEmpty(etParentsPhoneNumber.text.toString())) {
+               Toast.makeText(requireActivity(),R.string.no_dat, Toast.LENGTH_SHORT)
+                    .show()
+                return@OnClickListener
+            } else {
+                alertDialog.dismiss()
+            }
+            if (isUpdate && childListDataClass != null) {
+                if (etNameUpdate != null) {
+                    updateChildList(
+                        nameChildUpdate = etNameChild.text.toString(),
+                        surnameChildUpdate = etSurnameChild.text.toString(),
+                        patronamycChildUpdate = etPatronamycChild.text.toString(),
+                        birthdayChildUpdate = etBirthdayChild.text.toString(),
+                        parentsPhoneNumberUpdate = etParentsPhoneNumber.text.toString(),
+                        nameChildUpdatePosition = etNameUpdate,
+                        position = position
+                    )
+                }
+
+            } else {
+                createChildList(
+                    nameChildUpdate = etNameChild.text.toString(),
+                    surnameChildUpdate = etSurnameChild.text.toString(),
+                    patronamycChildUpdate = etPatronamycChild.text.toString(),
+                    birthdayChildUpdate = etBirthdayChild.text.toString(),
+                    parentsPhoneNumberUpdate = etParentsPhoneNumber.text.toString()
+                )
+            }
+        })
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun deleteChildList(const: String, position: Int) {
+
+//        campDbManager.deleteRawToTableDailySchedule(const)
+
+        adapter.removeChildList(position)
+
+    }
+
+    private fun updateChildList(
+        nameChildUpdate: String,
+        surnameChildUpdate: String,
+        patronamycChildUpdate: String,
+        parentsPhoneNumberUpdate: String,
+        birthdayChildUpdate: String,
+        nameChildUpdatePosition: String,
+        position: Int
+    ) {
+//        campDbManager.updateRawToTableDailySchedule(
+//            nameEvent = SurnameChildUpdate,
+//            dateEvent = PatronamycChildUpdate,
+//            timeEvent = NameChildUpdate,
+//            NameChildUpdatePosition = NameChildUpdatePosition
+//        )
+
+        val childListDataClass = ChildListDataClass(
+            nameChild = nameChildUpdate,
+            surnameChild = surnameChildUpdate,
+            patronamycChild = patronamycChildUpdate,
+            birthdayChild = birthdayChildUpdate,
+            parentsNumberChild = parentsPhoneNumberUpdate
+
+        )
+
+        adapter.updateChildList(position, childListDataClass)
+
+    }
+
+    private fun createChildList(
+        nameChildUpdate: String,
+        surnameChildUpdate: String,
+        patronamycChildUpdate: String,
+        parentsPhoneNumberUpdate: String,
+        birthdayChildUpdate: String
+    ) {
+//        campDbManager.insertToTableDailySchedule(
+//            nameEvent = nameEventCreate,
+//            dateEvent = dateEventCreate,
+//            timeEvent = timeEventCreate
+//        )
+
+        val childListDataClass = ChildListDataClass(
+            nameChild = nameChildUpdate,
+            surnameChild = surnameChildUpdate,
+            patronamycChild = patronamycChildUpdate,
+            birthdayChild = birthdayChildUpdate,
+            parentsNumberChild = parentsPhoneNumberUpdate
+        )
+
+        adapter.addChildList(childListDataClass)
+
     }
 
 }

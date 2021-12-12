@@ -6,7 +6,6 @@ data class ChildListDataClass(
     var surnameChild : String,
     var patronamycChild : String,
     var birthdayChild : String,
-    var parentsNumberChild : Int,
-    var nameSquad : String
+    var parentsNumberChild : String
 
 )

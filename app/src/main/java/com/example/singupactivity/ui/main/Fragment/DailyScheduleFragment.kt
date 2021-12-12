@@ -23,6 +23,7 @@ import android.widget.EditText
 
 import android.widget.TextView
 import androidx.recyclerview.widget.DefaultItemAnimator
+import com.example.singupactivity.ui.main.Adapter.DailyScheduleAdapter
 
 import com.example.singupactivity.ui.main.Data.DailyScheduleDataClass
 import com.example.singupactivity.ui.main.DataBase.CampDbManager
@@ -33,16 +34,14 @@ import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_T
 
 class DailyScheduleFragment : Fragment() {
 
-    lateinit var adapter: ChildListAdapter
-    lateinit var dailyScheduleDataClass: DailyScheduleDataClass
+    lateinit var adapter: DailyScheduleAdapter
     lateinit var campDbManager: CampDbManager
-    var dailyScheduleListFrag = ArrayList<DailyScheduleDataClass>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         campDbManager = activity?.let { CampDbManager(it) }!!
-        adapter = ChildListAdapter(this@DailyScheduleFragment)
+        adapter = DailyScheduleAdapter(this@DailyScheduleFragment)
         val eventTimeList = campDbManager.selectToTableDailySchedule(COLUMN_NAME_TIME_EVENT)
         val eventNameList = campDbManager.selectToTableDailySchedule(COLUMN_NAME_NAME_EVENT)
         val eventDateList = campDbManager.selectToTableDailySchedule(COLUMN_NAME_DATE_EVENT)

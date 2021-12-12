@@ -30,19 +30,34 @@
     <string name="daily_schedule">Расписание дня</string>
     <string name="data">Дата :</string>
     <string name="new_day">Новый день</string>
-    <string name="data_event_add_schedule">дата :</string>
-    <string name="name_event_add_schedule">название события :</string>
-    <string name="time_event_add_schedule">время :</string>
+    <string name="data_event_add_schedule">Дата :</string>
+    <string name="name_event_add_schedule">Название события :</string>
+    <string name="time_event_add_schedule">Время :</string>
     <string name="enter_name_event">Введите название мероприятия</string>
     <string name="enter_data_event">Введите дату мероприятия</string>
     <string name="enter_time_event">Введите время мероприятия</string>
-    <string name="name">Имя</string>
-    <string name="surname">Фамилия</string>
-    <string name="patronamyc">Отчество</string>
-    <string name="birthday">Дата рождения</string>
-    <string name="phone_number">Номер телефона</string>
+    <string name="name">Имя :</string>
+    <string name="surname">Фамилия :</string>
+    <string name="patronamyc">Отчество :</string>
+    <string name="birthday">Дата рождения :</string>
+    <string name="phone_number">Номер телефона :</string>
     <string name="edit_data">Редактировать данные</string>
     <string name="child_list_title">Ребёнок :</string>
+    <string name="edit_child">Добавить ребёнка</string>
+    <string name="parents_phone_number">Номер родителей :</string>
+    <string name="no_dat">Вы не ввели данные</string>
+    <string name="new_room">Новая комната</string>
+    <string name="floor">Этаж :</string>
+    <string name="room_number">Номер комнаты :</string>
+    <string name="child_quantity">Количество детей :</string>
+    <string name="squads">Отряд</string>
+    <string name="new_squads">Новый отряд</string>
+    <string name="squads_number">Номер отряда :</string>
+    <string name="squads_name">Название отряда :</string>
+    <string name="achievement">Награда</string>
+    <string name="new_achievement">Новая награда</string>
+    <string name="place">Занятое место :</string>
+    <string name="name_event">Название мероприятия :</string>
 
 
 </resources>
