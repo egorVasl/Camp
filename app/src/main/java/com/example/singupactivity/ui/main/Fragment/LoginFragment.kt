@@ -70,8 +70,9 @@ class LoginFragment : Fragment() {
                 val squadList =
                     campDbManager.selectToTableAuthorization(CampDbNameClass.COLUMN_NAME_SQUAD)
                 for ((i, item) in squadList.withIndex()) {
-                    squadIsTrue = squadList[i] == etSquad.text.toString()
-                    squadIsTrue = true
+                    if (squadList[i] == etSquad.text.toString()) {
+                        squadIsTrue = true
+                    }
                 }
 
                 if (squadIsTrue and passwordIsTrue and loginIsTrue) {
@@ -85,6 +86,7 @@ class LoginFragment : Fragment() {
                     )
                     intent.putExtra("KEY", result)
                     startActivity(intent)
+
                     etLogin.text.clear()
                     etPassword.text.clear()
                     etSquad.text.clear()

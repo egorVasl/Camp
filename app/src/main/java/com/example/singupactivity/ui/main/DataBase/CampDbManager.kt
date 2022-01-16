@@ -276,7 +276,7 @@ class CampDbManager(context: Context) {
         }
 
         val updCount = db.update(
-            TABLE_NAME_WEEK_EVENT, cv, "name_event = ?",
+            TABLE_NAME_WEEK_EVENT, cv, "event_name = ?",
             arrayOf(nameEventUpdatePosition)
         )
         closeDb()

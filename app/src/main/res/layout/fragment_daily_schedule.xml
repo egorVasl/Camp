@@ -7,6 +7,7 @@
     tools:context=".ui.main.Fragment.DailyScheduleFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:background="@color/teal_800"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -24,6 +25,7 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="true"
+            android:backgroundTint="@color/teal_700"
             android:src="@drawable/ic_baseline_post_add_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

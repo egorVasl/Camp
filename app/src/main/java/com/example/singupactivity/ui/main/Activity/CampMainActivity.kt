@@ -3,6 +3,7 @@ package com.example.singupactivity.ui.main.Activity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
+import com.example.singupactivity.R
 import com.example.singupactivity.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayout
 import com.example.singupactivity.ui.main.Adapter.ViewPagerAdapter
@@ -32,8 +33,8 @@ class CampMainActivity : AppCompatActivity() {
         val viewPager: ViewPager = binding.viewPager
         val tabs: TabLayout = binding.tabs
         val adapter = ViewPagerAdapter(supportFragmentManager)
-        adapter.addFragment(LoginFragment(), "Login")
-        adapter.addFragment(SignupFragment(), "Signup")
+        adapter.addFragment(LoginFragment(), getString(R.string.tab_text_1))
+        adapter.addFragment(SignupFragment(),  getString(R.string.tab_text_2))
         viewPager.adapter = adapter
         tabs.setupWithViewPager(viewPager)
 

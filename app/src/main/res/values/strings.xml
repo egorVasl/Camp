@@ -1,14 +1,14 @@
 <resources>
-    <string name="app_name">Camp</string>
-    <string name="tab_text_1">Login</string>
-    <string name="tab_text_2">Register</string>
-    <string name="login">Login</string>
-    <string name="signup">Signup</string>
-    <string name="password">Password</string>
-    <string name="repeatPassword">Repeat Password</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="phone">Phone</string>
-    <string name="squad">Squad</string>
+    <string name="app_name">Лагерь</string>
+    <string name="tab_text_1">Вход</string>
+    <string name="tab_text_2">Регистрация</string>
+    <string name="user_name">Имя пользователя</string>
+    <string name="login">Войти</string>
+    <string name="signup">Зарегистрироваться</string>
+    <string name="password">Пароль</string>
+    <string name="repeatPassword">Повторите пароль</string>
+    <string name="phone">Телефон</string>
+    <string name="squad">Отряд</string>
     <string name="notification">Уведомление</string>
     <string name="no_data_massage">Вы не ввели данные для авторизации</string>
     <string name="close">Закрыть</string>
@@ -37,6 +37,7 @@
     <string name="enter_data_event">Введите дату мероприятия</string>
     <string name="enter_time_event">Введите время мероприятия</string>
     <string name="name">Имя :</string>
+    <string name="search">Поиск</string>
     <string name="surname">Фамилия :</string>
     <string name="patronamyc">Отчество :</string>
     <string name="birthday">Дата рождения :</string>

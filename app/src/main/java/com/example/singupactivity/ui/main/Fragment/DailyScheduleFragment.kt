@@ -6,8 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.singupactivity.ui.main.Adapter.ChildListAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import android.widget.Toast
@@ -18,12 +16,14 @@ import android.content.DialogInterface
 
 import com.example.singupactivity.R
 import android.app.AlertDialog
+import android.os.Build
 
 import android.widget.EditText
 
 import android.widget.TextView
-import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.*
 import com.example.singupactivity.ui.main.Adapter.DailyScheduleAdapter
+import com.example.singupactivity.ui.main.Adapter.SearchAdapter
 
 import com.example.singupactivity.ui.main.Data.DailyScheduleDataClass
 import com.example.singupactivity.ui.main.DataBase.CampDbManager
@@ -64,19 +64,23 @@ class DailyScheduleFragment : Fragment() {
         val view: View = inflater.inflate(R.layout.fragment_daily_schedule, container, false)
         val rv = view.findViewById<RecyclerView>(R.id.rcDailySchedule)
         val fabDailySchedule = view.findViewById<FloatingActionButton>(R.id.fabDailySchedule)
+        val etSearch = view.findViewById<EditText>(R.id.etSearchDailySchedule)
 
-        rv.layoutManager = GridLayoutManager(activity, 2)
+        val searchAdapter = SearchAdapter()
+        val concatAdapter = ConcatAdapter(searchAdapter, adapter)
+
+        rv.layoutManager = LinearLayoutManager(activity)
         rv.itemAnimator = DefaultItemAnimator()
 
         fabDailySchedule.setOnClickListener {
             addAndEditSchedule(false, null, -1)
         }
 
-        rv.adapter = adapter
+        rv.adapter = concatAdapter
         return view
     }
 
-     @SuppressLint("InflateParams")
+    @SuppressLint("InflateParams")
     fun addAndEditSchedule(
         isUpdate: Boolean,
         dailyScheduleDataClass: DailyScheduleDataClass?,
@@ -186,7 +190,7 @@ class DailyScheduleFragment : Fragment() {
             dateEvent = dateEventUpdate
         )
 
-        adapter.updateDailySchedule(position,dailyScheduleDataClassUpdate)
+        adapter.updateDailySchedule(position, dailyScheduleDataClassUpdate)
 
     }
 

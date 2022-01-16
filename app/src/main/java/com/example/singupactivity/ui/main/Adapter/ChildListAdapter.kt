@@ -7,15 +7,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.singupactivity.R
 import com.example.singupactivity.databinding.ChildListListItemBinding
-import com.example.singupactivity.databinding.DailySceduleListItemBinding
 import com.example.singupactivity.ui.main.Data.ChildListDataClass
-import com.example.singupactivity.ui.main.Data.DailyScheduleDataClass
 import com.example.singupactivity.ui.main.Fragment.ChildListFragment
 
 class ChildListAdapter(fragment1: ChildListFragment) :
     RecyclerView.Adapter<ChildListAdapter.ChildListHolder>() {
 
-    var ChildList = ArrayList<ChildListDataClass>()
+    var childList = ArrayList<ChildListDataClass>()
 
     val fragment: ChildListFragment = fragment1
 
@@ -47,9 +45,9 @@ class ChildListAdapter(fragment1: ChildListFragment) :
 
     override fun onBindViewHolder(holder: ChildListHolder, position: Int) {
 
-        holder.bind(ChildList[position])
+        holder.bind(childList[position])
 
-        val childListDataClass: ChildListDataClass = ChildList[position]
+        val childListDataClass: ChildListDataClass = childList[position]
 
         holder.itemView.setOnClickListener {
 
@@ -61,14 +59,14 @@ class ChildListAdapter(fragment1: ChildListFragment) :
 
     override fun getItemCount(): Int {
 
-        return ChildList.size
+        return childList.size
 
     }
 
     @SuppressLint("NotifyDataSetChanged")
     fun addChildList(childListDataClass: ChildListDataClass) {
 
-        ChildList.add(childListDataClass)
+        childList.add(childListDataClass)
         notifyDataSetChanged()
 
     }
@@ -76,7 +74,7 @@ class ChildListAdapter(fragment1: ChildListFragment) :
     @SuppressLint("NotifyDataSetChanged")
     fun removeChildList(position: Int) {
 
-        ChildList.removeAt(position)
+        childList.removeAt(position)
         notifyDataSetChanged()
 
     }
@@ -84,7 +82,7 @@ class ChildListAdapter(fragment1: ChildListFragment) :
     @SuppressLint("NotifyDataSetChanged")
     fun updateChildList(position: Int, childListDataClass: ChildListDataClass) {
 
-        ChildList[position] = childListDataClass
+        childList[position] = childListDataClass
         notifyDataSetChanged()
 
     }
