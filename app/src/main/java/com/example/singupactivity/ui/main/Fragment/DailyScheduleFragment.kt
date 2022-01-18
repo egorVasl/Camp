@@ -30,6 +30,8 @@ import com.example.singupactivity.ui.main.DataBase.CampDbManager
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_DATE_EVENT
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_NAME_EVENT
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_TIME_EVENT
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 
 
 class DailyScheduleFragment : Fragment() {
@@ -69,14 +71,15 @@ class DailyScheduleFragment : Fragment() {
         val searchAdapter = SearchAdapter()
         val concatAdapter = ConcatAdapter(searchAdapter, adapter)
 
-        rv.layoutManager = LinearLayoutManager(activity)
+
+        rv.layoutManager = GridLayoutManager(activity, 2)
         rv.itemAnimator = DefaultItemAnimator()
 
         fabDailySchedule.setOnClickListener {
             addAndEditSchedule(false, null, -1)
         }
 
-        rv.adapter = concatAdapter
+        rv.adapter = adapter
         return view
     }
 

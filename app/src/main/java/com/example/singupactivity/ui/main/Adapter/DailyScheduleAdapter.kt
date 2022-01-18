@@ -38,7 +38,6 @@ class DailyScheduleAdapter(fragment1: DailyScheduleFragment) :
 
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.daily_scedule_list_item, parent, false)
-
         return DailyScheduleHolder(view)
 
     }
@@ -46,6 +45,7 @@ class DailyScheduleAdapter(fragment1: DailyScheduleFragment) :
     override fun onBindViewHolder(holder: DailyScheduleHolder, position: Int) {
 
         holder.bind(dailyScheduleList[position])
+
 
         val dailyScheduleDataClass: DailyScheduleDataClass = dailyScheduleList[position]
 

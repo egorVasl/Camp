@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Лагерь</string>
+    <string name="app_name">Неман</string>
     <string name="tab_text_1">Вход</string>
     <string name="tab_text_2">Регистрация</string>
     <string name="user_name">Имя пользователя</string>
