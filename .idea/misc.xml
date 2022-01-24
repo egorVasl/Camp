@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/TestTask/app/src/main/res/drawable/bottom_sheet_shape.xml" value="0.35208333333333336" />
         <entry key="..\:/TestTask/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.35208333333333336" />
         <entry key="..\:/TestTask/app/src/main/res/layout/achievements_list_item.xml" value="0.33" />
         <entry key="..\:/TestTask/app/src/main/res/layout/activity_main.xml" value="0.25" />
@@ -27,7 +28,7 @@
         <entry key="..\:/TestTask/app/src/main/res/layout/fragment_squads.xml" value="0.31614583333333335" />
         <entry key="..\:/TestTask/app/src/main/res/layout/navigation_header.xml" value="0.31614583333333335" />
         <entry key="..\:/TestTask/app/src/main/res/layout/room_list_item.xml" value="0.33" />
-        <entry key="..\:/TestTask/app/src/main/res/layout/search_layout.xml" value="0.33177083333333335" />
+        <entry key="..\:/TestTask/app/src/main/res/layout/search_layout.xml" value="0.25" />
         <entry key="..\:/TestTask/app/src/main/res/layout/squada_list_item.xml" value="0.1807909604519774" />
         <entry key="..\:/TestTask/app/src/main/res/menu-v26/navigation_menu.xml" value="0.275" />
         <entry key="..\:/TestTask/app/src/main/res/menu/navigation_menu.xml" value="0.33" />
