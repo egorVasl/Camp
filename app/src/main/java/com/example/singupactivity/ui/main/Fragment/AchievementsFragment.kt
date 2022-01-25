@@ -101,20 +101,25 @@ class AchievementsFragment : Fragment() {
         val alertDialog: AlertDialog = alertDialogBuilderUserInput.create()
         alertDialog.show()
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(View.OnClickListener {
-            if (TextUtils.isEmpty(etAchievementSquad.text.toString())) {
-                Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
-                    .show()
-                return@OnClickListener
-            } else if (TextUtils.isEmpty(etAchievementPlace.text.toString())) {
-                Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
-                    .show()
-                return@OnClickListener
-            } else if (TextUtils.isEmpty(etAchievementEvent.text.toString())) {
-                Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
-                    .show()
-                return@OnClickListener
-            } else {
-                alertDialog.dismiss()
+            when {
+                TextUtils.isEmpty(etAchievementSquad.text.toString()) -> {
+                    Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
+                        .show()
+                    return@OnClickListener
+                }
+                TextUtils.isEmpty(etAchievementPlace.text.toString()) -> {
+                    Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
+                        .show()
+                    return@OnClickListener
+                }
+                TextUtils.isEmpty(etAchievementEvent.text.toString()) -> {
+                    Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
+                        .show()
+                    return@OnClickListener
+                }
+                else -> {
+                    alertDialog.dismiss()
+                }
             }
             if (isUpdate && achievementsDataClass != null) {
                 if (etNameUpdate != null) {

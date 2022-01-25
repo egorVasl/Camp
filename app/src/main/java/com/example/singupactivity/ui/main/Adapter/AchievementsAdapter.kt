@@ -7,9 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.singupactivity.R
 import com.example.singupactivity.databinding.AchievementsListItemBinding
-import com.example.singupactivity.databinding.DailySceduleListItemBinding
 import com.example.singupactivity.ui.main.Data.AchievementsDataClass
-import com.example.singupactivity.ui.main.Data.DailyScheduleDataClass
 import com.example.singupactivity.ui.main.Fragment.AchievementsFragment
 
 class AchievementsAdapter(fragment1: AchievementsFragment) :

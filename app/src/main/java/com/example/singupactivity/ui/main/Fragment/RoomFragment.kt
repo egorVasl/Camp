@@ -116,20 +116,25 @@ class RoomFragment : Fragment() {
         val alertDialog: AlertDialog = alertDialogBuilderUserInput.create()
         alertDialog.show()
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(View.OnClickListener {
-            if (TextUtils.isEmpty(etFloor.text.toString())) {
-                Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
-                    .show()
-                return@OnClickListener
-            } else if (TextUtils.isEmpty(etRoomNumber.text.toString())) {
-                Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
-                    .show()
-                return@OnClickListener
-            } else if (TextUtils.isEmpty(etQuantity.text.toString())) {
-                Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
-                    .show()
-                return@OnClickListener
-            } else {
-                alertDialog.dismiss()
+            when {
+                TextUtils.isEmpty(etFloor.text.toString()) -> {
+                    Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
+                        .show()
+                    return@OnClickListener
+                }
+                TextUtils.isEmpty(etRoomNumber.text.toString()) -> {
+                    Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
+                        .show()
+                    return@OnClickListener
+                }
+                TextUtils.isEmpty(etQuantity.text.toString()) -> {
+                    Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
+                        .show()
+                    return@OnClickListener
+                }
+                else -> {
+                    alertDialog.dismiss()
+                }
             }
             if (isUpdate && roomDataClass != null) {
                 if (etRoomNumberUpdate != null) {

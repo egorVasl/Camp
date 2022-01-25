@@ -112,20 +112,25 @@ class EventsFragment : Fragment() {
         val alertDialog: AlertDialog = alertDialogBuilderUserInput.create()
         alertDialog.show()
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(View.OnClickListener {
-            if (TextUtils.isEmpty(etName.text.toString())) {
-                Toast.makeText(requireActivity(), R.string.enter_name_event, Toast.LENGTH_SHORT)
-                    .show()
-                return@OnClickListener
-            } else if (TextUtils.isEmpty(etData.text.toString())) {
-                Toast.makeText(requireActivity(), R.string.enter_data_event, Toast.LENGTH_SHORT)
-                    .show()
-                return@OnClickListener
-            } else if (TextUtils.isEmpty(etTime.text.toString())) {
-                Toast.makeText(requireActivity(), R.string.enter_time_event, Toast.LENGTH_SHORT)
-                    .show()
-                return@OnClickListener
-            } else {
-                alertDialog.dismiss()
+            when {
+                TextUtils.isEmpty(etName.text.toString()) -> {
+                    Toast.makeText(requireActivity(), R.string.enter_name_event, Toast.LENGTH_SHORT)
+                        .show()
+                    return@OnClickListener
+                }
+                TextUtils.isEmpty(etData.text.toString()) -> {
+                    Toast.makeText(requireActivity(), R.string.enter_data_event, Toast.LENGTH_SHORT)
+                        .show()
+                    return@OnClickListener
+                }
+                TextUtils.isEmpty(etTime.text.toString()) -> {
+                    Toast.makeText(requireActivity(), R.string.enter_time_event, Toast.LENGTH_SHORT)
+                        .show()
+                    return@OnClickListener
+                }
+                else -> {
+                    alertDialog.dismiss()
+                }
             }
             if (isUpdate && eventsDataClass != null) {
                 if (etNameUpdate != null) {

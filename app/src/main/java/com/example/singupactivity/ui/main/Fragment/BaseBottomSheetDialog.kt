@@ -18,16 +18,17 @@ import androidx.databinding.ViewDataBinding
 import com.example.singupactivity.R
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel
 import com.google.android.material.snackbar.Snackbar
 
-abstract class BaseBottomSheetDialog <VB : ViewDataBinding>(
+abstract class BaseBottomSheetDialog <DB : ViewDataBinding>(
     @LayoutRes
     private val layoutId: Int
-) : MvpBottomSheetDialogFragment() {
+) : BottomSheetDialogFragment() {
 
-    protected lateinit var binding: VB
+    protected lateinit var binding: DB
     protected lateinit var progressDialog: Dialog
     private var errorDialog: DialogInterface? = null
 
@@ -46,7 +47,7 @@ abstract class BaseBottomSheetDialog <VB : ViewDataBinding>(
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
-        binding.setLifecycleOwner ( viewLifecycleOwner)
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 

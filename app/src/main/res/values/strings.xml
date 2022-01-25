@@ -59,6 +59,9 @@
     <string name="new_achievement">Новая награда</string>
     <string name="place">Занятое место :</string>
     <string name="name_event">Название мероприятия :</string>
+    <string name="insert_item">Добавить событие</string>
+    <string name="import_pdf">Импортировать в PDF</string>
+
 
 
 </resources>

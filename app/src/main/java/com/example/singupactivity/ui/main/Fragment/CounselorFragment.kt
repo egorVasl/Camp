@@ -135,28 +135,35 @@ class CounselorFragment : Fragment() {
             with(alertDialog) {
                 show()
                 getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(View.OnClickListener {
-                    if (TextUtils.isEmpty(etNameCounselor.text.toString())) {
-                        Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
-                            .show()
-                        return@OnClickListener
-                    } else if (TextUtils.isEmpty(etSurnameCounselor.text.toString())) {
-                        Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
-                            .show()
-                        return@OnClickListener
-                    } else if (TextUtils.isEmpty(etPatronamycCounselor.text.toString())) {
-                        Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
-                            .show()
-                        return@OnClickListener
-                    } else if (TextUtils.isEmpty(etBirthdayCounselor.text.toString())) {
-                        Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
-                            .show()
-                        return@OnClickListener
-                    } else if (TextUtils.isEmpty(etPhoneNumberCounselor.text.toString())) {
-                        Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
-                            .show()
-                        return@OnClickListener
-                    } else {
-                        dismiss()
+                    when {
+                        TextUtils.isEmpty(etNameCounselor.text.toString()) -> {
+                            Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
+                                .show()
+                            return@OnClickListener
+                        }
+                        TextUtils.isEmpty(etSurnameCounselor.text.toString()) -> {
+                            Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
+                                .show()
+                            return@OnClickListener
+                        }
+                        TextUtils.isEmpty(etPatronamycCounselor.text.toString()) -> {
+                            Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
+                                .show()
+                            return@OnClickListener
+                        }
+                        TextUtils.isEmpty(etBirthdayCounselor.text.toString()) -> {
+                            Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
+                                .show()
+                            return@OnClickListener
+                        }
+                        TextUtils.isEmpty(etPhoneNumberCounselor.text.toString()) -> {
+                            Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
+                                .show()
+                            return@OnClickListener
+                        }
+                        else -> {
+                            dismiss()
+                        }
                     }
                 })
             }

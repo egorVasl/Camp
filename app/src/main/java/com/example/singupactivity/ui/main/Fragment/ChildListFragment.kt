@@ -127,28 +127,35 @@ ChildListFragment : Fragment() {
         val alertDialog: AlertDialog = alertDialogBuilderUserInput.create()
         alertDialog.show()
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(View.OnClickListener {
-            if (TextUtils.isEmpty(etNameChild.text.toString())) {
-                Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
-                    .show()
-                return@OnClickListener
-            } else if (TextUtils.isEmpty(etSurnameChild.text.toString())) {
-                Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
-                    .show()
-                return@OnClickListener
-            } else if (TextUtils.isEmpty(etPatronamycChild.text.toString())) {
-                Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
-                    .show()
-                return@OnClickListener
-            } else if (TextUtils.isEmpty(etBirthdayChild.text.toString())) {
-                Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
-                    .show()
-                return@OnClickListener
-            } else if (TextUtils.isEmpty(etParentsPhoneNumber.text.toString())) {
-               Toast.makeText(requireActivity(),R.string.no_dat, Toast.LENGTH_SHORT)
-                    .show()
-                return@OnClickListener
-            } else {
-                alertDialog.dismiss()
+            when {
+                TextUtils.isEmpty(etNameChild.text.toString()) -> {
+                    Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
+                        .show()
+                    return@OnClickListener
+                }
+                TextUtils.isEmpty(etSurnameChild.text.toString()) -> {
+                    Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
+                        .show()
+                    return@OnClickListener
+                }
+                TextUtils.isEmpty(etPatronamycChild.text.toString()) -> {
+                    Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
+                        .show()
+                    return@OnClickListener
+                }
+                TextUtils.isEmpty(etBirthdayChild.text.toString()) -> {
+                    Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
+                        .show()
+                    return@OnClickListener
+                }
+                TextUtils.isEmpty(etParentsPhoneNumber.text.toString()) -> {
+                    Toast.makeText(requireActivity(),R.string.no_dat, Toast.LENGTH_SHORT)
+                        .show()
+                    return@OnClickListener
+                }
+                else -> {
+                    alertDialog.dismiss()
+                }
             }
             if (isUpdate && childListDataClass != null) {
                 if (etNameUpdate != null) {

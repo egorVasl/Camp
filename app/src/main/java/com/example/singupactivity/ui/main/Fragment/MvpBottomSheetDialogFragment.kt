@@ -1,8 +1,8 @@
 package com.example.singupactivity.ui.main.Fragment
 
 import android.os.Bundle
-import com.arellomobile.mvp.MvpDelegate
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import moxy.MvpDelegate
 
 open class MvpBottomSheetDialogFragment : BottomSheetDialogFragment() {
     private var mIsStateSaved = false
