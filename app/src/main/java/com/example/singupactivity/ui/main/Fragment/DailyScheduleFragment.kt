@@ -12,6 +12,8 @@ import android.text.TextUtils
 import android.content.DialogInterface
 import com.example.singupactivity.R
 import android.app.AlertDialog
+import android.content.Context
+import android.util.TypedValue
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.TextView
@@ -93,28 +95,25 @@ class DailyScheduleFragment : Fragment() {
         if (cardSearch != null) {
             if(cardSearch.isVisible){
                cardSearch.isVisible = false
-                rv.apply {
-                    layoutManager = LinearLayoutManager(ctx)
-                    setPadding(resources.getDimension(R.dimen.click_area).toInt(),
-                        0,
-                        resources.getDimension(R.dimen.click_area).toInt(),
-                        0)
-                    clipToPadding = true
-                }
+                val layoutParams = rv.layoutParams as ConstraintLayout.LayoutParams
+                layoutParams.topMargin = context?.let { 0.toDp(it) }!!
+                rv.layoutParams = layoutParams
             } else {
                 cardSearch.isVisible = true
-                rv.apply {
-                    layoutManager = LinearLayoutManager(ctx)
-                    setPadding(resources.getDimension(R.dimen.click_area).toInt(),
-                        resources.getDimension(R.dimen.bottom_offset_dp).toInt(),
-                        resources.getDimension(R.dimen.click_area).toInt(),
-                        0)
-                    clipToPadding = true
-                }
+
+                val layoutParams = rv.layoutParams as ConstraintLayout.LayoutParams
+                layoutParams.topMargin = context?.let { 70.toDp(it) }!!
+                rv.layoutParams = layoutParams
             }
 
         }
+
+
     }
+
+    private fun Int.toDp(context: Context):Int = TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP,this.toFloat(),context.resources.displayMetrics
+    ).toInt()
 
     private fun importPDF(){
 
