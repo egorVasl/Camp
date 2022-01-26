@@ -1,0 +1,102 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_horizontal_large_margin">24dp</dimen>
+    <dimen name="activity_horizontal_extra_large_margin">32dp</dimen>
+    <dimen name="activity_horizontal_hyper_large_margin">36dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="activity_vertical_large_margin">12dp</dimen>
+    <dimen name="activity_vertical_extra_large_margin">32dp</dimen>
+    <dimen name="activity_card_design_choose_vertical_margin">16dp</dimen>
+    <dimen name="logo_margin">64dp</dimen>
+    <dimen name="horizontal_margin">8dp</dimen>
+    <dimen name="vertical_margin">8dp</dimen>
+    <dimen name="list_vertical_margin">24dp</dimen>
+    <dimen name="list_left_margin">24dp</dimen>
+    <dimen name="list_right_margin">24dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+    <dimen name="text_margin_large">22dp</dimen>
+    <dimen name="margin_10">10dp</dimen>
+    <dimen name="margin_6">6dp</dimen>
+    <dimen name="margin_4">4dp</dimen>
+    <dimen name="no_margin">0dp</dimen>
+    <dimen name="shimmer_elevation">10dp</dimen>
+    <dimen name="click_area">6dp</dimen>
+
+    <dimen name="button_drawable_margin">8dp</dimen>
+    <dimen name="button_height">36dp</dimen>
+    <dimen name="button_left_margin">18dp</dimen>
+    <dimen name="button_right_margin">18dp</dimen>
+
+    <dimen name="text_size_big">22sp</dimen>
+    <dimen name="text_size_large">20sp</dimen>
+    <dimen name="text_size_normal">16sp</dimen>
+    <dimen name="text_size_small">14sp</dimen>
+    <dimen name="text_size_extra_small">12sp</dimen>
+
+    <dimen name="transfer_card_number_text_size">28sp</dimen>
+    <dimen name="transfer_deposit_number_text_size">20sp</dimen>
+
+    <dimen name="internal_top_margin">16dp</dimen>
+    <dimen name="internal_small_top_margin">8dp</dimen>
+    <dimen name="internal_bottom_margin">16dp</dimen>
+    <dimen name="internal_small_bottom_margin">8dp</dimen>
+    <dimen name="internal_left_margin">16dp</dimen>
+    <dimen name="internal_small_left_margin">8dp</dimen>
+    <dimen name="internal_right_margin">16dp</dimen>
+    <dimen name="internal_small_right_margin">8dp</dimen>
+
+    <dimen name="account_button_height">56dp</dimen>
+
+    <dimen name="more_button_text_size">12sp</dimen>
+
+    <dimen name="horizontal_line_height">1dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="appbar_padding_top">8dp</dimen>
+    <dimen name="bottom_offset_dp">70dp</dimen>
+
+    <dimen name="design_bottom_navigation_text_size" tools:override="true">10sp</dimen>
+    <dimen name="design_bottom_navigation_active_text_size" tools:override="true">10sp</dimen>
+
+    <dimen name="bottom_navigation_margin_top_inactive" tools:override="true">6dp</dimen>
+    <dimen name="bottom_navigation_text_size_active" tools:override="true">12sp</dimen>
+
+    <dimen name="design_tab_text_size_2line" tools:override="true">@dimen/text_size_normal</dimen>
+
+    <dimen name="map_filter_icon_size">24dp</dimen>
+
+    <!--
+Refer to App Widget Documentation for margin information
+http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
+    -->
+    <dimen name="widget_margin">8dp</dimen>
+
+    <dimen name="text_size_10">10sp</dimen>
+    <dimen name="text_size_12">12sp</dimen>
+    <dimen name="text_size_14">14sp</dimen>
+    <dimen name="text_size_16">16sp</dimen>
+    <dimen name="text_size_18">18sp</dimen>
+    <dimen name="text_size_20">20sp</dimen>
+    <dimen name="text_size_28">28sp</dimen>
+
+    <dimen name="card_height">75dp</dimen>
+    <dimen name="card_width">120dp</dimen>
+
+    <dimen name="card_type_height">26dp</dimen>
+    <dimen name="card_type_width">43dp</dimen>
+
+    <dimen name="card_bib_logo_height">18dp</dimen>
+    <dimen name="card_bib_logo_width">30dp</dimen>
+
+    <dimen name="card_bib_logo_height_small">10dp</dimen>
+    <dimen name="card_bib_logo_width_small">16dp</dimen>
+
+    <dimen name="card_type_height_small">16dp</dimen>
+    <dimen name="card_type_width_small">24dp</dimen>
+
+    <dimen name="start_button_size">32dp</dimen>
+    <dimen name="start_button_vertical_margin">16dp</dimen>
+
+    <dimen name="consent_button_top_margin">100dp</dimen>
+
+</resources>

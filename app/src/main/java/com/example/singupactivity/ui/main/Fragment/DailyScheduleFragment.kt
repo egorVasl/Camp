@@ -34,7 +34,7 @@ class DailyScheduleFragment : Fragment() {
     lateinit var adapter: DailyScheduleAdapter
     lateinit var campDbManager: CampDbManager
 
-
+    lateinit var rv : RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +70,7 @@ class DailyScheduleFragment : Fragment() {
     ): View {
 
         val view: View = inflater.inflate(R.layout.fragment_daily_schedule, container, false)
-        val rv = view.findViewById<RecyclerView>(R.id.rcDailySchedule)
+        rv = view.findViewById(R.id.rcDailySchedule)
         val fabDailySchedule = view.findViewById<FloatingActionButton>(R.id.fabDailySchedule)
 
         rv.layoutManager = LinearLayoutManager(activity)
@@ -91,7 +91,28 @@ class DailyScheduleFragment : Fragment() {
 
         val cardSearch = view?.findViewById<ConstraintLayout>(R.id.cardSearch)
         if (cardSearch != null) {
-            cardSearch.isVisible = !cardSearch.isVisible
+            if(cardSearch.isVisible){
+               cardSearch.isVisible = false
+                rv.apply {
+                    layoutManager = LinearLayoutManager(ctx)
+                    setPadding(resources.getDimension(R.dimen.click_area).toInt(),
+                        0,
+                        resources.getDimension(R.dimen.click_area).toInt(),
+                        0)
+                    clipToPadding = true
+                }
+            } else {
+                cardSearch.isVisible = true
+                rv.apply {
+                    layoutManager = LinearLayoutManager(ctx)
+                    setPadding(resources.getDimension(R.dimen.click_area).toInt(),
+                        resources.getDimension(R.dimen.bottom_offset_dp).toInt(),
+                        resources.getDimension(R.dimen.click_area).toInt(),
+                        0)
+                    clipToPadding = true
+                }
+            }
+
         }
     }
 
