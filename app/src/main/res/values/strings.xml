@@ -61,7 +61,7 @@
     <string name="name_event">Название мероприятия :</string>
     <string name="insert_item">Добавить событие</string>
     <string name="import_pdf">Импортировать в PDF</string>
-
+    <string name="empty_list_text">Список пуст!</string>
 
 
 </resources>

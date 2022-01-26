@@ -3,6 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+    <data>
+
+    <variable
+        name="title"
+        type="String" />
+    </data>
+
 
 <FrameLayout
     android:layout_width="match_parent"
@@ -12,6 +19,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cardSearch"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -20,7 +28,6 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardSearch"
@@ -32,9 +39,10 @@
             android:id="@+id/rcDailySchedule"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="68dp"
+            android:layout_marginTop="@{title}"
             app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="16dp" />
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabDailySchedule"

@@ -4,16 +4,20 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 import com.example.singupactivity.R
 import com.example.singupactivity.databinding.DailySceduleListItemBinding
 import com.example.singupactivity.ui.main.Data.DailyScheduleDataClass
 import com.example.singupactivity.ui.main.Fragment.DailyScheduleFragment
 
-class DailyScheduleAdapter(fragment1: DailyScheduleFragment) :
-    RecyclerView.Adapter<DailyScheduleAdapter.DailyScheduleHolder>() {
+private const val ITEM_DAILY_SCHEDULE: Int = 0
+private const val ITEM_EMPTY_LIST: Int = 1
 
-    var dailyScheduleList = ArrayList<DailyScheduleDataClass>()
+class DailyScheduleAdapter(fragment1: DailyScheduleFragment) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private var dailyScheduleList = ArrayList<DailyScheduleDataClass>()
 
     val fragment: DailyScheduleFragment = fragment1
 
@@ -34,32 +38,50 @@ class DailyScheduleAdapter(fragment1: DailyScheduleFragment) :
 
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DailyScheduleHolder {
+    inner class EmptyListViewHolder(item: View): RecyclerView.ViewHolder(item) {
 
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.daily_scedule_list_item, parent, false)
-        return DailyScheduleHolder(view)
+        fun bind(){
+        }
+    }
+    override fun getItemViewType(position: Int) : Int {
+        return when{
+            dailyScheduleList.isNullOrEmpty() -> ITEM_EMPTY_LIST
+            else -> ITEM_DAILY_SCHEDULE
+        }
+
+    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):  RecyclerView.ViewHolder {
+
+        return when(viewType) {
+            ITEM_DAILY_SCHEDULE -> DailyScheduleHolder(parent.inflate(R.layout.daily_scedule_list_item))
+            else -> EmptyListViewHolder(parent.inflate(R.layout.partial_empty_list))
+        }
 
     }
 
-    override fun onBindViewHolder(holder: DailyScheduleHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
-        holder.bind(dailyScheduleList[position])
+        if (holder is DailyScheduleHolder ) {
+
+            holder.bind(dailyScheduleList[position])
 
 
-        val dailyScheduleDataClass: DailyScheduleDataClass = dailyScheduleList[position]
+            val dailyScheduleDataClass: DailyScheduleDataClass = dailyScheduleList[position]
 
-        holder.itemView.setOnClickListener {
+            holder.itemView.setOnClickListener {
 
-            fragment.addAndEditSchedule(true, dailyScheduleDataClass, position)
+                fragment.addAndEditSchedule(true, dailyScheduleDataClass, position)
 
+            }
+        } else if (holder is EmptyListViewHolder ) {
+            holder.bind()
         }
 
     }
 
     override fun getItemCount(): Int {
 
-        return dailyScheduleList.size
+        return if(dailyScheduleList.isNullOrEmpty()) 1 else dailyScheduleList.size
 
     }
 
@@ -86,5 +108,8 @@ class DailyScheduleAdapter(fragment1: DailyScheduleFragment) :
         notifyDataSetChanged()
 
     }
+
+    fun ViewGroup.inflate(@LayoutRes resId: Int) =
+        LayoutInflater.from(this.context).inflate(resId, this, false)!!
 
 }
