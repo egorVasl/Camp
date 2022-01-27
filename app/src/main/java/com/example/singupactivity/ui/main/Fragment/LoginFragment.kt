@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.example.singupactivity.R
 import com.example.singupactivity.ui.main.Activity.NavigationActivity
@@ -87,6 +88,12 @@ class LoginFragment : Fragment() {
                     intent.putExtra("KEY", result)
                     startActivity(intent)
 
+                    Toast.makeText(
+                        activity,
+                        R.string.successful_authorization,
+                        Toast.LENGTH_SHORT
+                    ).show()
+
                     etLogin.text.clear()
                     etPassword.text.clear()
                     etSquad.text.clear()
@@ -99,12 +106,12 @@ class LoginFragment : Fragment() {
     }
 
 
-    fun alert(massage: Int) {
-        val builder = AlertDialog.Builder(activity!!)
+    private fun alert(massage: Int) {
+        val builder = AlertDialog.Builder(act)
         builder.setTitle(R.string.notification)
             .setMessage(massage)
             .setCancelable(false)
-            .setPositiveButton(R.string.close) { dialog, _ ->
+            .setPositiveButton(R.string.contin) { dialog, _ ->
                 dialog.dismiss()
 
             }

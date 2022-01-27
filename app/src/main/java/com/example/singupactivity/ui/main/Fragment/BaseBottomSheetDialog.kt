@@ -1,5 +1,6 @@
 package com.example.singupactivity.ui.main.Fragment
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.DialogInterface
@@ -56,9 +57,9 @@ abstract class BaseBottomSheetDialog <DB : ViewDataBinding>(
         binding.root.background = ContextCompat.getDrawable(ctx, R.drawable.bottom_sheet_shape)
     }
 
+    @SuppressLint("ResourceType")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
-        dialog.window?.setWindowAnimations(-1)
         dialog.setOnShowListener {
             val d = it as BottomSheetDialog
 

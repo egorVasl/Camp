@@ -101,7 +101,7 @@ class SignupFragment : Fragment() {
                                 activity,
                                 R.string.successful_authorization_and_login,
                                 Toast.LENGTH_SHORT
-                            ).show();
+                            ).show()
                             etLogin.text.clear()
                             etPassword.text.clear()
                             etSquad.text.clear()
@@ -119,12 +119,12 @@ class SignupFragment : Fragment() {
         return view
     }
 
-    fun alert(massage: Int) {
-        val builder = AlertDialog.Builder(activity!!)
+    private fun alert(massage: Int) {
+        val builder = AlertDialog.Builder(act)
         builder.setTitle(R.string.notification)
             .setMessage(massage)
             .setCancelable(false)
-            .setPositiveButton(R.string.close) { dialog, _ ->
+            .setPositiveButton(R.string.contin) { dialog, _ ->
                 dialog.dismiss()
 
             }

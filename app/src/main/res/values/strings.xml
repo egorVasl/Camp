@@ -8,10 +8,11 @@
     <string name="password">Пароль</string>
     <string name="repeatPassword">Повторите пароль</string>
     <string name="phone">Телефон</string>
-    <string name="squad">Отряд</string>
+    <string name="squad">Номер отряда</string>
     <string name="notification">Уведомление</string>
     <string name="no_data_massage">Вы не ввели данные для авторизации</string>
     <string name="close">Закрыть</string>
+    <string name="contin">Продолжить</string>
     <string name="successful_authorization">Вы успешно авторизавались</string>
     <string name="unsuccessful_authorization">Вы не зарегистрированы или данные введины не коректно</string>
     <string name="alredy_registered">Пользователь с таким именем уже зарегистрированы</string>
@@ -24,8 +25,8 @@
     <string name="childList">Список детей</string>
     <string name="room">Комнаты</string>
     <string name="events">Мероприятия</string>
-    <string name="name_default">Арина Мазуренко</string>
-    <string name="verified">Активен</string>
+    <string name="name_default">Имя Фамилия</string>
+    <string name="verified">Статус</string>
     <string name="back">Назад</string>
     <string name="daily_schedule">Расписание дня</string>
     <string name="data">Дата :</string>
@@ -48,6 +49,7 @@
     <string name="parents_phone_number">Номер родителей :</string>
     <string name="no_dat">Вы не ввели данные</string>
     <string name="new_room">Новая комната</string>
+    <string name="search_title">Поиск по:</string>
     <string name="floor">Этаж :</string>
     <string name="room_number">Номер комнаты :</string>
     <string name="child_quantity">Количество детей :</string>
@@ -62,6 +64,9 @@
     <string name="insert_item">Добавить событие</string>
     <string name="import_pdf">Импортировать в PDF</string>
     <string name="empty_list_text">Список пуст!</string>
+    <string name="name_event_selection_arguments">Название события</string>
+    <string name="selection_arguments_time">Время</string>
+    <string name="selection_arguments_date">Дата</string>
 
 
 </resources>
