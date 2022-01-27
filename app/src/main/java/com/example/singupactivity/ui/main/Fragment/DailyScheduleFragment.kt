@@ -33,6 +33,7 @@ class DailyScheduleFragment : Fragment() {
     lateinit var campDbManager: CampDbManager
 
     lateinit var rv: RecyclerView
+    lateinit var cardSearch: ConstraintLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,10 +88,10 @@ class DailyScheduleFragment : Fragment() {
 
 
     private fun showSearchSchedule() {
-        if (rv.isNotEmpty()) {
-            val cardSearch = view?.findViewById<ConstraintLayout>(R.id.cardSearch)
-            val etCardSearch = view?.findViewById<EditText>(R.id.etSearchDailySchedule)
-            if (cardSearch != null) {
+        rv.let { recyclerView ->
+            if (recyclerView.isNotEmpty()) {
+                cardSearch = view!!.findViewById(R.id.cardSearch)
+                val etCardSearch = view?.findViewById<EditText>(R.id.etSearchDailySchedule)
                 if (cardSearch.isVisible) {
                     cardSearch.isVisible = false
                     val layoutParams = rv.layoutParams as ConstraintLayout.LayoutParams
@@ -105,9 +106,9 @@ class DailyScheduleFragment : Fragment() {
 
                     selectionArgs(etCardSearch?.text.toString())
                 }
+            } else {
+                alert(R.string.empty_list_text)
             }
-        } else {
-            alert(R.string.empty_list_text)
         }
 
     }
@@ -117,7 +118,7 @@ class DailyScheduleFragment : Fragment() {
     ).toInt()
 
 
-    private fun selectionArgs(searchTest: String) {
+    private fun selectionArgs(searchText: String) {
 
         val view = LayoutInflater.from(context).inflate(R.layout.selection_arguments_layout, null)
 
@@ -126,42 +127,50 @@ class DailyScheduleFragment : Fragment() {
             AlertDialog.Builder(requireActivity())
         alertDialogBuilderUserInput.setView(view)
 
-        var selectionArguments = ""
 
-        val rgSearch = view.findViewById<RadioGroup>(R.id.rgSearch)
+        val checkNameEvent = view.findViewById<CheckBox>(R.id.checkNameEvent)
+        val checkTimeEvent = view.findViewById<CheckBox>(R.id.checkTimeEvent)
+        val checkDateEvent = view.findViewById<CheckBox>(R.id.checkDateEvent)
 
-        selectionArguments = when (rgSearch.checkedRadioButtonId) {
-            R.id.radioNameEvent -> COLUMN_NAME_NAME_EVENT
-            R.id.radioTimeEvent -> COLUMN_NAME_TIME_EVENT
-            R.id.radioDateEvent -> COLUMN_NAME_DATE_EVENT
-            else ->""
-        }
+
 
         alertDialogBuilderUserInput
             .setCancelable(false)
-            .setPositiveButton(R.string.contin
-            ) { dialogBox, _ ->
-                if (selectionArguments.isBlank()) {
-                    Toast.makeText(
-                        requireActivity(),
-                        R.string.select_type_search,
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
-                } else {
-                    searchSchedule(
-                        searchTest = searchTest,
-                        selectionArguments = selectionArguments
-                    )
-                    dialogBox.cancel()
-                }
+            .setNegativeButton(R.string.cancellation){dialogBox,_->
+                cardSearch.isVisible = false
+                val layoutParams = rv.layoutParams as ConstraintLayout.LayoutParams
+                layoutParams.topMargin = context?.let { 0.toDp(it) }!!
+                rv.layoutParams = layoutParams
+                dialogBox.cancel()
             }
+            .setPositiveButton(R.string.contin) { _, _ -> }
         val alertDialog: AlertDialog = alertDialogBuilderUserInput.create()
         alertDialog.show()
+
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(View.OnClickListener {
+            val selectionArguments = when  {
+                checkNameEvent.isChecked -> COLUMN_NAME_NAME_EVENT
+                checkTimeEvent.isChecked -> COLUMN_NAME_TIME_EVENT
+                checkDateEvent.isChecked -> COLUMN_NAME_DATE_EVENT
+                else ->""
+            }
+             if(!checkNameEvent.isChecked && !checkTimeEvent.isChecked && !checkDateEvent.isChecked){
+                    Toast.makeText(requireActivity(), R.string.select_type_search, Toast.LENGTH_SHORT)
+                        .show()
+                    return@OnClickListener
+                }
+                else {
+                 searchSchedule(
+                     searchText = searchText,
+                     selectionArguments = selectionArguments
+                 )
+                    alertDialog.dismiss()
+                }
+        })
     }
 
-    private fun searchSchedule(searchTest: String, selectionArguments: String) {
-
+    private fun searchSchedule(searchText: String, selectionArguments: String) {
+val yest = selectionArguments
     }
 
     private fun importPDF() {
@@ -197,8 +206,8 @@ class DailyScheduleFragment : Fragment() {
         }
         alertDialogBuilderUserInput
             .setCancelable(false)
-            .setPositiveButton(if (isUpdate) "Обновить" else "Сохранить",
-                DialogInterface.OnClickListener { dialogBox, id -> })
+            .setPositiveButton(if (isUpdate) "Обновить" else "Сохранить"
+            ) { _, _ -> }
             .setNegativeButton(if (isUpdate) "Удалить" else "Закрыть",
                 DialogInterface.OnClickListener { dialogBox, id ->
                     if (isUpdate) {
