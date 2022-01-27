@@ -67,6 +67,6 @@
     <string name="name_event_selection_arguments">Название события</string>
     <string name="selection_arguments_time">Время</string>
     <string name="selection_arguments_date">Дата</string>
-
+    <string name="select_type_search">Выберите тип поиска</string>
 
 </resources>

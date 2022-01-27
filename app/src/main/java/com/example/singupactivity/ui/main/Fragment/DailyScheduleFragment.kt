@@ -32,17 +32,17 @@ class DailyScheduleFragment : Fragment() {
     lateinit var adapter: DailyScheduleAdapter
     lateinit var campDbManager: CampDbManager
 
-    lateinit var rv : RecyclerView
+    lateinit var rv: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setFragmentResultListener(RATES_BOTTOM_REQUEST_KEY){_,bundle->
+        setFragmentResultListener(RATES_BOTTOM_REQUEST_KEY) { _, bundle ->
             addAndEditSchedule(false, null, -1)
         }
-        setFragmentResultListener(RATES_BOTTOM_REQUEST_KEY_SEARCH){ _, _ ->
-           showSearchSchedule()
+        setFragmentResultListener(RATES_BOTTOM_REQUEST_KEY_SEARCH) { _, _ ->
+            showSearchSchedule()
         }
-        setFragmentResultListener(RATES_BOTTOM_REQUEST_KEY_IMPORT_PDF){ _, _ ->
+        setFragmentResultListener(RATES_BOTTOM_REQUEST_KEY_IMPORT_PDF) { _, _ ->
             importPDF()
         }
 
@@ -76,7 +76,8 @@ class DailyScheduleFragment : Fragment() {
 
         fabDailySchedule.setOnClickListener {
 
-            DailyScheduleBottomSheetDialog.newInstance().show(this.parentFragmentManager, "bottomDialog")
+            DailyScheduleBottomSheetDialog.newInstance()
+                .show(this.parentFragmentManager, "bottomDialog")
 
         }
 
@@ -85,7 +86,7 @@ class DailyScheduleFragment : Fragment() {
     }
 
 
-    private fun showSearchSchedule(){
+    private fun showSearchSchedule() {
         if (rv.isNotEmpty()) {
             val cardSearch = view?.findViewById<ConstraintLayout>(R.id.cardSearch)
             val etCardSearch = view?.findViewById<EditText>(R.id.etSearchDailySchedule)
@@ -111,48 +112,59 @@ class DailyScheduleFragment : Fragment() {
 
     }
 
-    private fun Int.toDp(context: Context):Int = TypedValue.applyDimension(
-        TypedValue.COMPLEX_UNIT_DIP,this.toFloat(),context.resources.displayMetrics
+    private fun Int.toDp(context: Context): Int = TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP, this.toFloat(), context.resources.displayMetrics
     ).toInt()
 
 
-   private fun selectionArgs(searchTest: String) {
+    private fun selectionArgs(searchTest: String) {
 
-       val view = LayoutInflater.from(context).inflate(R.layout.selection_arguments_layout, null)
+        val view = LayoutInflater.from(context).inflate(R.layout.selection_arguments_layout, null)
 
 
-       val alertDialogBuilderUserInput: AlertDialog.Builder =
-           AlertDialog.Builder(requireActivity())
-       alertDialogBuilderUserInput.setView(view)
+        val alertDialogBuilderUserInput: AlertDialog.Builder =
+            AlertDialog.Builder(requireActivity())
+        alertDialogBuilderUserInput.setView(view)
 
-       var selectionArguments = ""
+        var selectionArguments = ""
 
-       val rgSearch = view.findViewById<RadioGroup>(R.id.rgSearch)
+        val rgSearch = view.findViewById<RadioGroup>(R.id.rgSearch)
 
-       selectionArguments = when(rgSearch.checkedRadioButtonId) {
-           R.id.radioNameEvent -> COLUMN_NAME_NAME_EVENT
-           R.id.radioTimeEvent -> COLUMN_NAME_TIME_EVENT
-           else -> COLUMN_NAME_DATE_EVENT
-       }
+        selectionArguments = when (rgSearch.checkedRadioButtonId) {
+            R.id.radioNameEvent -> COLUMN_NAME_NAME_EVENT
+            R.id.radioTimeEvent -> COLUMN_NAME_TIME_EVENT
+            R.id.radioDateEvent -> COLUMN_NAME_DATE_EVENT
+            else ->""
+        }
 
-       alertDialogBuilderUserInput
-           .setCancelable(false)
-           .setPositiveButton(R.string.contin,
-               DialogInterface.OnClickListener { dialogBox, id ->
-                   searchSchedule(searchTest = searchTest,
-                       selectionArguments = selectionArguments
-                   )
-                   dialogBox.cancel()
-               })
-       val alertDialog: AlertDialog = alertDialogBuilderUserInput.create()
-       alertDialog.show()
-   }
+        alertDialogBuilderUserInput
+            .setCancelable(false)
+            .setPositiveButton(R.string.contin
+            ) { dialogBox, _ ->
+                if (selectionArguments.isBlank()) {
+                    Toast.makeText(
+                        requireActivity(),
+                        R.string.select_type_search,
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                } else {
+                    searchSchedule(
+                        searchTest = searchTest,
+                        selectionArguments = selectionArguments
+                    )
+                    dialogBox.cancel()
+                }
+            }
+        val alertDialog: AlertDialog = alertDialogBuilderUserInput.create()
+        alertDialog.show()
+    }
 
-    private fun searchSchedule(searchTest: String, selectionArguments: String){
+    private fun searchSchedule(searchTest: String, selectionArguments: String) {
 
     }
 
-    private fun importPDF(){
+    private fun importPDF() {
 
     }
 
