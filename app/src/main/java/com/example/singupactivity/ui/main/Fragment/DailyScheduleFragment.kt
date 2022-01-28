@@ -15,8 +15,9 @@ import android.content.Context
 import android.util.TypedValue
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.isNotEmpty
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.recyclerview.widget.*
 import com.example.singupactivity.ui.main.Adapter.DailyScheduleAdapter
@@ -26,6 +27,8 @@ import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_D
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_NAME_EVENT
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_TIME_EVENT
 
+const val IS_CHECKED_TRUE_REQUEST_KEY = "IS_CHECKED_TRUE_REQUEST_KEY"
+const val IS_CHECKED_TRUE_BUNDLE_KEY = "IS_CHECKED_TRUE_BUNDLE_KEY"
 
 class DailyScheduleFragment : Fragment() {
 
@@ -37,11 +40,11 @@ class DailyScheduleFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setFragmentResultListener(RATES_BOTTOM_REQUEST_KEY) { _, bundle ->
+        setFragmentResultListener(RATES_BOTTOM_REQUEST_KEY) { _, _ ->
             addAndEditSchedule(false, null, -1)
         }
-        setFragmentResultListener(RATES_BOTTOM_REQUEST_KEY_SEARCH) { _, _ ->
-            showSearchSchedule()
+        setFragmentResultListener(RATES_BOTTOM_REQUEST_KEY_SEARCH) { _, bundle ->
+            showSearchSchedule(bundle.getBoolean(RATES_BOTTOM_BUNDLE_KEY_SEARCH))
         }
         setFragmentResultListener(RATES_BOTTOM_REQUEST_KEY_IMPORT_PDF) { _, _ ->
             importPDF()
@@ -67,7 +70,6 @@ class DailyScheduleFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         val view: View = inflater.inflate(R.layout.fragment_daily_schedule, container, false)
         rv = view.findViewById(R.id.rcDailySchedule)
         val fabDailySchedule = view.findViewById<FloatingActionButton>(R.id.fabDailySchedule)
@@ -87,12 +89,11 @@ class DailyScheduleFragment : Fragment() {
     }
 
 
-    private fun showSearchSchedule() {
-        rv.let { recyclerView ->
-            if (recyclerView.isNotEmpty()) {
-                cardSearch = view!!.findViewById(R.id.cardSearch)
+    private fun showSearchSchedule(isChecked: Boolean) {
+            if (adapter.dailyScheduleList.size > 0) {
+                cardSearch = requireView().findViewById(R.id.cardSearch)
                 val etCardSearch = view?.findViewById<EditText>(R.id.etSearchDailySchedule)
-                if (cardSearch.isVisible) {
+                if (!isChecked) {
                     cardSearch.isVisible = false
                     val layoutParams = rv.layoutParams as ConstraintLayout.LayoutParams
                     layoutParams.topMargin = context?.let { 0.toDp(it) }!!
@@ -107,9 +108,10 @@ class DailyScheduleFragment : Fragment() {
                     selectionArgs(etCardSearch?.text.toString())
                 }
             } else {
-                alert(R.string.empty_list_text)
+                if (isChecked){ alert(R.string.empty_list_text)
+                    setFragmentResult(IS_CHECKED_TRUE_REQUEST_KEY, bundleOf(IS_CHECKED_TRUE_BUNDLE_KEY to true))
+               }
             }
-        }
 
     }
 
@@ -122,17 +124,13 @@ class DailyScheduleFragment : Fragment() {
 
         val view = LayoutInflater.from(context).inflate(R.layout.selection_arguments_layout, null)
 
-
         val alertDialogBuilderUserInput: AlertDialog.Builder =
             AlertDialog.Builder(requireActivity())
         alertDialogBuilderUserInput.setView(view)
 
-
         val checkNameEvent = view.findViewById<CheckBox>(R.id.checkNameEvent)
         val checkTimeEvent = view.findViewById<CheckBox>(R.id.checkTimeEvent)
         val checkDateEvent = view.findViewById<CheckBox>(R.id.checkDateEvent)
-
-
 
         alertDialogBuilderUserInput
             .setCancelable(false)
@@ -141,6 +139,7 @@ class DailyScheduleFragment : Fragment() {
                 val layoutParams = rv.layoutParams as ConstraintLayout.LayoutParams
                 layoutParams.topMargin = context?.let { 0.toDp(it) }!!
                 rv.layoutParams = layoutParams
+                setFragmentResult(IS_CHECKED_TRUE_REQUEST_KEY, bundleOf(IS_CHECKED_TRUE_BUNDLE_KEY to true))
                 dialogBox.cancel()
             }
             .setPositiveButton(R.string.contin) { _, _ -> }
@@ -170,7 +169,10 @@ class DailyScheduleFragment : Fragment() {
     }
 
     private fun searchSchedule(searchText: String, selectionArguments: String) {
-val yest = selectionArguments
+
+
+
+
     }
 
     private fun importPDF() {

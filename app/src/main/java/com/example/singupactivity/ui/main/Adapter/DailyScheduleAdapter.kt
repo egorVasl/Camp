@@ -17,7 +17,7 @@ private const val ITEM_EMPTY_LIST: Int = 1
 class DailyScheduleAdapter(fragment1: DailyScheduleFragment) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var dailyScheduleList = ArrayList<DailyScheduleDataClass>()
+    var dailyScheduleList = ArrayList<DailyScheduleDataClass>()
 
     val fragment: DailyScheduleFragment = fragment1
 

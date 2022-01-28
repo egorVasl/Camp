@@ -1,17 +1,12 @@
 package com.example.singupactivity.ui.main.Fragment
 
-import android.annotation.SuppressLint
-import android.app.Dialog
 import android.os.Bundle
 import android.view.*
-import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import com.example.singupactivity.R
 import com.example.singupactivity.databinding.BottomDialogRatesBinding
-import com.example.singupactivity.databinding.BottomDialogRatesBindingImpl
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 const val RATES_BOTTOM_REQUEST_KEY = "RATES_BOTTOM_REQUEST_KEY"
 const val RATES_BOTTOM_BUNDLE_KEY = "RATES_BOTTOM_BUNDLE_KEY"
@@ -37,6 +32,13 @@ companion object{
         window?.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setFragmentResultListener(IS_CHECKED_TRUE_REQUEST_KEY) { _, _ ->
+            binding.checkSearchStart.isChecked = false
+        }
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -46,9 +48,8 @@ companion object{
             dismiss()
         }
 
-        binding.tvSearch.setOnClickListener {
-            setFragmentResult(RATES_BOTTOM_REQUEST_KEY_SEARCH, bundleOf(RATES_BOTTOM_BUNDLE_KEY_SEARCH to true))
-            dismiss()
+        binding.checkSearchStart.setOnCheckedChangeListener { buttonView, isChecked ->
+           setFragmentResult(RATES_BOTTOM_REQUEST_KEY_SEARCH, bundleOf(RATES_BOTTOM_BUNDLE_KEY_SEARCH to isChecked))
 
         }
 
