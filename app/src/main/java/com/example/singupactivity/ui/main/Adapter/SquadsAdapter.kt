@@ -6,12 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.singupactivity.R
-import com.example.singupactivity.databinding.DailySceduleListItemBinding
 import com.example.singupactivity.databinding.SquadaListItemBinding
-import com.example.singupactivity.ui.main.Data.DailyScheduleDataClass
 import com.example.singupactivity.ui.main.Data.SquadsDataClass
-import com.example.singupactivity.ui.main.Fragment.DailyScheduleFragment
-import com.example.singupactivity.ui.main.Fragment.SquadsFragment
+import com.example.singupactivity.ui.main.Fragment.TableFragments.SquadsFragment
 
 class SquadsAdapter(fragment1: SquadsFragment) :
     RecyclerView.Adapter<SquadsAdapter.SquadsHolder>() {

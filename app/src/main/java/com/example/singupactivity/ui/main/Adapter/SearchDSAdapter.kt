@@ -8,10 +8,8 @@ import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 import com.example.singupactivity.R
 import com.example.singupactivity.databinding.DailySceduleListItemBinding
-import com.example.singupactivity.databinding.FragmentSearchBinding
 import com.example.singupactivity.ui.main.Data.DailyScheduleDataClass
-import com.example.singupactivity.ui.main.Fragment.DailyScheduleFragment
-import com.example.singupactivity.ui.main.Fragment.SearchFragment
+import com.example.singupactivity.ui.main.Fragment.Search.SearchFragment
 
 private const val ITEM_DAILY_SCHEDULE: Int = 0
 private const val ITEM_EMPTY_LIST: Int = 1

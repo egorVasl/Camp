@@ -8,8 +8,8 @@ import com.example.singupactivity.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayout
 import com.example.singupactivity.ui.main.Adapter.ViewPagerAdapter
 import com.example.singupactivity.ui.main.DataBase.CampDbManager
-import com.example.singupactivity.ui.main.Fragment.LoginFragment
-import com.example.singupactivity.ui.main.Fragment.SignupFragment
+import com.example.singupactivity.ui.main.Fragment.Authoriztion.LoginFragment
+import com.example.singupactivity.ui.main.Fragment.Authoriztion.SignupFragment
 
 
 class CampMainActivity : AppCompatActivity() {

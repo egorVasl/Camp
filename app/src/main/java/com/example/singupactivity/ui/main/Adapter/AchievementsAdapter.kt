@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.singupactivity.R
 import com.example.singupactivity.databinding.AchievementsListItemBinding
 import com.example.singupactivity.ui.main.Data.AchievementsDataClass
-import com.example.singupactivity.ui.main.Fragment.AchievementsFragment
+import com.example.singupactivity.ui.main.Fragment.TableFragments.AchievementsFragment
 
 class AchievementsAdapter(fragment1: AchievementsFragment) :
     RecyclerView.Adapter<AchievementsAdapter.AchievementsHolder>() {

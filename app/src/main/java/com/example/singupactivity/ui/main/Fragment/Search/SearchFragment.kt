@@ -1,4 +1,4 @@
-package com.example.singupactivity.ui.main.Fragment
+package com.example.singupactivity.ui.main.Fragment.Search
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
@@ -20,6 +20,7 @@ import com.example.singupactivity.ui.main.Adapter.SearchDSAdapter
 import com.example.singupactivity.ui.main.Data.DailyScheduleDataClass
 import com.example.singupactivity.ui.main.DataBase.CampDbManager
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass
+import com.example.singupactivity.ui.main.Fragment.act
 import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentDSdataClass
 import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentsDS
 import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentsDSFlag

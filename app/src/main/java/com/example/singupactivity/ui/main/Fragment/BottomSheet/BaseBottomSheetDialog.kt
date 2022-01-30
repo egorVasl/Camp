@@ -1,7 +1,6 @@
-package com.example.singupactivity.ui.main.Fragment
+package com.example.singupactivity.ui.main.Fragment.BottomSheet
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
@@ -9,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import androidx.annotation.ArrayRes
 import androidx.annotation.LayoutRes
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
@@ -17,12 +15,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 
 import com.example.singupactivity.R
+import com.example.singupactivity.ui.main.Fragment.ProgressBarDialog
+import com.example.singupactivity.ui.main.Fragment.act
+import com.example.singupactivity.ui.main.Fragment.ctx
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel
-import com.google.android.material.snackbar.Snackbar
 
 abstract class BaseBottomSheetDialog <DB : ViewDataBinding>(
     @LayoutRes

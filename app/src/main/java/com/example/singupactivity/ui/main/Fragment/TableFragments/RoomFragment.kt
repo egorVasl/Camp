@@ -1,4 +1,4 @@
-package com.example.singupactivity.ui.main.Fragment
+package com.example.singupactivity.ui.main.Fragment.TableFragments
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog

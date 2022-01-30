@@ -1,20 +1,17 @@
-package com.example.singupactivity.ui.main.Fragment
+package com.example.singupactivity.ui.main.Fragment.BottomSheet
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.setFragmentResultListener
 import com.example.singupactivity.R
 import com.example.singupactivity.databinding.BottomDialogRatesBinding
 import com.example.singupactivity.ui.main.Activity.SearchActivity
+import com.example.singupactivity.ui.main.Fragment.act
 
 const val RATES_BOTTOM_REQUEST_KEY = "RATES_BOTTOM_REQUEST_KEY"
 const val RATES_BOTTOM_BUNDLE_KEY = "RATES_BOTTOM_BUNDLE_KEY"
-
-const val RATES_BOTTOM_REQUEST_KEY_SEARCH = "RATES_BOTTOM_REQUEST_KEY_SEARCH"
-const val RATES_BOTTOM_BUNDLE_KEY_SEARCH = "RATES_BOTTOM_BUNDLE_KEY_SEARCH"
 
 const val RATES_BOTTOM_REQUEST_KEY_IMPORT_PDF = "RATES_BOTTOM_REQUEST_KEY_IMPORT_PDF"
 const val RATES_BOTTOM_BUNDLE_KEY_IMPORT_PDF = "RATES_BOTTOM_BUNDLE_KEY_IMPORT_PDF"

@@ -6,11 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.singupactivity.R
-import com.example.singupactivity.databinding.DailySceduleListItemBinding
 import com.example.singupactivity.databinding.RoomListItemBinding
-import com.example.singupactivity.ui.main.Data.DailyScheduleDataClass
 import com.example.singupactivity.ui.main.Data.RoomDataClass
-import com.example.singupactivity.ui.main.Fragment.RoomFragment
+import com.example.singupactivity.ui.main.Fragment.TableFragments.RoomFragment
 
 class RoomAdapter(fragment1: RoomFragment) :
     RecyclerView.Adapter<RoomAdapter.RoomHolder>() {

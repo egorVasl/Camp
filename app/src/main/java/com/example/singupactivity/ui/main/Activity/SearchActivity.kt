@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import com.example.singupactivity.R
-import com.example.singupactivity.ui.main.Fragment.SearchFragment
+import com.example.singupactivity.ui.main.Fragment.Search.SearchFragment
 import com.example.singupactivity.ui.main.Fragment.addFragmentToActivity
 import android.view.Menu
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_DATE_EVENT

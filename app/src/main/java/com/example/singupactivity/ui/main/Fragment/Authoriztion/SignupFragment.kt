@@ -1,4 +1,4 @@
-package com.example.singupactivity.ui.main.Fragment
+package com.example.singupactivity.ui.main.Fragment.Authoriztion
 
 import android.app.AlertDialog
 import android.content.Intent
@@ -14,6 +14,7 @@ import com.example.singupactivity.R
 import com.example.singupactivity.ui.main.Activity.NavigationActivity
 import com.example.singupactivity.ui.main.DataBase.CampDbManager
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass
+import com.example.singupactivity.ui.main.Fragment.act
 
 
 class SignupFragment : Fragment() {

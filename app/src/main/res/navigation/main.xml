@@ -7,37 +7,37 @@
 
     <fragment
         android:id="@+id/dailyScheduleFragment"
-        android:name="com.example.singupactivity.ui.main.Fragment.DailyScheduleFragment"
+        android:name="com.example.singupactivity.ui.main.Fragment.TableFragments.DailyScheduleFragment"
         android:label="@string/daily_schedule"
         tools:layout="@layout/fragment_daily_schedule" />
     <fragment
         android:id="@+id/menuCounselor"
-        android:name="com.example.singupactivity.ui.main.Fragment.CounselorFragment"
+        android:name="com.example.singupactivity.ui.main.Fragment.TableFragments.CounselorFragment"
         android:label="@string/counselor"
         tools:layout="@layout/fragment_counselor" />
     <fragment
         android:id="@+id/menuWeekEvent"
-        android:name="com.example.singupactivity.ui.main.Fragment.EventsFragment"
+        android:name="com.example.singupactivity.ui.main.Fragment.TableFragments.EventsFragment"
         android:label="@string/events"
         tools:layout="@layout/fragment_events" />
     <fragment
         android:id="@+id/menuSquad"
-        android:name="com.example.singupactivity.ui.main.Fragment.SquadsFragment"
+        android:name="com.example.singupactivity.ui.main.Fragment.TableFragments.SquadsFragment"
         android:label="@string/squad_menu"
         tools:layout="@layout/fragment_squads" />
     <fragment
         android:id="@+id/menuAchievements"
-        android:name="com.example.singupactivity.ui.main.Fragment.AchievementsFragment"
+        android:name="com.example.singupactivity.ui.main.Fragment.TableFragments.AchievementsFragment"
         android:label="@string/achievements"
         tools:layout="@layout/fragment_achievements" />
     <fragment
         android:id="@+id/menuChildList"
-        android:name="com.example.singupactivity.ui.main.Fragment.ChildListFragment"
+        android:name="com.example.singupactivity.ui.main.Fragment.TableFragments.ChildListFragment"
         android:label="@string/childList"
         tools:layout="@layout/fragment_child_list" />
     <fragment
         android:id="@+id/menuRoom"
-        android:name="com.example.singupactivity.ui.main.Fragment.RoomFragment"
+        android:name="com.example.singupactivity.ui.main.Fragment.TableFragments.RoomFragment"
         android:label="@string/room"
         tools:layout="@layout/fragment_room" />
 

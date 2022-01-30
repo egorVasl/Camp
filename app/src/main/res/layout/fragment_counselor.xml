@@ -8,7 +8,7 @@
 <FrameLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.Fragment.CounselorFragment">
+    tools:context=".ui.main.Fragment.TableFragments.CounselorFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/consLayoutCounselor"

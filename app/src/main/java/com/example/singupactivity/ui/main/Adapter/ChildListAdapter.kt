@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.singupactivity.R
 import com.example.singupactivity.databinding.ChildListListItemBinding
 import com.example.singupactivity.ui.main.Data.ChildListDataClass
-import com.example.singupactivity.ui.main.Fragment.ChildListFragment
+import com.example.singupactivity.ui.main.Fragment.TableFragments.ChildListFragment
 
 class ChildListAdapter(fragment1: ChildListFragment) :
     RecyclerView.Adapter<ChildListAdapter.ChildListHolder>() {

@@ -1,4 +1,4 @@
-package com.example.singupactivity.ui.main.Fragment
+package com.example.singupactivity.ui.main.Fragment.TableFragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -11,6 +11,7 @@ import android.text.TextUtils
 import android.content.DialogInterface
 import com.example.singupactivity.R
 import android.app.AlertDialog
+import android.icu.text.SimpleDateFormat
 import android.widget.*
 import androidx.fragment.app.setFragmentResultListener
 import androidx.recyclerview.widget.*
@@ -22,12 +23,14 @@ import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_N
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_TIME_EVENT
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.example.singupactivity.ui.main.Fragment.*
 import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentDSdataClass
 import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentsDSFlag
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.util.*
 
-
-const val IS_CHECKED_TRUE_REQUEST_KEY = "IS_CHECKED_TRUE_REQUEST_KEY"
-const val IS_CHECKED_TRUE_BUNDLE_KEY = "IS_CHECKED_TRUE_BUNDLE_KEY"
 
 class DailyScheduleFragment : Fragment() {
     lateinit var adapter: DailyScheduleAdapter
@@ -43,7 +46,7 @@ class DailyScheduleFragment : Fragment() {
         }
 
         setFragmentResultListener(RATES_BOTTOM_REQUEST_KEY_IMPORT_PDF) { _, _ ->
-            importPDF()
+            importTextFile()
         }
 
         campDbManager = activity?.let { CampDbManager(it) }!!
@@ -191,8 +194,33 @@ class DailyScheduleFragment : Fragment() {
 
 
 
-    private fun importPDF() {
+    @SuppressLint("SimpleDateFormat")
+    private fun importTextFile() {
+        val sdf = SimpleDateFormat("dd.MM.yyyy")
+        val currentDate = sdf.format(Date())
 
+        val path = context?.getExternalFilesDir(null)
+
+        val letDirectory = File(path, "Daily schedule")
+        letDirectory.mkdirs()
+        val file = File(letDirectory, "Daily schedule $currentDate.txt")
+        try {
+            FileOutputStream(file).use { stream ->
+                adapter.let {
+                    for ((i, elm) in it.dailyScheduleList.withIndex()) {
+                        stream.write("День:${i+1}\n".toByteArray())
+                        stream.write("Дата: ${it.dailyScheduleList[i].dateEvent}\n".toByteArray())
+                        stream.write("Название мероприятия: ${it.dailyScheduleList[i].nameEvent}\n".toByteArray())
+                        stream.write("Время: ${it.dailyScheduleList[i].timeEvent}\n\n".toByteArray())
+
+                    }
+                }
+                stream.close()
+                Toast.makeText(ctx, "Файл успешно создан!\n Путь: $path/Daily schedule/Daily schedule $currentDate.txt", Toast.LENGTH_LONG).show()
+            }
+        }catch (exe: IOException){
+            Toast.makeText(ctx, "Ошибка создания файла: $exe", Toast.LENGTH_SHORT).show()
+        }
     }
 
     @SuppressLint("InflateParams")

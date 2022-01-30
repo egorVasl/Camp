@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/teal_800"
-    tools:context=".ui.main.Fragment.SignupFragment">
+    tools:context=".ui.main.Fragment.Authoriztion.SignupFragment">
 
     <EditText
         android:id="@+id/etLogin"

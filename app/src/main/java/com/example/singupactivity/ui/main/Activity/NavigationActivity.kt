@@ -1,7 +1,6 @@
 package com.example.singupactivity.ui.main.Activity
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -17,10 +16,6 @@ import android.graphics.BitmapFactory
 
 import android.net.Uri
 import android.view.View
-import android.widget.TextView
-import android.widget.Toast
-import androidx.core.os.bundleOf
-import com.example.singupactivity.ui.main.Fragment.CounselorFragment
 import java.io.FileNotFoundException
 import java.io.InputStream
 

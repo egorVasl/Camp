@@ -7,9 +7,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.singupactivity.R
 import com.example.singupactivity.databinding.DailySceduleListItemBinding
-import com.example.singupactivity.ui.main.Data.DailyScheduleDataClass
 import com.example.singupactivity.ui.main.Data.EventsDataClass
-import com.example.singupactivity.ui.main.Fragment.EventsFragment
+import com.example.singupactivity.ui.main.Fragment.TableFragments.EventsFragment
 
 class EventsAdapter (fragment1: EventsFragment) :
     RecyclerView.Adapter<EventsAdapter.EventsHolder>() {
