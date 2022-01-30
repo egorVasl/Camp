@@ -12,16 +12,6 @@
     tools:context=".ui.main.Fragment.DailyScheduleFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cardSearch"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <include layout="@layout/search_layout" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardSearch"
@@ -33,10 +23,10 @@
             android:id="@+id/rcDailySchedule"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-           android:layout_marginTop="0dp"
+           android:layout_marginTop="10dp"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"/>
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabDailySchedule"

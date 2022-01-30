@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.fragment.app.activityViewModels
 import com.example.singupactivity.R
 import com.example.singupactivity.ui.main.Activity.NavigationActivity
 import com.example.singupactivity.ui.main.DataBase.CampDbManager

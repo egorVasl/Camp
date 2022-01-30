@@ -541,6 +541,31 @@ class CampDbManager(context: Context) {
         return dataList
     }
 
+    @SuppressLint("Range")
+    fun selectToTableDailySchedule(const: String, searchText: String, selectionArguments: String): ArrayList<String> {
+        openDb()
+        val sqlQuery = ("select * from $TABLE_NAME_DAILY_SCHEDULE where $selectionArguments = '$searchText';")
+//        val selection = "$selectionArguments = "
+//        val selectionArgumentsList = arrayOf(searchText)
+        val dataList = ArrayList<String>()
+        val cursor = db.rawQuery(sqlQuery, null)
+
+
+
+//        query(
+//            TABLE_NAME_DAILY_SCHEDULE, null, selection,
+//            selectionArgumentsList, null, null, null
+//        )
+
+        while (cursor?.moveToNext()!!) {
+            val dataText = cursor.getString(cursor.getColumnIndex(const))
+            dataList.add(dataText.toString())
+        }
+        cursor.close()
+        closeDb()
+        return dataList
+    }
+
     fun deleteRawToTableDailySchedule(const: String) {
         openDb()
         val delCount = db.delete(TABLE_NAME_DAILY_SCHEDULE, "name_event = '$const'", null)

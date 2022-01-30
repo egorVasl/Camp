@@ -10,15 +10,15 @@
     <string name="phone">Телефон</string>
     <string name="squad">Номер отряда</string>
     <string name="notification">Уведомление</string>
-    <string name="no_data_massage">Вы не ввели данные для авторизации</string>
+    <string name="no_data_massage">Вы не ввели данные для авторизации.</string>
     <string name="close">Закрыть</string>
     <string name="cancellation">Отмена</string>
     <string name="contin">Продолжить</string>
-    <string name="successful_authorization">Вы успешно авторизавались</string>
-    <string name="unsuccessful_authorization">Вы не зарегистрированы или данные введины не коректно</string>
-    <string name="alredy_registered">Пользователь с таким именем уже зарегистрированы</string>
-    <string name="uncorrect_password">Пароли не совпадают</string>
-    <string name="successful_authorization_and_login">Вы успешно зарегестрированы и авторизованы</string>
+    <string name="successful_authorization">Вы успешно авторизавались.</string>
+    <string name="unsuccessful_authorization">Вы не зарегистрированы или данные введины не коректно.</string>
+    <string name="alredy_registered">Пользователь с таким именем уже зарегистрированы.</string>
+    <string name="uncorrect_password">Пароли не совпадают.</string>
+    <string name="successful_authorization_and_login">Вы успешно зарегестрированы и авторизованы.</string>
     <string name="counselor">Профиль</string>
     <string name="squad_menu">Отряды</string>
     <string name="achievements">Нагарады</string>
@@ -35,9 +35,9 @@
     <string name="data_event_add_schedule">Дата :</string>
     <string name="name_event_add_schedule">Название события :</string>
     <string name="time_event_add_schedule">Время :</string>
-    <string name="enter_name_event">Введите название мероприятия</string>
-    <string name="enter_data_event">Введите дату мероприятия</string>
-    <string name="enter_time_event">Введите время мероприятия</string>
+    <string name="enter_name_event">Введите название мероприятия.</string>
+    <string name="enter_data_event">Введите дату мероприятия.</string>
+    <string name="enter_time_event">Введите время мероприятия.</string>
     <string name="name">Имя :</string>
     <string name="search">Поиск</string>
     <string name="surname">Фамилия :</string>
@@ -48,7 +48,7 @@
     <string name="child_list_title">Ребёнок :</string>
     <string name="edit_child">Добавить ребёнка</string>
     <string name="parents_phone_number">Номер родителей :</string>
-    <string name="no_dat">Вы не ввели данные</string>
+    <string name="no_dat">Вы не ввели данные.</string>
     <string name="new_room">Новая комната</string>
     <string name="search_title">Поиск по:</string>
     <string name="floor">Этаж :</string>
@@ -68,6 +68,12 @@
     <string name="name_event_selection_arguments">Название события</string>
     <string name="selection_arguments_time">Время</string>
     <string name="selection_arguments_date">Дата</string>
-    <string name="select_type_search">Выберите тип поиска</string>
+    <string name="select_type_search">Выберите тип поиска.</string>
+    <string name="no_data_to_search">Вы не ввели данные для поиска.</string>
+    <string name="no_argument_selected_title">Вы не выбрали критэрий поиска!</string>
+    <string name="no_argument_selected">Для выбоа нажмите на три точки в правом верхнем углу экрана.</string>
+    <string name="no_data_after_search_title">Данные не найдены!</string>
+    <string name="no_data_after_search">Возможно данные не соответствуют выбранному критэрию. \nПовторите попытку!\n </string>
+
 
 </resources>
