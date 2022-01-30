@@ -74,6 +74,10 @@
     <string name="no_argument_selected">Для выбоа нажмите на три точки в правом верхнем углу экрана.</string>
     <string name="no_data_after_search_title">Данные не найдены!</string>
     <string name="no_data_after_search">Возможно данные не соответствуют выбранному критэрию. \nПовторите попытку!\n </string>
+    <string name="take_photo">Сделать фото</string>
+    <string name="choice_from_gallery">Выбрать из галереи</string>
+    <string name="error_uploading_image">Ошибка при загрузке изображения</string>
+
 
 
 </resources>

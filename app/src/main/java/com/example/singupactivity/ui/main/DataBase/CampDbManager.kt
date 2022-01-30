@@ -5,6 +5,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_ACHIEVEMENTS_PLACE
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_AVATAR
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_CHILD_BIRTHDAY
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_CHILD_NAME
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_CHILD_PATRONYMIC
@@ -24,6 +25,7 @@ import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_I
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_ID_SQUAD_CHILD
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_ID_SQUAD_COUNSELOR
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_LOGIN
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_LOGIN_AVATAR
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_NAME_EVENT
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_PARENTS_NUMBER
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_PASSWORD
@@ -36,6 +38,7 @@ import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_T
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_TIME_EVENT
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.TABLE_NAME_ACHIEVEMENTS
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.TABLE_NAME_AUTHORIZATION
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.TABLE_NAME_AVATAR
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.TABLE_NAME_CHILD
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.TABLE_NAME_COUNSELOR
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.TABLE_NAME_DAILY_SCHEDULE
@@ -52,6 +55,67 @@ class CampDbManager(context: Context) {
 
     fun openDb() {
         db = campDbHelper.writableDatabase
+    }
+
+    /**
+     * Table Avatar
+     */
+    fun insertToTableAvatar(img: ByteArray, login: String) {
+        openDb()
+        val cv = ContentValues().apply {
+            put(COLUMN_NAME_LOGIN_AVATAR, login)
+            put(COLUMN_NAME_AVATAR, img)
+        }
+        val rowID = db.insert(TABLE_NAME_AVATAR, null, cv)
+
+        closeDb()
+    }
+
+    @SuppressLint("Range")
+    fun selectToTableAvatarLogin(const: String): ArrayList<String> {
+        openDb()
+        val dataList = ArrayList<String>()
+        val cursor = db.query(
+            TABLE_NAME_AVATAR, null, null,
+            null, null, null, null
+        )
+
+        while (cursor?.moveToNext()!!) {
+            val dataText = cursor.getString(cursor.getColumnIndex(const))
+            dataList.add(dataText.toString())
+        }
+        cursor.close()
+        return dataList
+    }
+
+    @SuppressLint("Range")
+    fun selectToTableAvatarImage(const: String): ByteArray {
+        openDb()
+        val cursor = db.query(
+            TABLE_NAME_AVATAR, null, null,
+            null, null, null, null
+        )
+        while (cursor?.moveToNext()!!) {
+            return cursor.getBlob(cursor.getColumnIndex(const))
+        }
+        cursor.close()
+        return byteArrayOf()
+    }
+
+    fun updateRawToTableAvatar(
+        img: ByteArray, login: String
+    ) {
+        openDb()
+        val cv = ContentValues().apply {
+            put(COLUMN_NAME_LOGIN_AVATAR, login)
+            put(COLUMN_NAME_AVATAR, img)
+        }
+
+        val updCount = db.update(
+            TABLE_NAME_AVATAR, cv, "login_avatar = ?",
+            arrayOf(login)
+        )
+        closeDb()
     }
 
     /**

@@ -16,6 +16,11 @@ import com.example.singupactivity.ui.main.DataBase.CampDbManager
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass
 import com.example.singupactivity.ui.main.Fragment.act
 
+import android.graphics.BitmapFactory
+
+import android.graphics.Bitmap
+import java.io.ByteArrayOutputStream
+
 
 class SignupFragment : Fragment() {
 
@@ -94,6 +99,14 @@ class SignupFragment : Fragment() {
                                 password = etPassword.text.toString(),
                                 squad = etSquad.text.toString()
                             )
+                            val icon = BitmapFactory.decodeResource(
+                                context!!.resources,
+                                R.drawable.ic_baseline_person_24
+                            )
+                            val stream = ByteArrayOutputStream()
+                            icon.compress(Bitmap.CompressFormat.PNG, 100, stream)
+                            val byteArray = stream.toByteArray()
+                            campDbManager.insertToTableAvatar(byteArray, etLogin.text.toString())
 
                             startActivity(Intent(activity, NavigationActivity::class.java))
                             Toast.makeText(

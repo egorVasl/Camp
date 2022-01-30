@@ -12,6 +12,24 @@ object CampDbNameClass : BaseColumns{
     const val DATABASE_NAME = "Camp.db"
 
     /**
+     * Table Avatar
+     */
+
+    const val TABLE_NAME_AVATAR = "avatar"
+
+    const val COLUMN_NAME_ID_AVATAR = "id_avatar"
+    const val COLUMN_NAME_LOGIN_AVATAR = "login_avatar"
+    const val COLUMN_NAME_AVATAR = "avatar"
+
+    const val CREATE_TABLE_AVATAR =
+        "CREATE TABLE IF NOT EXISTS $TABLE_NAME_AVATAR (" +
+                "$COLUMN_NAME_ID_AVATAR  INTEGER PRIMARY KEY AUTOINCREMENT ," +
+                "$COLUMN_NAME_LOGIN_AVATAR  TEXT," +
+                "$COLUMN_NAME_AVATAR BLOB)"
+
+    const val DELETE_TABLE_AVATAR = "DROP TABLE IF EXISTS $TABLE_NAME_AVATAR"
+
+    /**
      * Table Authorization
      */
 

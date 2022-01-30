@@ -15,6 +15,7 @@ import com.example.singupactivity.ui.main.Activity.NavigationActivity
 import com.example.singupactivity.ui.main.DataBase.CampDbManager
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass
 import com.example.singupactivity.ui.main.Fragment.act
+import com.example.singupactivity.ui.main.Objects.NavigationActviy.ArgumentsLogin
 
 
 class LoginFragment : Fragment() {
@@ -79,7 +80,7 @@ class LoginFragment : Fragment() {
                 if (squadIsTrue and passwordIsTrue and loginIsTrue) {
 
                     val result = etLogin.text.toString()
-
+                    ArgumentsLogin.login = result
 
                     val intent = Intent(
                         activity?.baseContext,
