@@ -152,7 +152,7 @@ class SignupFragment : Fragment() {
                 1,
                 1,
                 Bitmap.Config.ARGB_8888
-            ) // Single color bitmap will be created of 1x1 pixel
+            )
         } else {
             Bitmap.createBitmap(
                 drawable.intrinsicWidth,

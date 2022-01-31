@@ -84,7 +84,7 @@
     <string name="exit_layout_title">Экран выхода!</string>
     <string name="exit_activity_title">Экран выхода</string>
     <string name="exit_layout">Для отмены или подтверждения нажмите кнопку \"Назад\" </string>
-
+    <string name="enter_data">Ввести данные</string>
 
 
 

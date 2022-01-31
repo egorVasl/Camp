@@ -19,6 +19,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.singupactivity.R
 import com.example.singupactivity.ui.main.Activity.NavigationActivity
 import com.example.singupactivity.ui.main.DataBase.CampDbManager
+import com.example.singupactivity.ui.main.Fragment.BottomSheet.CounselorBottomSheetDialog
+import com.example.singupactivity.ui.main.Fragment.BottomSheet.DailyScheduleBottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.io.FileNotFoundException
 import java.io.InputStream
@@ -50,11 +52,11 @@ class CounselorFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val view: View = inflater.inflate(R.layout.fragment_counselor, container, false)
-        val tvNameCounselor = view.findViewById<TextView>(R.id.tvNameCounselor)
-        val tvSurnameCounselor = view.findViewById<TextView>(R.id.tvSurnameCounselor)
-        val tvPatronamycCounselor = view.findViewById<TextView>(R.id.tvPatronamycCounselor)
-        val tvBirthdayCounselor = view.findViewById<TextView>(R.id.tvBirthdayCounselor)
-        val tvPhoneNumberCounselor = view.findViewById<TextView>(R.id.tvPhoneNumberCounselor)
+//        val tvNameCounselor = view.findViewById<TextView>(R.id.tvNameCounselor)
+//        val tvSurnameCounselor = view.findViewById<TextView>(R.id.tvSurnameCounselor)
+//        val tvPatronamycCounselor = view.findViewById<TextView>(R.id.tvPatronamycCounselor)
+//        val tvBirthdayCounselor = view.findViewById<TextView>(R.id.tvBirthdayCounselor)
+//        val tvPhoneNumberCounselor = view.findViewById<TextView>(R.id.tvPhoneNumberCounselor)
         val fabCounselor = view.findViewById<FloatingActionButton>(R.id.fabCounselor)
 
          image = view.findViewById<ImageView>(R.id.imageProfile)
@@ -74,101 +76,107 @@ class CounselorFragment : Fragment() {
         result = activity?.getMyData()
 
         fabCounselor.setOnClickListener {
-            val view1 = LayoutInflater.from(context).inflate(R.layout.add_counselor, null)
 
-            val alertDialogBuilderUserInput: AlertDialog.Builder =
-                AlertDialog.Builder(requireActivity())
-            alertDialogBuilderUserInput.setView(view1)
 
-            val etNameCounselor = view1.findViewById<TextView>(R.id.etNameCounselor)
-            val etSurnameCounselor = view1.findViewById<TextView>(R.id.etSurnameCounselor)
-            val etPatronamycCounselor = view1.findViewById<TextView>(R.id.etPatronamycCounselor)
-            val etBirthdayCounselor = view1.findViewById<TextView>(R.id.etBirthdayCounselor)
-            val etPhoneNumberCounselor = view1.findViewById<TextView>(R.id.etPhoneNumberCounselor)
+            CounselorBottomSheetDialog.newInstance()
+                .show(this.parentFragmentManager, "bottomDialogDS")
+
+
+//            val view1 = LayoutInflater.from(context).inflate(R.layout.add_counselor, null)
 //
-//            etNameCounselor.text = nameCounselor
-//            etSurnameCounselor.text = surnameCounselor
-//            etPatronamycCounselor.text = patronamycCounselor
-//            etBirthdayCounselor.text = birthdayCounselor
-//            etPhoneNumberCounselor.text = phoneNumberCounselor
-
-            alertDialogBuilderUserInput
-                .setCancelable(false)
-                .setPositiveButton(if (true) "Добавить" else "",
-                    DialogInterface.OnClickListener { dialogBox, id ->
-
-
-                         nameCounselor= etNameCounselor.text.toString()
-                         surnameCounselor = etSurnameCounselor.text.toString()
-                         patronamycCounselor  = etPatronamycCounselor.text.toString()
-                         birthdayCounselor = etBirthdayCounselor.text.toString()
-                         phoneNumberCounselor =  etPhoneNumberCounselor.text.toString()
-
-
-
-//                        campDbManager.insertToTableCounselor(
-//                            counselorName = etNameCounselor.text.toString(),
-//                            counselorSurname = etSurnameCounselor.text.toString(),
-//                            counselorPatronymic = etPatronamycCounselor.text.toString(),
-//                            counselorBirthday = etBirthdayCounselor.text.toString(),
-//                            counselorNumber = etPhoneNumberCounselor.text.toString(),
-//                        )
-
-                    })
-                .setNegativeButton(if (true) "Закрыть" else "",
-                    DialogInterface.OnClickListener { dialogBox, id ->
-
-                    })
-
-            tvNameCounselor.text = nameCounselor
-            tvSurnameCounselor.text = surnameCounselor
-            tvPatronamycCounselor.text = patronamycCounselor
-            tvBirthdayCounselor.text = birthdayCounselor
-            tvPhoneNumberCounselor.text = phoneNumberCounselor
-
-            val alertDialog: AlertDialog = alertDialogBuilderUserInput.create()
-            with(alertDialog) {
-                show()
-                getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(View.OnClickListener {
-                    when {
-                        TextUtils.isEmpty(etNameCounselor.text.toString()) -> {
-                            Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
-                                .show()
-                            return@OnClickListener
-                        }
-                        TextUtils.isEmpty(etSurnameCounselor.text.toString()) -> {
-                            Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
-                                .show()
-                            return@OnClickListener
-                        }
-                        TextUtils.isEmpty(etPatronamycCounselor.text.toString()) -> {
-                            Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
-                                .show()
-                            return@OnClickListener
-                        }
-                        TextUtils.isEmpty(etBirthdayCounselor.text.toString()) -> {
-                            Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
-                                .show()
-                            return@OnClickListener
-                        }
-                        TextUtils.isEmpty(etPhoneNumberCounselor.text.toString()) -> {
-                            Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
-                                .show()
-                            return@OnClickListener
-                        }
-                        else -> {
-                            dismiss()
-                        }
-                    }
-                })
-            }
+//            val alertDialogBuilderUserInput: AlertDialog.Builder =
+//                AlertDialog.Builder(requireActivity())
+//            alertDialogBuilderUserInput.setView(view1)
+//
+//            val etNameCounselor = view1.findViewById<TextView>(R.id.etNameCounselor)
+//            val etSurnameCounselor = view1.findViewById<TextView>(R.id.etSurnameCounselor)
+//            val etPatronamycCounselor = view1.findViewById<TextView>(R.id.etPatronamycCounselor)
+//            val etBirthdayCounselor = view1.findViewById<TextView>(R.id.etBirthdayCounselor)
+//            val etPhoneNumberCounselor = view1.findViewById<TextView>(R.id.etPhoneNumberCounselor)
+////
+////            etNameCounselor.text = nameCounselor
+////            etSurnameCounselor.text = surnameCounselor
+////            etPatronamycCounselor.text = patronamycCounselor
+////            etBirthdayCounselor.text = birthdayCounselor
+////            etPhoneNumberCounselor.text = phoneNumberCounselor
+//
+//            alertDialogBuilderUserInput
+//                .setCancelable(false)
+//                .setPositiveButton(if (true) "Добавить" else "",
+//                    DialogInterface.OnClickListener { dialogBox, id ->
+//
+//
+//                         nameCounselor= etNameCounselor.text.toString()
+//                         surnameCounselor = etSurnameCounselor.text.toString()
+//                         patronamycCounselor  = etPatronamycCounselor.text.toString()
+//                         birthdayCounselor = etBirthdayCounselor.text.toString()
+//                         phoneNumberCounselor =  etPhoneNumberCounselor.text.toString()
+//
+//
+//
+////                        campDbManager.insertToTableCounselor(
+////                            counselorName = etNameCounselor.text.toString(),
+////                            counselorSurname = etSurnameCounselor.text.toString(),
+////                            counselorPatronymic = etPatronamycCounselor.text.toString(),
+////                            counselorBirthday = etBirthdayCounselor.text.toString(),
+////                            counselorNumber = etPhoneNumberCounselor.text.toString(),
+////                        )
+//
+//                    })
+//                .setNegativeButton(if (true) "Закрыть" else "",
+//                    DialogInterface.OnClickListener { dialogBox, id ->
+//
+//                    })
+//
+//            tvNameCounselor.text = nameCounselor
+//            tvSurnameCounselor.text = surnameCounselor
+//            tvPatronamycCounselor.text = patronamycCounselor
+//            tvBirthdayCounselor.text = birthdayCounselor
+//            tvPhoneNumberCounselor.text = phoneNumberCounselor
+//
+//            val alertDialog: AlertDialog = alertDialogBuilderUserInput.create()
+//            with(alertDialog) {
+//                show()
+//                getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(View.OnClickListener {
+//                    when {
+//                        TextUtils.isEmpty(etNameCounselor.text.toString()) -> {
+//                            Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
+//                                .show()
+//                            return@OnClickListener
+//                        }
+//                        TextUtils.isEmpty(etSurnameCounselor.text.toString()) -> {
+//                            Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
+//                                .show()
+//                            return@OnClickListener
+//                        }
+//                        TextUtils.isEmpty(etPatronamycCounselor.text.toString()) -> {
+//                            Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
+//                                .show()
+//                            return@OnClickListener
+//                        }
+//                        TextUtils.isEmpty(etBirthdayCounselor.text.toString()) -> {
+//                            Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
+//                                .show()
+//                            return@OnClickListener
+//                        }
+//                        TextUtils.isEmpty(etPhoneNumberCounselor.text.toString()) -> {
+//                            Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
+//                                .show()
+//                            return@OnClickListener
+//                        }
+//                        else -> {
+//                            dismiss()
+//                        }
+//                    }
+//                })
+//            }
         }
 
-        tvNameCounselor.text = nameCounselor
-        tvSurnameCounselor.text = surnameCounselor
-        tvPatronamycCounselor.text = patronamycCounselor
-        tvBirthdayCounselor.text = birthdayCounselor
-        tvPhoneNumberCounselor.text = phoneNumberCounselor
+//        tvNameCounselor.text = nameCounselor
+//        tvSurnameCounselor.text = surnameCounselor
+//        tvPatronamycCounselor.text = patronamycCounselor
+//        tvBirthdayCounselor.text = birthdayCounselor
+//        tvPhoneNumberCounselor.text = phoneNumberCounselor
         return view
 
     }
