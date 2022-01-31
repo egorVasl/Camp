@@ -1,5 +1,5 @@
 package com.example.singupactivity.ui.main.Objects.NavigationActviy
 
-object ArgumentsLogin {
+object ArgumentsNAlogin {
     var login : String = ""
 }

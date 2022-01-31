@@ -52,6 +52,12 @@
         <entry key="..\:/TestTask/app/src/main/res/menu/search_payments_menu.xml" value="0.31197916666666664" />
         <entry key="..\:/TestTask/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.35208333333333336" />
         <entry key="..\:/TestTask/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.35208333333333336" />
+        <entry key="..\:/Users/vaslavenok_e/Camp/app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.3525" />
+        <entry key="..\:/Users/vaslavenok_e/Camp/app/src/main/res/layout/activity_conteiner.xml" value="0.33" />
+        <entry key="..\:/Users/vaslavenok_e/Camp/app/src/main/res/layout/daily_scedule_list_item.xml" value="0.33061594202898553" />
+        <entry key="..\:/Users/vaslavenok_e/Camp/app/src/main/res/layout/fragment_daily_schedule.xml" value="0.33061594202898553" />
+        <entry key="..\:/Users/vaslavenok_e/Camp/app/src/main/res/layout/navigation_header.xml" value="0.4683808200138985" />
+        <entry key="..\:/Users/vaslavenok_e/Camp/app/src/main/res/layout/partial_empty_list.xml" value="0.33061594202898553" />
         <entry key="..\:/Users/vaslavenok_e/StudioProjects/SingUpActivity/app/src/main/res/layout/fragment_login.xml" value="0.2826086956521739" />
         <entry key="..\:/Users/vaslavenok_e/StudioProjects/SingUpActivity/app/src/main/res/layout/fragment_signup.xml" value="0.36666666666666664" />
       </map>

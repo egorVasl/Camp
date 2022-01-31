@@ -219,7 +219,7 @@ class DailyScheduleFragment : Fragment() {
                     }
                 }
                 stream.close()
-                Toast.makeText(ctx, "Файл успешно создан!\n Путь: $path/Daily schedule/Daily schedule $currentDate.txt", Toast.LENGTH_LONG).show()
+                alert("Файл успешно создан!", "Путь: $path/Daily schedule/Daily schedule $currentDate.txt")
             }
         }catch (exe: IOException){
             Toast.makeText(ctx, "Ошибка создания файла: $exe", Toast.LENGTH_SHORT).show()
@@ -365,9 +365,9 @@ class DailyScheduleFragment : Fragment() {
 
     }
 
-    private fun alert(massage: Int) {
+    private fun alert(title: String, massage: String) {
         val builder = AlertDialog.Builder(act)
-        builder.setTitle(R.string.notification)
+        builder.setTitle(title)
             .setMessage(massage)
             .setCancelable(false)
             .setPositiveButton(R.string.contin) { dialog, _ ->

@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.CREATE_TABLE_ACHIEVEMENTS
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.CREATE_TABLE_AUTHORIZATION
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.CREATE_TABLE_AVATAR
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.CREATE_TABLE_CHILD
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.CREATE_TABLE_COUNSELOR
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.CREATE_TABLE_DAILY_SCHEDULE
@@ -17,6 +18,7 @@ import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.DATABASE_NAME
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.DATABASE_VERSION
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.DELETE_TABLE_ACHIEVEMENTS
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.DELETE_TABLE_AUTHORIZATION
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.DELETE_TABLE_AVATAR
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.DELETE_TABLE_CHILD
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.DELETE_TABLE_COUNSELOR
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.DELETE_TABLE_DAILY_SCHEDULE
@@ -44,6 +46,7 @@ class CampDbHelper(context: Context) :
         db?.execSQL(CREATE_TABLE_LIVING)
         db?.execSQL(CREATE_TABLE_DAILY_SCHEDULE)
         db?.execSQL(CREATE_TABLE_TRIGGER_RESULT)
+        db?.execSQL(CREATE_TABLE_AVATAR)
         db?.execSQL(insertToTableResultTriggerAfterInsertToAuthorization())
         db?.execSQL(insertToTableResultTriggerAfterInsertToTableDailySchedule())
         db?.execSQL(insertTableResultTriggerAfterInsertToTableSquads())
@@ -60,6 +63,7 @@ class CampDbHelper(context: Context) :
         db?.execSQL(DELETE_TABLE_LIVING)
         db?.execSQL(DELETE_TABLE_DAILY_SCHEDULE)
         db?.execSQL(DELETE_TABLE_TRIGGER_RESULT)
+        db?.execSQL(DELETE_TABLE_AVATAR)
         onCreate(db)
     }
 

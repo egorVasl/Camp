@@ -1,6 +1,7 @@
 package com.example.singupactivity.ui.main.Activity
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
@@ -14,26 +15,19 @@ import com.example.singupactivity.R
 import com.example.singupactivity.databinding.ActivityNavigtionBinding
 import com.example.singupactivity.ui.main.DataBase.CampDbManager
 import android.graphics.BitmapFactory
-import android.media.Image
 
 import android.net.Uri
 import android.os.Build
-import android.os.Environment
 import android.provider.MediaStore
 import android.view.View
 import android.widget.PopupMenu
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.appcompat.view.menu.MenuBuilder
-import androidx.appcompat.view.menu.MenuPopupHelper
-import androidx.core.graphics.get
-import com.example.singupactivity.ui.main.Data.DailyScheduleDataClass
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_AVATAR
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_LOGIN_AVATAR
-import com.example.singupactivity.ui.main.Objects.NavigationActviy.ArgumentsLogin
+import com.example.singupactivity.ui.main.Objects.NavigationActviy.ArgumentsNAlogin
 import java.io.*
-import java.text.SimpleDateFormat
-import java.util.*
 
 private const val REQUEST_IMAGE_CAPTURE_CAMERA = 1
 private const val REQUEST_IMAGE_CAPTURE_GALLERY = 2
@@ -41,6 +35,7 @@ class NavigationActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNavigtionBinding
     lateinit var campDbManager: CampDbManager
     lateinit var imageProfile: ImageView
+    lateinit var bottomProfileText: TextView
 
     var message: String? = null
 
@@ -56,15 +51,6 @@ class NavigationActivity : AppCompatActivity() {
         setContentView(binding.root)
         campDbManager = CampDbManager(this)
         campDbManager.openDb()
-
-
-        val intent = intent
-        message = getIntent().extras?.get("KEY").toString()
-
-
-//        val frag= CounselorFragment()
-//        frag.arguments = bundleOf("message" to message.toString())
-
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
 
@@ -82,23 +68,22 @@ class NavigationActivity : AppCompatActivity() {
             binding.textTitle.text = destination.label
         }
 
-//        val loginList =
-//            campDbManager.selectToTableAuthorization(CampDbNameClass.COLUMN_NAME_LOGIN)
-//        for ((i, item) in loginList.withIndex()) {
-//            if (loginList[i] == etLogin.text.toString()) {
-//                loginIsTrue = true
-//            }
-//        }
         val headerLayout: View = binding.navigationView.getHeaderView(0)
 
+        bottomProfileText = headerLayout.findViewById(R.id.bottomProfileTest)
         imageProfile = headerLayout.findViewById<ImageView>(R.id.imageHeaderProfile)
 
         val loginList = campDbManager.selectToTableAvatarLogin(COLUMN_NAME_LOGIN_AVATAR)
         val imgByteArray = campDbManager.selectToTableAvatarImage(COLUMN_NAME_AVATAR)
         for ((i, elm) in loginList.withIndex()) {
-           if (loginList[i] == ArgumentsLogin.login){
-               val bmp = BitmapFactory.decodeByteArray(imgByteArray, 0, imgByteArray.size)
-               imageProfile.setImageBitmap(bmp)
+           if (loginList[i] == ArgumentsNAlogin.login){
+               try {
+                   val bmp = BitmapFactory.decodeByteArray(imgByteArray[i], 0, imgByteArray[i].size)
+                   imageProfile.setImageBitmap(bmp)
+               } catch (exe: RuntimeException){
+                   alert(R.string.error_uploading_image_repit_operation)
+               }
+
            }
         }
 
@@ -120,6 +105,7 @@ class NavigationActivity : AppCompatActivity() {
                 }
             }
         }
+        bottomProfileText.text = ArgumentsNAlogin.login
 
     }
 
@@ -142,7 +128,6 @@ class NavigationActivity : AppCompatActivity() {
     private fun uploadPhotoFromCamera(cameraExtras: Bundle?) {
         (cameraExtras?.get("data") as? Bitmap)?.let {
             try {
-                createImageFile(it)
                 imageProfile.setImageBitmap(it)
                 saveImageBitmapAvatar(it)
             } catch (e: Exception) {
@@ -166,21 +151,6 @@ class NavigationActivity : AppCompatActivity() {
            Toast.makeText(this, R.string.error_uploading_image, Toast.LENGTH_SHORT).show()
         }
     }
-    @Throws(IOException::class)
-    private fun createImageFile(bitmap: Bitmap): File {
-        val bytes = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val imageFileName = "JPEG_${timeStamp}_"
-        val storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-        storageDir?.let { storageDir ->
-            val image = File.createTempFile(imageFileName, ".jpg", storageDir)
-            val stream = FileOutputStream(image)
-            stream.write(bytes.toByteArray())
-            stream.close()
-            return image
-        } ?: throw IOException("Couldn't reach external cache dir")
-    }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
@@ -192,13 +162,27 @@ class NavigationActivity : AppCompatActivity() {
 
     private fun saveImageBitmapAvatar(img : Bitmap){
         val stream = ByteArrayOutputStream()
-        img.compress(Bitmap.CompressFormat.PNG, 100, stream)
+        img.compress(Bitmap.CompressFormat.PNG, 0, stream)
         val byteArray = stream.toByteArray()
-        campDbManager.updateRawToTableAvatar(byteArray, ArgumentsLogin.login)
+        campDbManager.updateRawToTableAvatar(byteArray, ArgumentsNAlogin.login)
     }
 
     override fun onDestroy() {
         campDbManager.closeDb()
         super.onDestroy()
+    }
+
+    private fun alert(massage: Int) {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(R.string.notification)
+            .setMessage(massage)
+            .setCancelable(false)
+            .setPositiveButton(R.string.contin) { dialog, _ ->
+                dialog.dismiss()
+
+            }
+
+        val alert = builder.create()
+        alert.show()
     }
 }

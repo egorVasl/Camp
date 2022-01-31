@@ -77,6 +77,14 @@
     <string name="take_photo">Сделать фото</string>
     <string name="choice_from_gallery">Выбрать из галереи</string>
     <string name="error_uploading_image">Ошибка при загрузке изображения</string>
+    <string name="error_uploading_image_repit_operation">Ошибка при загрузке изображения, попробуйте повторно выбрать изображения.</string>
+    <string name="exit_text">Вы действительно хотите выйти?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="exit_layout_title">Экран выхода!</string>
+    <string name="exit_activity_title">Экран выхода</string>
+    <string name="exit_layout">Для отмены или подтверждения нажмите кнопку \"Назад\" </string>
+
 
 
 

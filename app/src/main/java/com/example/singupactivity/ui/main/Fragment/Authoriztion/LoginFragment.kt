@@ -11,11 +11,11 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import com.example.singupactivity.R
-import com.example.singupactivity.ui.main.Activity.NavigationActivity
+import com.example.singupactivity.ui.main.Activity.ConteinerActivityExit
 import com.example.singupactivity.ui.main.DataBase.CampDbManager
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass
 import com.example.singupactivity.ui.main.Fragment.act
-import com.example.singupactivity.ui.main.Objects.NavigationActviy.ArgumentsLogin
+import com.example.singupactivity.ui.main.Objects.NavigationActviy.ArgumentsNAlogin
 
 
 class LoginFragment : Fragment() {
@@ -79,14 +79,12 @@ class LoginFragment : Fragment() {
 
                 if (squadIsTrue and passwordIsTrue and loginIsTrue) {
 
-                    val result = etLogin.text.toString()
-                    ArgumentsLogin.login = result
+                    ArgumentsNAlogin.login = etLogin.text.toString()
 
                     val intent = Intent(
                         activity?.baseContext,
-                        NavigationActivity::class.java
+                        ConteinerActivityExit::class.java
                     )
-                    intent.putExtra("KEY", result)
                     startActivity(intent)
 
                     Toast.makeText(

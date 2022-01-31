@@ -36,22 +36,22 @@
         android:layout_margin="4dp"
         android:text="@string/name_default"
         android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/viewSupporter"
         app:layout_constraintStart_toEndOf="@id/imageHeaderProfile"
         />
 
     <TextView
+        android:id="@+id/bottomProfileTest"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
-        android:text="@string/verified"
-        android:textSize="16sp"
+        android:layout_marginStart="16dp"
+        android:text="@string/user_name"
+        android:textSize="18sp"
         android:textStyle="italic"
         app:layout_constraintStart_toEndOf="@id/imageHeaderProfile"
-        app:layout_constraintTop_toBottomOf="@id/viewSupporter"
-        />
+        app:layout_constraintTop_toBottomOf="@id/viewSupporter" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

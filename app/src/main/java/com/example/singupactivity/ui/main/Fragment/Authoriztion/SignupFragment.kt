@@ -1,24 +1,30 @@
 package com.example.singupactivity.ui.main.Fragment.Authoriztion
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
+import androidx.fragment.app.Fragment
 import com.example.singupactivity.R
-import com.example.singupactivity.ui.main.Activity.NavigationActivity
+import com.example.singupactivity.ui.main.Activity.ConteinerActivityExit
 import com.example.singupactivity.ui.main.DataBase.CampDbManager
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass
 import com.example.singupactivity.ui.main.Fragment.act
-
-import android.graphics.BitmapFactory
-
-import android.graphics.Bitmap
+import com.example.singupactivity.ui.main.Fragment.ctx
+import com.example.singupactivity.ui.main.Objects.NavigationActviy.ArgumentsNAlogin
 import java.io.ByteArrayOutputStream
 
 
@@ -67,13 +73,13 @@ class SignupFragment : Fragment() {
                             loginIsTrue = true
                         }
                     }
-                    val passwordList =
-                        campDbManager.selectToTableAuthorization(CampDbNameClass.COLUMN_NAME_PASSWORD)
-                    for ((i, item) in passwordList.withIndex()) {
-                        if (passwordList[i] == etPassword.text.toString()) {
-                            passwordIsTrue = true
-                        }
-                    }
+//                    val passwordList =
+//                        campDbManager.selectToTableAuthorization(CampDbNameClass.COLUMN_NAME_PASSWORD)
+//                    for ((i, item) in passwordList.withIndex()) {
+//                        if (passwordList[i] == etPassword.text.toString()) {
+//                            passwordIsTrue = true
+//                        }
+//                    }
                     val squadList =
                         campDbManager.selectToTableAuthorization(CampDbNameClass.COLUMN_NAME_SQUAD)
                     for ((i, item) in squadList.withIndex()) {
@@ -81,34 +87,25 @@ class SignupFragment : Fragment() {
                             squadIsTrue = true
                         }
                     }
-
-                    if (loginIsTrue) {
-
-                        alert(R.string.alredy_registered)
-
-                    } else {
-
-                        if (squadIsTrue and passwordIsTrue and loginIsTrue) {
+                        if (loginIsTrue && squadIsTrue ) {
 
                             alert(R.string.alredy_registered)
 
                         } else {
+                            ArgumentsNAlogin.login = etLogin.text.toString()
+                            val stream = ByteArrayOutputStream()
+                            getBitmapFromVectorDrawable(ctx,R.drawable.ic_baseline_person_24)?.compress(Bitmap.CompressFormat.PNG, 0, stream)
+                            val byteArray = stream.toByteArray()
+                            campDbManager.insertToTableAvatar(byteArray, etLogin.text.toString())
 
                             campDbManager.insertToTableAuthorization(
                                 login = etLogin.text.toString(),
                                 password = etPassword.text.toString(),
                                 squad = etSquad.text.toString()
                             )
-                            val icon = BitmapFactory.decodeResource(
-                                context!!.resources,
-                                R.drawable.ic_baseline_person_24
-                            )
-                            val stream = ByteArrayOutputStream()
-                            icon.compress(Bitmap.CompressFormat.PNG, 100, stream)
-                            val byteArray = stream.toByteArray()
-                            campDbManager.insertToTableAvatar(byteArray, etLogin.text.toString())
 
-                            startActivity(Intent(activity, NavigationActivity::class.java))
+
+                            startActivity(Intent(activity, ConteinerActivityExit::class.java))
                             Toast.makeText(
                                 activity,
                                 R.string.successful_authorization_and_login,
@@ -119,7 +116,6 @@ class SignupFragment : Fragment() {
                             etSquad.text.clear()
                             etRepeatPassword.text.clear()
                         }
-                    }
                 } else {
 
                     alert(R.string.uncorrect_password)
@@ -130,7 +126,45 @@ class SignupFragment : Fragment() {
         }
         return view
     }
-
+   private fun getBitmapFromVectorDrawable(context: Context?, drawableId: Int): Bitmap? {
+        var drawable = context?.let { ContextCompat.getDrawable(it, drawableId) }
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            drawable = DrawableCompat.wrap(drawable!!).mutate()
+        }
+        val bitmap = Bitmap.createBitmap(
+            drawable!!.intrinsicWidth,
+            drawable.intrinsicHeight, Bitmap.Config.ARGB_8888
+        )
+        val canvas = Canvas(bitmap)
+        drawable.setBounds(0, 0, canvas.width, canvas.height)
+        drawable.draw(canvas)
+        return bitmap
+    }
+    private fun drawableToBitmap(drawable: Drawable): Bitmap? {
+        var bitmap: Bitmap? = null
+        if (drawable is BitmapDrawable) {
+            if (drawable.bitmap != null) {
+                return drawable.bitmap
+            }
+        }
+        bitmap = if (drawable.intrinsicWidth <= 0 || drawable.intrinsicHeight <= 0) {
+            Bitmap.createBitmap(
+                1,
+                1,
+                Bitmap.Config.ARGB_8888
+            ) // Single color bitmap will be created of 1x1 pixel
+        } else {
+            Bitmap.createBitmap(
+                drawable.intrinsicWidth,
+                drawable.intrinsicHeight,
+                Bitmap.Config.ARGB_8888
+            )
+        }
+        val canvas = Canvas(bitmap)
+        drawable.setBounds(0, 0, canvas.width, canvas.height)
+        drawable.draw(canvas)
+        return bitmap
+    }
     private fun alert(massage: Int) {
         val builder = AlertDialog.Builder(act)
         builder.setTitle(R.string.notification)
