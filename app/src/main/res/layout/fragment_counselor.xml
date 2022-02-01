@@ -61,23 +61,25 @@
 
                 <TextView
                     android:id="@+id/textHeaderProfile"
-                    android:layout_width="0dp"
+                    android:layout_width="255dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
+                    android:layout_marginStart="30dp"
                     android:layout_marginEnd="16dp"
                     android:text="@string/name_default"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/viewSupporter"
-                    app:layout_constraintEnd_toEndOf="@+id/bottomProfileTest"
+                    app:layout_constraintEnd_toEndOf="@+id/bottomProfileText"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@id/imageProfile" />
 
                 <TextView
-                    android:id="@+id/bottomProfileTest"
+                    android:id="@+id/bottomProfileText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="52dp"
+                    android:layout_marginTop="8dp"
                     android:text="@string/user_name"
                     android:textSize="18sp"
                     android:textStyle="italic"

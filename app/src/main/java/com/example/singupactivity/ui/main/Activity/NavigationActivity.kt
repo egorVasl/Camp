@@ -39,9 +39,6 @@ class NavigationActivity : AppCompatActivity() {
 
     var message: String? = null
 
-    private val pickImage = 1
-
-
     @RequiresApi(Build.VERSION_CODES.Q)
     @SuppressLint("InflateParams", "RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,46 +1,39 @@
 package com.example.singupactivity.ui.main.Fragment.TableFragments
 
-import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.text.TextUtils
+import android.provider.MediaStore
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.example.singupactivity.R
-import com.example.singupactivity.ui.main.Activity.NavigationActivity
 import com.example.singupactivity.ui.main.DataBase.CampDbManager
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass
 import com.example.singupactivity.ui.main.Fragment.BottomSheet.CounselorBottomSheetDialog
-import com.example.singupactivity.ui.main.Fragment.BottomSheet.DailyScheduleBottomSheetDialog
+import com.example.singupactivity.ui.main.Fragment.act
+import com.example.singupactivity.ui.main.Fragment.ctx
+import com.example.singupactivity.ui.main.Objects.NavigationActviy.ArgumentsNAlogin
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import java.io.FileNotFoundException
+import java.io.ByteArrayOutputStream
 import java.io.InputStream
 
+private const val REQUEST_IMAGE_CAPTURE_CAMERA_COUNSELOR = 1
+private const val REQUEST_IMAGE_CAPTURE_GALLERY_COUNSELOR = 2
 
 class CounselorFragment : Fragment() {
 
     lateinit var campDbManager: CampDbManager
-    private val pickImage = 1
-    lateinit var image: ImageView
-
-
-    var idAuthorization: String = ""
-    var nameCounselor: String = "Арина"
-    var surnameCounselor: String = "Викторовна"
-    var patronamycCounselor: String = "Мазуренко"
-    var birthdayCounselor: String = "05.01.2003"
-    var phoneNumberCounselor: String = "375291764532"
-    var result: String? = null
-
+    lateinit var imageProfile: ImageView
+    lateinit var bottomProfileText: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,159 +45,126 @@ class CounselorFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val view: View = inflater.inflate(R.layout.fragment_counselor, container, false)
-//        val tvNameCounselor = view.findViewById<TextView>(R.id.tvNameCounselor)
-//        val tvSurnameCounselor = view.findViewById<TextView>(R.id.tvSurnameCounselor)
-//        val tvPatronamycCounselor = view.findViewById<TextView>(R.id.tvPatronamycCounselor)
-//        val tvBirthdayCounselor = view.findViewById<TextView>(R.id.tvBirthdayCounselor)
-//        val tvPhoneNumberCounselor = view.findViewById<TextView>(R.id.tvPhoneNumberCounselor)
         val fabCounselor = view.findViewById<FloatingActionButton>(R.id.fabCounselor)
+        bottomProfileText = view.findViewById(R.id.bottomProfileText)
+        imageProfile = view.findViewById(R.id.imageProfile)
 
-         image = view.findViewById<ImageView>(R.id.imageProfile)
+        val loginList =
+            campDbManager.selectToTableAvatarLogin(CampDbNameClass.COLUMN_NAME_LOGIN_AVATAR)
+        val imgByteArray =
+            campDbManager.selectToTableAvatarImage(CampDbNameClass.COLUMN_NAME_AVATAR)
+        for ((i, elm) in loginList.withIndex()) {
+            if (loginList[i] == ArgumentsNAlogin.login) {
+                try {
+                    val bmp =
+                        BitmapFactory.decodeByteArray(imgByteArray[i], 0, imgByteArray[i].size)
+                    imageProfile.setImageBitmap(bmp)
+                } catch (exe: RuntimeException) {
+                    alert(R.string.error_uploading_image_repit_operation)
+                }
 
-        image.setOnClickListener {
-
-            val photoPickerIntent: Intent = Intent(Intent.ACTION_PICK)
-
-            photoPickerIntent.type = "image/*"
-
-            startActivityForResult(photoPickerIntent, pickImage);
-
+            }
         }
 
-
-        val activity: NavigationActivity? = activity as NavigationActivity?
-        result = activity?.getMyData()
-
-        fabCounselor.setOnClickListener {
-
-
-            CounselorBottomSheetDialog.newInstance()
-                .show(this.parentFragmentManager, "bottomDialogDS")
-
-
-//            val view1 = LayoutInflater.from(context).inflate(R.layout.add_counselor, null)
-//
-//            val alertDialogBuilderUserInput: AlertDialog.Builder =
-//                AlertDialog.Builder(requireActivity())
-//            alertDialogBuilderUserInput.setView(view1)
-//
-//            val etNameCounselor = view1.findViewById<TextView>(R.id.etNameCounselor)
-//            val etSurnameCounselor = view1.findViewById<TextView>(R.id.etSurnameCounselor)
-//            val etPatronamycCounselor = view1.findViewById<TextView>(R.id.etPatronamycCounselor)
-//            val etBirthdayCounselor = view1.findViewById<TextView>(R.id.etBirthdayCounselor)
-//            val etPhoneNumberCounselor = view1.findViewById<TextView>(R.id.etPhoneNumberCounselor)
-////
-////            etNameCounselor.text = nameCounselor
-////            etSurnameCounselor.text = surnameCounselor
-////            etPatronamycCounselor.text = patronamycCounselor
-////            etBirthdayCounselor.text = birthdayCounselor
-////            etPhoneNumberCounselor.text = phoneNumberCounselor
-//
-//            alertDialogBuilderUserInput
-//                .setCancelable(false)
-//                .setPositiveButton(if (true) "Добавить" else "",
-//                    DialogInterface.OnClickListener { dialogBox, id ->
-//
-//
-//                         nameCounselor= etNameCounselor.text.toString()
-//                         surnameCounselor = etSurnameCounselor.text.toString()
-//                         patronamycCounselor  = etPatronamycCounselor.text.toString()
-//                         birthdayCounselor = etBirthdayCounselor.text.toString()
-//                         phoneNumberCounselor =  etPhoneNumberCounselor.text.toString()
-//
-//
-//
-////                        campDbManager.insertToTableCounselor(
-////                            counselorName = etNameCounselor.text.toString(),
-////                            counselorSurname = etSurnameCounselor.text.toString(),
-////                            counselorPatronymic = etPatronamycCounselor.text.toString(),
-////                            counselorBirthday = etBirthdayCounselor.text.toString(),
-////                            counselorNumber = etPhoneNumberCounselor.text.toString(),
-////                        )
-//
-//                    })
-//                .setNegativeButton(if (true) "Закрыть" else "",
-//                    DialogInterface.OnClickListener { dialogBox, id ->
-//
-//                    })
-//
-//            tvNameCounselor.text = nameCounselor
-//            tvSurnameCounselor.text = surnameCounselor
-//            tvPatronamycCounselor.text = patronamycCounselor
-//            tvBirthdayCounselor.text = birthdayCounselor
-//            tvPhoneNumberCounselor.text = phoneNumberCounselor
-//
-//            val alertDialog: AlertDialog = alertDialogBuilderUserInput.create()
-//            with(alertDialog) {
-//                show()
-//                getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(View.OnClickListener {
-//                    when {
-//                        TextUtils.isEmpty(etNameCounselor.text.toString()) -> {
-//                            Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
-//                                .show()
-//                            return@OnClickListener
-//                        }
-//                        TextUtils.isEmpty(etSurnameCounselor.text.toString()) -> {
-//                            Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
-//                                .show()
-//                            return@OnClickListener
-//                        }
-//                        TextUtils.isEmpty(etPatronamycCounselor.text.toString()) -> {
-//                            Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
-//                                .show()
-//                            return@OnClickListener
-//                        }
-//                        TextUtils.isEmpty(etBirthdayCounselor.text.toString()) -> {
-//                            Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
-//                                .show()
-//                            return@OnClickListener
-//                        }
-//                        TextUtils.isEmpty(etPhoneNumberCounselor.text.toString()) -> {
-//                            Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
-//                                .show()
-//                            return@OnClickListener
-//                        }
-//                        else -> {
-//                            dismiss()
-//                        }
-//                    }
-//                })
-//            }
-        }
-
-//        tvNameCounselor.text = nameCounselor
-//        tvSurnameCounselor.text = surnameCounselor
-//        tvPatronamycCounselor.text = patronamycCounselor
-//        tvBirthdayCounselor.text = birthdayCounselor
-//        tvPhoneNumberCounselor.text = phoneNumberCounselor
-        return view
-
-    }
-
-    @SuppressLint("InflateParams")
-    private fun addAndEditCounselor(isUpdate: Boolean) {
-
-
-
-    }
-
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        when (requestCode) {
-            pickImage -> {
-                if (resultCode === AppCompatActivity.RESULT_OK) {
-                    try {
-                        val imageUri: Uri = data?.data!!
-                        val imageStream: InputStream? =
-                            activity?.contentResolver?.openInputStream(imageUri)
-                        val selectedImage = BitmapFactory.decodeStream(imageStream)
-                        image.setImageBitmap(selectedImage)
-                    } catch (e: FileNotFoundException) {
-                        e.printStackTrace()
+        imageProfile.setOnClickListener {
+            val popupMenu = PopupMenu(ctx, view)
+            popupMenu.menuInflater.inflate(R.menu.choice_action_profile_image, popupMenu.menu)
+            popupMenu.show()
+            popupMenu.setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.choiceFromGallery -> {
+                        choicePhotoFromGallery()
+                        true
+                    }
+                    else -> {
+                        takePhoto()
+                        true
                     }
                 }
             }
         }
+        bottomProfileText.text = ArgumentsNAlogin.login
+
+
+
+        fabCounselor.setOnClickListener {
+
+            CounselorBottomSheetDialog.newInstance()
+                .show(this.parentFragmentManager, "bottomDialogDS")
+
+        }
+        return view
+    }
+
+    private fun choicePhotoFromGallery() {
+        val intent =
+            Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI).apply {
+                type = "image/*"
+            }
+
+        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE_GALLERY_COUNSELOR);
+    }
+
+    private fun takePhoto() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE_CAMERA_COUNSELOR);
+    }
+
+    private fun uploadPhotoFromCamera(cameraExtras: Bundle?) {
+        (cameraExtras?.get("data") as? Bitmap)?.let {
+            try {
+                imageProfile.setImageBitmap(it)
+                saveImageBitmapAvatar(it)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(ctx, R.string.error_uploading_image, Toast.LENGTH_SHORT).show()
+            }
+        } ?: Toast.makeText(ctx, R.string.error_uploading_image, Toast.LENGTH_SHORT).show()
+
+    }
+
+    private fun uploadPhotoFromGallery(uri: Uri?) {
+        try {
+            val imageUri: Uri = uri!!
+            val imageStream: InputStream? =
+                act.contentResolver.openInputStream(imageUri)
+            val selectedImage = BitmapFactory.decodeStream(imageStream)
+            imageProfile.setImageBitmap(selectedImage)
+            saveImageBitmapAvatar(selectedImage)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(ctx, R.string.error_uploading_image, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            REQUEST_IMAGE_CAPTURE_CAMERA_COUNSELOR -> uploadPhotoFromCamera(data?.extras)
+            REQUEST_IMAGE_CAPTURE_GALLERY_COUNSELOR -> uploadPhotoFromGallery(data?.data)
+
+        }
+    }
+
+    private fun saveImageBitmapAvatar(img: Bitmap) {
+        val stream = ByteArrayOutputStream()
+        img.compress(Bitmap.CompressFormat.PNG, 0, stream)
+        val byteArray = stream.toByteArray()
+        campDbManager.updateRawToTableAvatar(byteArray, ArgumentsNAlogin.login)
+    }
+
+
+    private fun alert(massage: Int) {
+        val builder = AlertDialog.Builder(ctx)
+        builder.setTitle(R.string.notification)
+            .setMessage(massage)
+            .setCancelable(false)
+            .setPositiveButton(R.string.contin) { dialog, _ ->
+                dialog.dismiss()
+
+            }
+
+        val alert = builder.create()
+        alert.show()
     }
 }
