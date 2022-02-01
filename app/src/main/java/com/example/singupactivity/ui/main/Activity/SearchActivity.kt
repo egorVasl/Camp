@@ -41,7 +41,7 @@ class SearchActivity : AppCompatActivity() {
 
 
     }
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.search_parameters_menu, menu)
         return super.onCreateOptionsMenu(menu)
     }

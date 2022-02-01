@@ -85,6 +85,10 @@
     <string name="exit_activity_title">Экран выхода</string>
     <string name="exit_layout">Для отмены или подтверждения нажмите кнопку \"Назад\" </string>
     <string name="enter_data">Ввести данные</string>
+    <string name="error_empty_field">Поле пустое!</string>
+    <string name="add_counselor_correct">Данные пользователя успешно добавлены</string>
+
+
 
 
 
