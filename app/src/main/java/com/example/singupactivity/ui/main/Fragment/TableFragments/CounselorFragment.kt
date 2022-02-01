@@ -15,7 +15,11 @@ import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.singupactivity.R
+import com.example.singupactivity.ui.main.Adapter.CounselorAdapter
 import com.example.singupactivity.ui.main.DataBase.CampDbManager
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass
 import com.example.singupactivity.ui.main.Fragment.BottomSheet.CounselorBottomSheetDialog
@@ -31,6 +35,10 @@ private const val REQUEST_IMAGE_CAPTURE_GALLERY_COUNSELOR = 2
 
 class CounselorFragment : Fragment() {
 
+    lateinit var adapter: CounselorAdapter
+    lateinit var rv: RecyclerView
+
+
     lateinit var campDbManager: CampDbManager
     lateinit var imageProfile: ImageView
     lateinit var bottomProfileText: TextView
@@ -40,15 +48,9 @@ class CounselorFragment : Fragment() {
         campDbManager = activity?.let { CampDbManager(it) }!!
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val view: View = inflater.inflate(R.layout.fragment_counselor, container, false)
-        val fabCounselor = view.findViewById<FloatingActionButton>(R.id.fabCounselor)
-        bottomProfileText = view.findViewById(R.id.bottomProfileText)
-        imageProfile = view.findViewById(R.id.imageProfile)
 
+    override fun onStart() {
+        super.onStart()
         val loginList =
             campDbManager.selectToTableAvatarLogin(CampDbNameClass.COLUMN_NAME_LOGIN_AVATAR)
         val imgByteArray =
@@ -65,6 +67,22 @@ class CounselorFragment : Fragment() {
 
             }
         }
+        bottomProfileText.text = ArgumentsNAlogin.login
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        val view: View = inflater.inflate(R.layout.fragment_counselor, container, false)
+        val fabCounselor = view.findViewById<FloatingActionButton>(R.id.fabCounselor)
+
+        rv = view.findViewById(R.id.rcCounselor)
+        rv.layoutManager = LinearLayoutManager(act)
+        rv.itemAnimator = DefaultItemAnimator()
+
+        bottomProfileText = view.findViewById(R.id.bottomProfileText)
+        imageProfile = view.findViewById(R.id.imageProfile)
 
         imageProfile.setOnClickListener {
             val popupMenu = PopupMenu(ctx, view)
@@ -83,7 +101,6 @@ class CounselorFragment : Fragment() {
                 }
             }
         }
-        bottomProfileText.text = ArgumentsNAlogin.login
 
 
 
@@ -93,6 +110,8 @@ class CounselorFragment : Fragment() {
                 .show(this.parentFragmentManager, "bottomDialogDS")
 
         }
+
+        rv.adapter = adapter
         return view
     }
 

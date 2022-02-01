@@ -20,6 +20,7 @@ import com.example.singupactivity.ui.main.Adapter.ChildListAdapter
 import com.example.singupactivity.ui.main.Data.ChildListDataClass
 import com.example.singupactivity.ui.main.DataBase.CampDbManager
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass
+import com.example.singupactivity.ui.main.Fragment.ctx
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
@@ -83,7 +84,7 @@ ChildListFragment : Fragment() {
         childListDataClass: ChildListDataClass?,
         position: Int
     ) {
-        val view = LayoutInflater.from(context).inflate(R.layout.add_edit_child, null)
+        val view = LayoutInflater.from(ctx).inflate(R.layout.add_edit_child, null)
 
 
         val alertDialogBuilderUserInput: AlertDialog.Builder =

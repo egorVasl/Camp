@@ -21,6 +21,7 @@ import com.example.singupactivity.ui.main.Data.DailyScheduleDataClass
 import com.example.singupactivity.ui.main.DataBase.CampDbManager
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass
 import com.example.singupactivity.ui.main.Fragment.act
+import com.example.singupactivity.ui.main.Fragment.ctx
 import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentDSdataClass
 import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentsDS
 import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentsDSFlag
@@ -123,7 +124,7 @@ class SearchFragment : Fragment() {
         dailyScheduleDataClass: DailyScheduleDataClass?,
         position: Int
     ) {
-        val view = LayoutInflater.from(context).inflate(R.layout.add_daily_schedule, null)
+        val view = LayoutInflater.from(ctx).inflate(R.layout.add_daily_schedule, null)
 
 
         val alertDialogBuilderUserInput: AlertDialog.Builder =

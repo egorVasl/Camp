@@ -39,6 +39,27 @@ class NavigationActivity : AppCompatActivity() {
 
     var message: String? = null
 
+    override fun onStart() {
+        super.onStart()
+
+        bottomProfileText.text = ArgumentsNAlogin.login
+
+        val loginList = campDbManager.selectToTableAvatarLogin(COLUMN_NAME_LOGIN_AVATAR)
+        val imgByteArray = campDbManager.selectToTableAvatarImage(COLUMN_NAME_AVATAR)
+        for ((i, elm) in loginList.withIndex()) {
+            if (loginList[i] == ArgumentsNAlogin.login){
+                try {
+                    val bmp = BitmapFactory.decodeByteArray(imgByteArray[i], 0, imgByteArray[i].size)
+                    imageProfile.setImageBitmap(bmp)
+                } catch (exe: RuntimeException){
+                    alert(R.string.error_uploading_image_repit_operation)
+                }
+
+            }
+        }
+
+    }
+
     @RequiresApi(Build.VERSION_CODES.Q)
     @SuppressLint("InflateParams", "RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,20 +91,6 @@ class NavigationActivity : AppCompatActivity() {
         bottomProfileText = headerLayout.findViewById(R.id.bottomProfileTest)
         imageProfile = headerLayout.findViewById<ImageView>(R.id.imageHeaderProfile)
 
-        val loginList = campDbManager.selectToTableAvatarLogin(COLUMN_NAME_LOGIN_AVATAR)
-        val imgByteArray = campDbManager.selectToTableAvatarImage(COLUMN_NAME_AVATAR)
-        for ((i, elm) in loginList.withIndex()) {
-           if (loginList[i] == ArgumentsNAlogin.login){
-               try {
-                   val bmp = BitmapFactory.decodeByteArray(imgByteArray[i], 0, imgByteArray[i].size)
-                   imageProfile.setImageBitmap(bmp)
-               } catch (exe: RuntimeException){
-                   alert(R.string.error_uploading_image_repit_operation)
-               }
-
-           }
-        }
-
         imageProfile.setOnClickListener { view ->
             val popupMenu = PopupMenu(this, view)
             val inflater = popupMenu.menuInflater
@@ -102,8 +109,6 @@ class NavigationActivity : AppCompatActivity() {
                 }
             }
         }
-        bottomProfileText.text = ArgumentsNAlogin.login
-
     }
 
     private fun choicePhotoFromGallery() {

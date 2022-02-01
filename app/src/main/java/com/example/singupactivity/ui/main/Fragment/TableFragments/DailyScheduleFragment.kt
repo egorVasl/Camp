@@ -41,7 +41,6 @@ class DailyScheduleFragment : Fragment() {
     lateinit var campDbManager: CampDbManager
 
     lateinit var rv: RecyclerView
-    lateinit var cardSearch: ConstraintLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,7 +77,7 @@ class DailyScheduleFragment : Fragment() {
         rv = view.findViewById(R.id.rcDailySchedule)
         val fabDailySchedule = view.findViewById<FloatingActionButton>(R.id.fabDailySchedule)
 
-        rv.layoutManager = LinearLayoutManager(activity)
+        rv.layoutManager = LinearLayoutManager(act)
         rv.itemAnimator = DefaultItemAnimator()
 
         fabDailySchedule.setOnClickListener {

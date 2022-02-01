@@ -62,7 +62,7 @@ class AchievementsFragment : Fragment() {
         achievementsDataClass: AchievementsDataClass?,
         position: Int
     ) {
-        val view = LayoutInflater.from(context).inflate(R.layout.add_edit_achievements, null)
+        val view = LayoutInflater.from(ctx).inflate(R.layout.add_edit_achievements, null)
 
 
         val alertDialogBuilderUserInput: AlertDialog.Builder =

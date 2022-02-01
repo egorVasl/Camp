@@ -82,13 +82,13 @@ class LoginFragment : Fragment() {
                     ArgumentsNAlogin.login = etLogin.text.toString()
 
                     val intent = Intent(
-                        activity?.baseContext,
+                        act,
                         ConteinerActivityExit::class.java
                     )
                     startActivity(intent)
 
                     Toast.makeText(
-                        activity,
+                        act,
                         R.string.successful_authorization,
                         Toast.LENGTH_SHORT
                     ).show()
