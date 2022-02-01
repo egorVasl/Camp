@@ -6,11 +6,8 @@ import android.os.Bundle
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
-import androidx.core.os.bundleOf
-import androidx.fragment.app.setFragmentResult
 import com.example.singupactivity.R
 import com.example.singupactivity.databinding.CounselorBottomHeetDialogBinding
-import com.example.singupactivity.ui.main.Activity.SearchActivity
 import com.example.singupactivity.ui.main.Fragment.act
 import com.example.singupactivity.ui.main.Fragment.ctx
 import com.example.singupactivity.ui.main.Objects.Counselor.ArgumentsCounselorItem
