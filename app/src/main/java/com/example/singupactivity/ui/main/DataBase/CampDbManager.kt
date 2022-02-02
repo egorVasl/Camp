@@ -19,13 +19,12 @@ import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_D
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_DATE_EVENT
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_EVENT_NAME
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_FLOOR
-import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_ID_AUTHORIZATION_COUNSELOR
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_ID_EVENT_ACHIEVEMENTS
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_ID_SQUAD_ACHIEVEMENTS
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_ID_SQUAD_CHILD
-import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_ID_SQUAD_COUNSELOR
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_LOGIN
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_LOGIN_AVATAR
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_LOGIN_COUNSELOR
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_NAME_EVENT
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_PARENTS_NUMBER
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_PASSWORD
@@ -214,7 +213,7 @@ class CampDbManager(context: Context) {
     fun insertToTableCounselor(
         counselorName: String, counselorSurname: String,
         counselorPatronymic: String, counselorBirthday: String,
-        counselorNumber: String
+        counselorNumber: String, loginCounselor: String
     ) {
         openDb()
         val cv = ContentValues().apply {
@@ -223,8 +222,7 @@ class CampDbManager(context: Context) {
             put(COLUMN_NAME_COUNSELOR_PATRONYMIC, counselorPatronymic)
             put(COLUMN_NAME_COUNSELOR_BIRTHDAY, counselorBirthday)
             put(COLUMN_NAME_COUNSELOR_NUMBER, counselorNumber)
-            put(COLUMN_NAME_ID_SQUAD_COUNSELOR, "null")
-            put(COLUMN_NAME_ID_AUTHORIZATION_COUNSELOR, "null")
+            put(COLUMN_NAME_LOGIN_COUNSELOR, loginCounselor)
 
         }
         val rowID = db.insert(TABLE_NAME_COUNSELOR, null, cv)
@@ -232,17 +230,12 @@ class CampDbManager(context: Context) {
     }
 
     @SuppressLint("Range")
-    fun selectToTableCounselor(const: String, title: String): ArrayList<String> {
-        openDb()
+    fun selectToTableCounselor(const: String): ArrayList<String> {
         val dataList = ArrayList<String>()
-
-        val sqlQuery = ("select c.counselor_name , c.counselor_surname, "
-                + "c.counselor_patronymic, c.counselor_birthday, c.counselor_number, c.id_authorization "
-                + "from counselor as c "
-                + "inner join authorization as a "
-                + "on c.id_authorization = a.id_authorization "
-                + "where login = ?")
-        val cursor = db.rawQuery(sqlQuery, arrayOf(title));
+        val cursor = db.query(
+            TABLE_NAME_COUNSELOR, null, null,
+            null, null, null, null
+        )
 
         while (cursor?.moveToNext()!!) {
             val dataText = cursor.getString(cursor.getColumnIndex(const))
@@ -255,7 +248,7 @@ class CampDbManager(context: Context) {
     fun updateRawToTableCounselor(
         counselorName: String, counselorSurname: String,
         counselorPatronymic: String, counselorBirthday: String,
-        counselorNumber: String, id: String
+        counselorNumber: String, loginCounselor: String
     ) {
         openDb()
         val cv = ContentValues().apply {
@@ -264,13 +257,19 @@ class CampDbManager(context: Context) {
             put(COLUMN_NAME_COUNSELOR_PATRONYMIC, counselorPatronymic)
             put(COLUMN_NAME_COUNSELOR_BIRTHDAY, counselorBirthday)
             put(COLUMN_NAME_COUNSELOR_NUMBER, counselorNumber)
-            put(COLUMN_NAME_ID_SQUAD_COUNSELOR, "null")
         }
 
         val updCount = db.update(
-            TABLE_NAME_COUNSELOR, cv, "id_authorization = ?",
-            arrayOf(id)
+            TABLE_NAME_COUNSELOR, cv, "login_counselor = ?",
+            arrayOf(loginCounselor)
         )
+        closeDb()
+
+    }
+
+    fun deleteRawToTableCounselor(const: String) {
+        openDb()
+        val delCount = db.delete(TABLE_NAME_COUNSELOR, "login_counselor = '$const'", null)
         closeDb()
     }
 

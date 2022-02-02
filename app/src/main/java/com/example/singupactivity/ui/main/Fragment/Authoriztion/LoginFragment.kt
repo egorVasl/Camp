@@ -14,13 +14,24 @@ import com.example.singupactivity.R
 import com.example.singupactivity.ui.main.Activity.ConteinerActivityExit
 import com.example.singupactivity.ui.main.DataBase.CampDbManager
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_LOGIN
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_PASSWORD
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_SQUAD
 import com.example.singupactivity.ui.main.Fragment.act
 import com.example.singupactivity.ui.main.Objects.NavigationActviy.ArgumentsNAlogin
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import java.util.concurrent.Callable
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 
 class LoginFragment : Fragment() {
 
 
+    private val loginService: ExecutorService = Executors.newFixedThreadPool(1)
 
 
     private lateinit var campDbManager: CampDbManager
@@ -30,6 +41,11 @@ class LoginFragment : Fragment() {
         campDbManager = activity?.let { CampDbManager(it) }!!
 
     }
+
+    private fun getData(const: String): ArrayList<String> {
+        return campDbManager.selectToTableAuthorization(const)
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,23 +71,40 @@ class LoginFragment : Fragment() {
                 alert(R.string.no_data_massage)
 
             } else {
+
                 val loginList =
-                    campDbManager.selectToTableAuthorization(CampDbNameClass.COLUMN_NAME_LOGIN)
-                for ((i, item) in loginList.withIndex()) {
+                    runBlocking {
+                        async {
+                            getData(COLUMN_NAME_LOGIN)
+                        }.await()
+                    }
+
+                for ((i, _) in loginList.withIndex()) {
                     if (loginList[i] == etLogin.text.toString()) {
                         loginIsTrue = true
                     }
                 }
                 val passwordList =
-                    campDbManager.selectToTableAuthorization(CampDbNameClass.COLUMN_NAME_PASSWORD)
-                for ((i, item) in passwordList.withIndex()) {
-                    if (passwordList[i] == etPassword.text.toString()) {
+                    runBlocking {
+                        async {
+                            getData(COLUMN_NAME_PASSWORD)
+
+                        }.await()
+                }
+                for ((i, _) in passwordList.withIndex()) {
+                    if (passwordList[i] == etPassword.text.toString()
+
+                    ) {
                         passwordIsTrue = true
                     }
                 }
-                val squadList =
-                    campDbManager.selectToTableAuthorization(CampDbNameClass.COLUMN_NAME_SQUAD)
-                for ((i, item) in squadList.withIndex()) {
+                val squadList = runBlocking {
+                    async {
+                        getData(COLUMN_NAME_SQUAD)
+
+                    }.await()
+                }
+                for ((i, _) in squadList.withIndex()) {
                     if (squadList[i] == etSquad.text.toString()) {
                         squadIsTrue = true
                     }

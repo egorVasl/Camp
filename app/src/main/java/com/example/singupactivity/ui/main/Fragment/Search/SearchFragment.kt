@@ -20,11 +20,19 @@ import com.example.singupactivity.ui.main.Adapter.SearchDSAdapter
 import com.example.singupactivity.ui.main.Data.DailyScheduleDataClass
 import com.example.singupactivity.ui.main.DataBase.CampDbManager
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_DATE_EVENT
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_NAME_EVENT
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_TIME_EVENT
 import com.example.singupactivity.ui.main.Fragment.act
 import com.example.singupactivity.ui.main.Fragment.ctx
 import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentDSdataClass
 import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentsDS
 import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentsDSFlag
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
+import java.util.concurrent.Callable
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 
 class SearchFragment : Fragment() {
@@ -34,6 +42,8 @@ class SearchFragment : Fragment() {
 
     lateinit var rv: RecyclerView
     lateinit var etCardSearch: EditText
+
+
 
     companion object {
         @JvmStatic
@@ -45,6 +55,14 @@ class SearchFragment : Fragment() {
         super.onCreate(savedInstanceState)
         campDbManager = activity?.let { CampDbManager(it) }!!
 
+    }
+
+    private fun getData(const: String, searchText: String): ArrayList<String> {
+        return  campDbManager.selectToTableDailySchedule(
+            const,
+            searchText,
+            ArgumentsDS.arg
+        )
     }
 
     override fun onCreateView(
@@ -64,28 +82,34 @@ class SearchFragment : Fragment() {
             if (ArgumentsDS.arg.isNotBlank()) {
                 val searchText = etCardSearch.text.toString()
                 if (searchText.isNotEmpty()) {
-                    campDbManager = activity?.let { CampDbManager(it) }!!
                     adapter.searchList.clear()
-                    val eventTimeList = campDbManager.selectToTableDailySchedule(
-                        CampDbNameClass.COLUMN_NAME_TIME_EVENT,
-                        searchText,
-                        ArgumentsDS.arg
-                    )
-                    val eventNameList = campDbManager.selectToTableDailySchedule(
-                        CampDbNameClass.COLUMN_NAME_NAME_EVENT,
-                        searchText,
-                        ArgumentsDS.arg
-                    )
-                    val eventDateList = campDbManager.selectToTableDailySchedule(
-                        CampDbNameClass.COLUMN_NAME_DATE_EVENT,
-                        searchText,
-                        ArgumentsDS.arg
-                    )
-                    for ((i, elm) in eventTimeList.withIndex()) {
+                    val eventTimeList =
+                        runBlocking {
+                            async {
+                                getData(COLUMN_NAME_TIME_EVENT, searchText)
+                            }.await()
+                        }
+
+                    val eventNameList =
+                        runBlocking {
+                            async {
+                                getData(COLUMN_NAME_NAME_EVENT, searchText)
+                            }.await()
+                        }
+
+                    val eventDateList =
+                        runBlocking {
+                            async {
+                                getData(COLUMN_NAME_DATE_EVENT, searchText)
+                            }.await()
+                        }
+
+                    for ((i, _) in eventTimeList.withIndex()) {
                         adapter.addDailySchedule(
                             DailyScheduleDataClass(
                                 eventTimeList[i],
-                                eventNameList[i], eventDateList[i]
+                                eventNameList[i],
+                                eventDateList[i]
                             )
                         )
 
@@ -207,21 +231,18 @@ class SearchFragment : Fragment() {
                     )
                 }
 
-            } else {
-                createDailySchedule(
-                    nameEventCreate = etName.text.toString(),
-                    dateEventCreate = etData.text.toString(),
-                    timeEventCreate = etTime.text.toString()
-                )
             }
         })
     }
 
     @SuppressLint("NotifyDataSetChanged")
     private fun deleteDailySchedule(const: String, position: Int) {
+        runBlocking {
+            async {
+                campDbManager.deleteRawToTableDailySchedule(const)
 
-        campDbManager.deleteRawToTableDailySchedule(const)
-
+            }.await()
+        }
         adapter.removeDailySchedule(position)
 
 
@@ -234,12 +255,18 @@ class SearchFragment : Fragment() {
         nameEventUpdatePosition: String,
         position: Int
     ) {
-        campDbManager.updateRawToTableDailySchedule(
-            nameEvent = nameEventUpdate,
-            dateEvent = dateEventUpdate,
-            timeEvent = timeEventUpdate,
-            nameEventUpdatePosition = nameEventUpdatePosition
-        )
+
+        runBlocking {
+            async {
+                campDbManager.updateRawToTableDailySchedule(
+                nameEvent = nameEventUpdate,
+                dateEvent = dateEventUpdate,
+                timeEvent = timeEventUpdate,
+                nameEventUpdatePosition = nameEventUpdatePosition
+            )
+            }.await()
+        }
+
 
         val dailyScheduleDataClassUpdate = DailyScheduleDataClass(
             timeEvent = timeEventUpdate,
@@ -248,26 +275,6 @@ class SearchFragment : Fragment() {
         )
 
         adapter.updateDailySchedule(position, dailyScheduleDataClassUpdate)
-
-    }
-
-    private fun createDailySchedule(
-        timeEventCreate: String, nameEventCreate: String,
-        dateEventCreate: String
-    ) {
-        campDbManager.insertToTableDailySchedule(
-            nameEvent = nameEventCreate,
-            dateEvent = dateEventCreate,
-            timeEvent = timeEventCreate
-        )
-
-        val dailyScheduleDataClassCreate = DailyScheduleDataClass(
-            timeEvent = timeEventCreate,
-            nameEvent = nameEventCreate,
-            dateEvent = dateEventCreate
-        )
-
-        adapter.addDailySchedule(dailyScheduleDataClassCreate)
 
     }
 

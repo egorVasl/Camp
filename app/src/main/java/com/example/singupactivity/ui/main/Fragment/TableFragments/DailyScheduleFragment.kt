@@ -22,18 +22,22 @@ import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_D
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_NAME_EVENT
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_TIME_EVENT
 import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.singupactivity.ui.main.Fragment.*
-import com.example.singupactivity.ui.main.Fragment.BottomSheet.CounselorBottomSheetDialog
 import com.example.singupactivity.ui.main.Fragment.BottomSheet.DailyScheduleBottomSheetDialog
 import com.example.singupactivity.ui.main.Fragment.BottomSheet.RATES_BOTTOM_REQUEST_KEY
 import com.example.singupactivity.ui.main.Fragment.BottomSheet.RATES_BOTTOM_REQUEST_KEY_IMPORT_PDF
 import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentDSdataClass
+import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentsDS
 import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentsDSFlag
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.util.*
+import java.util.concurrent.Callable
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 
 class DailyScheduleFragment : Fragment() {
@@ -53,11 +57,28 @@ class DailyScheduleFragment : Fragment() {
         }
 
         campDbManager = activity?.let { CampDbManager(it) }!!
+
         adapter = DailyScheduleAdapter(this@DailyScheduleFragment)
-        val eventTimeList = campDbManager.selectToTableDailySchedule(COLUMN_NAME_TIME_EVENT)
-        val eventNameList = campDbManager.selectToTableDailySchedule(COLUMN_NAME_NAME_EVENT)
-        val eventDateList = campDbManager.selectToTableDailySchedule(COLUMN_NAME_DATE_EVENT)
-        for ((i, elm) in eventTimeList.withIndex()) {
+        val eventTimeList =
+            runBlocking {
+                async {
+                    getData(COLUMN_NAME_TIME_EVENT)
+                }.await()
+            }
+        val eventNameList =
+            runBlocking {
+                async {
+                    getData(COLUMN_NAME_NAME_EVENT)
+                }.await()
+            }
+
+        val eventDateList = runBlocking {
+            async {
+                getData(COLUMN_NAME_DATE_EVENT)
+            }.await()
+        }
+
+        for ((i, _) in eventTimeList.withIndex()) {
             adapter.addDailySchedule(
                 DailyScheduleDataClass(
                     eventTimeList[i],
@@ -104,98 +125,22 @@ class DailyScheduleFragment : Fragment() {
             nameEvent = ArgumentDSdataClass.nameEventUpdate,
             dateEvent = ArgumentDSdataClass.dateEventUpdate
         )
-        if(ArgumentsDSFlag.isUpdate){
+        if (ArgumentsDSFlag.isUpdate) {
             adapter.let {
-                for ((i, elm) in it.dailyScheduleList.withIndex()) {
+                for ((i, _) in it.dailyScheduleList.withIndex()) {
                     if (it.dailyScheduleList[i] == response)
                         it.updateDailySchedule(i, responseUpdate)
                 }
             }
         } else {
             adapter.let {
-                for ((i, elm) in it.dailyScheduleList.withIndex()) {
+                for ((i, _) in it.dailyScheduleList.withIndex()) {
                     if (it.dailyScheduleList[i] == response)
                         it.removeDailySchedule(i)
                 }
             }
         }
     }
-
-//    private fun searchSchedule(selectionArg: String) {
-//            if (adapter.dailyScheduleList.size > 0) {
-//                cardSearch = requireView().findViewById(R.id.cardSearch)
-//                if (!isChecked) {
-//                    cardSearch.isVisible = false
-//                    val layoutParams = rv.layoutParams as ConstraintLayout.LayoutParams
-//                    layoutParams.topMargin = context?.let { 0.toDp(it) }!!
-//                    rv.layoutParams = layoutParams
-//                } else {
-//                    cardSearch.isVisible = true
-//                    val layoutParams = rv.layoutParams as ConstraintLayout.LayoutParams
-//                    layoutParams.topMargin = context?.let { 70.toDp(it) }!!
-//                    rv.layoutParams = layoutParams
-//
-////                    selectionArgs()
-//                }
-//            } else {
-//                if (isChecked){ alert(R.string.empty_list_text)
-//                    setFragmentResult(IS_CHECKED_TRUE_REQUEST_KEY, bundleOf(IS_CHECKED_TRUE_BUNDLE_KEY to false))
-//               }
-//            }
-//
-//    }
-
-//    private fun Int.toDp(context: Context): Int = TypedValue.applyDimension(
-//        TypedValue.COMPLEX_UNIT_DIP, this.toFloat(), context.resources.displayMetrics
-//    ).toInt()
-
-
-//    private fun selectionArgs() {
-//
-//        val view = LayoutInflater.from(context).inflate(R.layout.selection_arguments_layout, null)
-//
-//        val alertDialogBuilderUserInput: AlertDialog.Builder =
-//            AlertDialog.Builder(requireActivity())
-//        alertDialogBuilderUserInput.setView(view)
-//
-//        val checkNameEvent = view.findViewById<CheckBox>(R.id.checkNameEvent)
-//        val checkTimeEvent = view.findViewById<CheckBox>(R.id.checkTimeEvent)
-//        val checkDateEvent = view.findViewById<CheckBox>(R.id.checkDateEvent)
-//
-//        alertDialogBuilderUserInput
-//            .setCancelable(false)
-//            .setNegativeButton(R.string.cancellation){dialogBox,_->
-//                cardSearch.isVisible = false
-//                val layoutParams = rv.layoutParams as ConstraintLayout.LayoutParams
-//                layoutParams.topMargin = context?.let { 0.toDp(it) }!!
-//                rv.layoutParams = layoutParams
-//                setFragmentResult(IS_CHECKED_TRUE_REQUEST_KEY, bundleOf(IS_CHECKED_TRUE_BUNDLE_KEY to false))
-//                dialogBox.cancel()
-//            }
-//            .setPositiveButton(R.string.contin) { _, _ -> }
-//        val alertDialog: AlertDialog = alertDialogBuilderUserInput.create()
-//        alertDialog.show()
-//
-//        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(View.OnClickListener {
-//            ArgumentsDS.arg = when  {
-//                checkNameEvent.isChecked -> COLUMN_NAME_NAME_EVENT
-//                checkTimeEvent.isChecked -> COLUMN_NAME_TIME_EVENT
-//                checkDateEvent.isChecked -> COLUMN_NAME_DATE_EVENT
-//                else ->""
-//            }
-//             if(!checkNameEvent.isChecked && !checkTimeEvent.isChecked && !checkDateEvent.isChecked){
-//                    Toast.makeText(requireActivity(), R.string.select_type_search, Toast.LENGTH_SHORT)
-//                        .show()
-//                    return@OnClickListener
-//                }
-//                else {
-//                 searchSchedule()
-//                    alertDialog.dismiss()
-//                }
-//        })
-//    }
-
-
 
     @SuppressLint("SimpleDateFormat")
     private fun importTextFile() {
@@ -210,8 +155,8 @@ class DailyScheduleFragment : Fragment() {
         try {
             FileOutputStream(file).use { stream ->
                 adapter.let {
-                    for ((i, elm) in it.dailyScheduleList.withIndex()) {
-                        stream.write("День:${i+1}\n".toByteArray())
+                    for ((i, _) in it.dailyScheduleList.withIndex()) {
+                        stream.write("День:${i + 1}\n".toByteArray())
                         stream.write("Дата: ${it.dailyScheduleList[i].dateEvent}\n".toByteArray())
                         stream.write("Название мероприятия: ${it.dailyScheduleList[i].nameEvent}\n".toByteArray())
                         stream.write("Время: ${it.dailyScheduleList[i].timeEvent}\n\n".toByteArray())
@@ -219,9 +164,12 @@ class DailyScheduleFragment : Fragment() {
                     }
                 }
                 stream.close()
-                alert("Файл успешно создан!", "Путь: $path/Daily schedule/Daily schedule $currentDate.txt")
+                alert(
+                    "Файл успешно создан!",
+                    "Путь: $path/Daily schedule/Daily schedule $currentDate.txt"
+                )
             }
-        }catch (exe: IOException){
+        } catch (exe: IOException) {
             Toast.makeText(ctx, "Ошибка создания файла: $exe", Toast.LENGTH_SHORT).show()
         }
     }
@@ -254,7 +202,8 @@ class DailyScheduleFragment : Fragment() {
         }
         alertDialogBuilderUserInput
             .setCancelable(false)
-            .setPositiveButton(if (isUpdate) "Обновить" else "Сохранить"
+            .setPositiveButton(
+                if (isUpdate) "Обновить" else "Сохранить"
             ) { _, _ -> }
             .setNegativeButton(if (isUpdate) "Удалить" else "Закрыть",
                 DialogInterface.OnClickListener { dialogBox, id ->
@@ -315,7 +264,12 @@ class DailyScheduleFragment : Fragment() {
     @SuppressLint("NotifyDataSetChanged")
     private fun deleteDailySchedule(const: String, position: Int) {
 
-        campDbManager.deleteRawToTableDailySchedule(const)
+        runBlocking {
+            async {
+                campDbManager.deleteRawToTableDailySchedule(const)
+            }.await()
+        }
+
 
         adapter.removeDailySchedule(position)
 
@@ -328,12 +282,18 @@ class DailyScheduleFragment : Fragment() {
         nameEventUpdatePosition: String,
         position: Int
     ) {
-        campDbManager.updateRawToTableDailySchedule(
-            nameEvent = nameEventUpdate,
-            dateEvent = dateEventUpdate,
-            timeEvent = timeEventUpdate,
-            nameEventUpdatePosition = nameEventUpdatePosition
-        )
+
+        runBlocking {
+            async {
+                campDbManager.updateRawToTableDailySchedule(
+                    nameEvent = nameEventUpdate,
+                    dateEvent = dateEventUpdate,
+                    timeEvent = timeEventUpdate,
+                    nameEventUpdatePosition = nameEventUpdatePosition
+                )
+            }.await()
+        }
+
 
         val dailyScheduleDataClassUpdate = DailyScheduleDataClass(
             timeEvent = timeEventUpdate,
@@ -349,11 +309,16 @@ class DailyScheduleFragment : Fragment() {
         timeEventCreate: String, nameEventCreate: String,
         dateEventCreate: String
     ) {
-        campDbManager.insertToTableDailySchedule(
-            nameEvent = nameEventCreate,
-            dateEvent = dateEventCreate,
-            timeEvent = timeEventCreate
-        )
+        runBlocking {
+            async {
+                campDbManager.insertToTableDailySchedule(
+                    nameEvent = nameEventCreate,
+                    dateEvent = dateEventCreate,
+                    timeEvent = timeEventCreate
+                )
+            }.await()
+        }
+
 
         val dailyScheduleDataClassCreate = DailyScheduleDataClass(
             timeEvent = timeEventCreate,
@@ -379,4 +344,9 @@ class DailyScheduleFragment : Fragment() {
         alert.show()
     }
 
+    private fun getData(const: String): ArrayList<String> {
+        return campDbManager.selectToTableDailySchedule(
+            const
+        )
+    }
 }

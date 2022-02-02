@@ -8,9 +8,13 @@ import android.view.Window
 import android.view.WindowManager
 import com.example.singupactivity.R
 import com.example.singupactivity.databinding.CounselorBottomHeetDialogBinding
+import com.example.singupactivity.ui.main.DataBase.CampDbManager
 import com.example.singupactivity.ui.main.Fragment.act
 import com.example.singupactivity.ui.main.Fragment.ctx
 import com.example.singupactivity.ui.main.Objects.Counselor.ArgumentsCounselorItem
+import com.example.singupactivity.ui.main.Objects.NavigationActviy.ArgumentsNAlogin
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 
 class CounselorBottomSheetDialog :
     BaseBottomSheetDialog<CounselorBottomHeetDialogBinding>(
@@ -20,6 +24,12 @@ class CounselorBottomSheetDialog :
         fun newInstance(): CounselorBottomSheetDialog {
             return CounselorBottomSheetDialog()
         }
+    }
+    lateinit var campDbManager: CampDbManager
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        campDbManager = CampDbManager(act)
     }
 
     override fun onStart() {
@@ -87,7 +97,22 @@ class CounselorBottomSheetDialog :
                 ArgumentsCounselorItem.patronymicCounselor.isNotBlank() &&
                 ArgumentsCounselorItem.birthdayCounselor.isNotBlank() &&
                 ArgumentsCounselorItem.numberPhoneCounselor.isNotBlank()
+
             ) {
+
+                runBlocking {
+                    async {
+                        campDbManager.updateRawToTableCounselor(
+                            ArgumentsCounselorItem.nameCounselor,
+                            ArgumentsCounselorItem.surnameCounselor,
+                            ArgumentsCounselorItem.patronymicCounselor,
+                            ArgumentsCounselorItem.birthdayCounselor,
+                            ArgumentsCounselorItem.numberPhoneCounselor,
+                            ArgumentsNAlogin.login
+                        )
+                    }.await()
+                }
+
                 alert(getString(R.string.notification), getString(R.string.add_counselor_correct))
                 dismiss()
             }

@@ -58,7 +58,7 @@
                     app:layout_constraintTop_toTopOf="@id/imageProfile" />
 
                 <TextView
-                    android:id="@+id/textHeaderProfile"
+                    android:id="@+id/headerProfileTextCounselor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
@@ -68,12 +68,12 @@
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/viewSupporter"
-                    app:layout_constraintEnd_toEndOf="@+id/bottomProfileText"
+                    app:layout_constraintEnd_toEndOf="@+id/bottomProfileTextCounselor"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@id/imageProfile" />
 
                 <TextView
-                    android:id="@+id/bottomProfileText"
+                    android:id="@+id/bottomProfileTextCounselor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="30dp"

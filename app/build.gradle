@@ -45,6 +45,7 @@ apply plugin: 'kotlin-kapt'
 
 
 dependencies {
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:0.19.3'
 
 
     implementation "com.github.moxy-community:moxy:2.2.2"

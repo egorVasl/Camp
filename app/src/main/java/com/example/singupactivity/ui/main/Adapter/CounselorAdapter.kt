@@ -83,7 +83,7 @@ class CounselorAdapter() :
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun addDailyCounselor(counselorDataClass: CounselorDataClass) {
+    fun addCounselor(counselorDataClass: CounselorDataClass) {
 
         counselorList.add(counselorDataClass)
         notifyDataSetChanged()

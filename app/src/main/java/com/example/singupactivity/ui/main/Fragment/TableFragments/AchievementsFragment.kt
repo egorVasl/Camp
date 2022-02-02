@@ -19,6 +19,7 @@ import com.example.singupactivity.R
 import com.example.singupactivity.ui.main.Adapter.AchievementsAdapter
 import com.example.singupactivity.ui.main.Data.AchievementsDataClass
 import com.example.singupactivity.ui.main.DataBase.CampDbManager
+import com.example.singupactivity.ui.main.Fragment.ctx
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class AchievementsFragment : Fragment() {

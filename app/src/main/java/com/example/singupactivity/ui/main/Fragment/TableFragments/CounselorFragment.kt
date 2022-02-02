@@ -19,16 +19,27 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.singupactivity.R
+import com.example.singupactivity.ui.main.Adapter.AchievementsAdapter
 import com.example.singupactivity.ui.main.Adapter.CounselorAdapter
+import com.example.singupactivity.ui.main.Data.CounselorDataClass
 import com.example.singupactivity.ui.main.DataBase.CampDbManager
-import com.example.singupactivity.ui.main.DataBase.CampDbNameClass
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_AVATAR
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_COUNSELOR_BIRTHDAY
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_COUNSELOR_NAME
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_COUNSELOR_NUMBER
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_COUNSELOR_PATRONYMIC
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_COUNSELOR_SURNAME
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_LOGIN_AVATAR
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_LOGIN_COUNSELOR
 import com.example.singupactivity.ui.main.Fragment.BottomSheet.CounselorBottomSheetDialog
 import com.example.singupactivity.ui.main.Fragment.act
 import com.example.singupactivity.ui.main.Fragment.ctx
+import com.example.singupactivity.ui.main.Objects.Counselor.ArgumentsCounselorItem
 import com.example.singupactivity.ui.main.Objects.NavigationActviy.ArgumentsNAlogin
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
+import kotlin.concurrent.thread
 
 private const val REQUEST_IMAGE_CAPTURE_CAMERA_COUNSELOR = 1
 private const val REQUEST_IMAGE_CAPTURE_GALLERY_COUNSELOR = 2
@@ -41,20 +52,80 @@ class CounselorFragment : Fragment() {
 
     lateinit var campDbManager: CampDbManager
     lateinit var imageProfile: ImageView
-    lateinit var bottomProfileText: TextView
+    private lateinit var bottomProfileText: TextView
+    lateinit var profileText: TextView
+
+
+    lateinit var loginList : ArrayList<String>
+    lateinit var counselorName : ArrayList<String>
+    lateinit var counselorSurname : ArrayList<String>
+    lateinit var counselorPatronymic : ArrayList<String>
+    lateinit var counselorBirthday : ArrayList<String>
+    lateinit var counselorPhoneNumber : ArrayList<String>
+    lateinit var counselorLoginCounselor : ArrayList<String>
+
+    private val counselorItemTitle =
+        arrayListOf("Имя: ", "Фамилия: ", "Отчество: ", " Дата рождения: ", "Номер телефона: ")
+    private var counselorItemSubscription = arrayListOf<String>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        campDbManager = activity?.let { CampDbManager(it) }!!
+
+        campDbManager = CampDbManager(act)
+        adapter = CounselorAdapter()
+
+//
+//            counselorName =
+//                campDbManager.selectToTableCounselor(COLUMN_NAME_COUNSELOR_NAME)
+//            counselorSurname =
+//                campDbManager.selectToTableCounselor(COLUMN_NAME_COUNSELOR_SURNAME)
+//            counselorPatronymic =
+//                campDbManager.selectToTableCounselor(COLUMN_NAME_COUNSELOR_PATRONYMIC)
+//            counselorBirthday =
+//                campDbManager.selectToTableCounselor(COLUMN_NAME_COUNSELOR_BIRTHDAY)
+//            counselorPhoneNumber =
+//                campDbManager.selectToTableCounselor(COLUMN_NAME_COUNSELOR_NUMBER)
+//            counselorLoginCounselor =
+//                campDbManager.selectToTableCounselor(COLUMN_NAME_LOGIN_COUNSELOR)
+//
+//
+//
+//        for ((i, elm) in counselorLoginCounselor.withIndex()) {
+//            if (counselorLoginCounselor[i] == ArgumentsNAlogin.login) {
+//                if (counselorName[i].isNotBlank()) {
+//                    counselorItemSubscription[0] = counselorName[i]
+//                    counselorItemSubscription[1] = counselorSurname[i]
+//                    counselorItemSubscription[2] = counselorPatronymic[i]
+//                    counselorItemSubscription[3] = counselorBirthday[i]
+//                    counselorItemSubscription[4] = counselorPhoneNumber[i]
+//
+//                }
+//            }
+//        }
+//
+//        for ((i, firstElm) in counselorItemTitle.withIndex()) {
+//            for ((j, secondElm) in counselorItemSubscription.withIndex()) {
+//                adapter.addCounselor(
+//                    CounselorDataClass(
+//                        counselorItemTitle[i],
+//                        counselorItemSubscription[j]
+//                    )
+//                )
+//            }
+//        }
+//        rv.adapter = adapter
+
     }
 
 
     override fun onStart() {
         super.onStart()
-        val loginList =
-            campDbManager.selectToTableAvatarLogin(CampDbNameClass.COLUMN_NAME_LOGIN_AVATAR)
+         loginList =
+            campDbManager.selectToTableAvatarLogin(COLUMN_NAME_LOGIN_AVATAR)
         val imgByteArray =
-            campDbManager.selectToTableAvatarImage(CampDbNameClass.COLUMN_NAME_AVATAR)
+            campDbManager.selectToTableAvatarImage(COLUMN_NAME_AVATAR)
+
         for ((i, elm) in loginList.withIndex()) {
             if (loginList[i] == ArgumentsNAlogin.login) {
                 try {
@@ -67,7 +138,15 @@ class CounselorFragment : Fragment() {
 
             }
         }
+//
+//
+//        profileText.text =
+//            if (counselorItemSubscription[0].isNotEmpty())
+//                "${counselorItemSubscription[0]}  ${counselorItemSubscription[1]}"
+//        else
+//            "Имя Фамилия"
         bottomProfileText.text = ArgumentsNAlogin.login
+//        rv.adapter = adapter
     }
 
     override fun onCreateView(
@@ -81,7 +160,8 @@ class CounselorFragment : Fragment() {
         rv.layoutManager = LinearLayoutManager(act)
         rv.itemAnimator = DefaultItemAnimator()
 
-        bottomProfileText = view.findViewById(R.id.bottomProfileText)
+        profileText = view.findViewById(R.id.headerProfileTextCounselor)
+        bottomProfileText = view.findViewById(R.id.bottomProfileTextCounselor)
         imageProfile = view.findViewById(R.id.imageProfile)
 
         imageProfile.setOnClickListener {
