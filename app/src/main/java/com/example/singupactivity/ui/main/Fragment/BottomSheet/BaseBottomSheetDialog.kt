@@ -30,7 +30,7 @@ abstract class BaseBottomSheetDialog <DB : ViewDataBinding>(
 ) : BottomSheetDialogFragment() {
 
     protected lateinit var binding: DB
-    protected lateinit var progressDialog: Dialog
+    protected open lateinit var progressDialog: Dialog
     private var errorDialog: DialogInterface? = null
 
     protected lateinit var behavior: BottomSheetBehavior<FrameLayout>

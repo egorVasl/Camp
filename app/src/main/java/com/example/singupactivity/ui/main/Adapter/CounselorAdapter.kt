@@ -15,12 +15,12 @@ import com.example.singupactivity.ui.main.Data.CounselorDataClass
 private const val ITEM_COUNSELOR: Int = 0
 private const val ITEM_EMPTY_LIST: Int = 1
 
-class CounselorAdapter() :
+class CounselorAdapter :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var counselorList = ArrayList<CounselorDataClass>()
 
-    class SearchHolder(item: View) : RecyclerView.ViewHolder(item) {
+    class CounselorHolder(item: View) : RecyclerView.ViewHolder(item) {
 
         private val bindingCounselor = CounselorListItemBinding.bind(item)
 
@@ -56,7 +56,7 @@ class CounselorAdapter() :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
         return when (viewType) {
-            ITEM_COUNSELOR -> SearchHolder(parent.inflate(R.layout.daily_scedule_list_item))
+            ITEM_COUNSELOR -> CounselorHolder(parent.inflate(R.layout.counselor_list_item))
             else -> EmptyListViewHolder(parent.inflate(R.layout.partial_empty_list))
         }
 
@@ -64,11 +64,12 @@ class CounselorAdapter() :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
-        if (holder is SearchHolder) {
+        if (holder is CounselorHolder) {
 
             holder.bind(counselorList[position])
 
-        } else if (holder is EmptyListViewHolder) {
+
+            } else if (holder is EmptyListViewHolder) {
 
             holder.bind()
 

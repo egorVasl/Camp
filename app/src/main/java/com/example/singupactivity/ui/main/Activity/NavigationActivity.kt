@@ -4,9 +4,19 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Bitmap
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.BitmapFactory
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
+import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.menu.MenuBuilder
+import androidx.appcompat.view.menu.MenuPopupHelper
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.Navigation
@@ -14,44 +24,60 @@ import androidx.navigation.ui.NavigationUI
 import com.example.singupactivity.R
 import com.example.singupactivity.databinding.ActivityNavigtionBinding
 import com.example.singupactivity.ui.main.DataBase.CampDbManager
-import android.graphics.BitmapFactory
-
-import android.net.Uri
-import android.os.Build
-import android.provider.MediaStore
-import android.view.View
-import android.widget.PopupMenu
-import android.widget.TextView
-import android.widget.Toast
-import androidx.annotation.RequiresApi
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_AVATAR
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_COUNSELOR_NAME
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_COUNSELOR_SURNAME
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_LOGIN_AVATAR
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_LOGIN_COUNSELOR
 import com.example.singupactivity.ui.main.Objects.NavigationActviy.ArgumentsNAlogin
-import java.io.*
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
+import java.io.ByteArrayOutputStream
+import java.io.InputStream
 
 private const val REQUEST_IMAGE_CAPTURE_CAMERA = 1
 private const val REQUEST_IMAGE_CAPTURE_GALLERY = 2
-class NavigationActivity : AppCompatActivity() {
+
+interface OnDataPass {
+    fun onDataPass(data: Boolean?)
+}
+
+
+class NavigationActivity : AppCompatActivity(), OnDataPass {
     private lateinit var binding: ActivityNavigtionBinding
     lateinit var campDbManager: CampDbManager
     lateinit var imageProfile: ImageView
     lateinit var bottomProfileText: TextView
-
-    var message: String? = null
+    lateinit var headerProfileText: TextView
+    private lateinit var counselorName: ArrayList<String>
+    private lateinit var counselorSurname: ArrayList<String>
+    private lateinit var counselorLoginCounselor: ArrayList<String>
 
     override fun onStart() {
         super.onStart()
 
-        bottomProfileText.text = ArgumentsNAlogin.login
+        setUpTitleText()
 
-        val loginList = campDbManager.selectToTableAvatarLogin(COLUMN_NAME_LOGIN_AVATAR)
-        val imgByteArray = campDbManager.selectToTableAvatarImage(COLUMN_NAME_AVATAR)
-        for ((i, elm) in loginList.withIndex()) {
-            if (loginList[i] == ArgumentsNAlogin.login){
+        val loginList =
+            runBlocking {
+                async {
+                    campDbManager.selectToTableAvatarLogin(COLUMN_NAME_LOGIN_AVATAR)
+                }.await()
+            }
+
+        val imgByteArray =
+            runBlocking {
+                async {
+                    campDbManager.selectToTableAvatarImage(COLUMN_NAME_AVATAR)
+                }.await()
+            }
+        for ((i, _) in loginList.withIndex()) {
+            if (loginList[i] == ArgumentsNAlogin.login) {
                 try {
-                    val bmp = BitmapFactory.decodeByteArray(imgByteArray[i], 0, imgByteArray[i].size)
+                    val bmp =
+                        BitmapFactory.decodeByteArray(imgByteArray[i], 0, imgByteArray[i].size)
                     imageProfile.setImageBitmap(bmp)
-                } catch (exe: RuntimeException){
+                } catch (exe: RuntimeException) {
                     alert(R.string.error_uploading_image_repit_operation)
                 }
 
@@ -89,13 +115,14 @@ class NavigationActivity : AppCompatActivity() {
         val headerLayout: View = binding.navigationView.getHeaderView(0)
 
         bottomProfileText = headerLayout.findViewById(R.id.bottomProfileTest)
-        imageProfile = headerLayout.findViewById<ImageView>(R.id.imageHeaderProfile)
+        imageProfile = headerLayout.findViewById(R.id.imageHeaderProfile)
+        headerProfileText = headerLayout.findViewById(R.id.textHeaderProfile)
+
 
         imageProfile.setOnClickListener { view ->
-            val popupMenu = PopupMenu(this, view)
-            val inflater = popupMenu.menuInflater
-            inflater.inflate(R.menu.choice_action_profile_image, popupMenu.menu)
-            popupMenu.show()
+            val popupMenu =
+                androidx.appcompat.widget.PopupMenu(this, imageProfile)
+            popupMenu.inflate(R.menu.choice_action_profile_image)
             popupMenu.setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.choiceFromGallery -> {
@@ -108,13 +135,21 @@ class NavigationActivity : AppCompatActivity() {
                     }
                 }
             }
+            val menuHelper = MenuPopupHelper(
+                this,
+                popupMenu.menu as MenuBuilder,
+                imageProfile
+            )
+            menuHelper.setForceShowIcon(true)
+            menuHelper.show()
         }
     }
 
     private fun choicePhotoFromGallery() {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI).apply {
-            type = "image/*"
-        }
+        val intent =
+            Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI).apply {
+                type = "image/*"
+            }
 
         startActivityForResult(intent, REQUEST_IMAGE_CAPTURE_GALLERY);
     }
@@ -124,9 +159,6 @@ class NavigationActivity : AppCompatActivity() {
         startActivityForResult(intent, REQUEST_IMAGE_CAPTURE_CAMERA);
     }
 
-    fun getMyData(): String? {
-        return message
-    }
     private fun uploadPhotoFromCamera(cameraExtras: Bundle?) {
         (cameraExtras?.get("data") as? Bitmap)?.let {
             try {
@@ -136,7 +168,7 @@ class NavigationActivity : AppCompatActivity() {
                 e.printStackTrace()
                 Toast.makeText(this, R.string.error_uploading_image, Toast.LENGTH_SHORT).show()
             }
-        } ?:Toast.makeText(this, R.string.error_uploading_image, Toast.LENGTH_SHORT).show()
+        } ?: Toast.makeText(this, R.string.error_uploading_image, Toast.LENGTH_SHORT).show()
 
     }
 
@@ -150,9 +182,10 @@ class NavigationActivity : AppCompatActivity() {
             saveImageBitmapAvatar(selectedImage)
         } catch (e: Exception) {
             e.printStackTrace()
-           Toast.makeText(this, R.string.error_uploading_image, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.error_uploading_image, Toast.LENGTH_SHORT).show()
         }
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
@@ -162,11 +195,56 @@ class NavigationActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveImageBitmapAvatar(img : Bitmap){
+    private fun saveImageBitmapAvatar(img: Bitmap) {
         val stream = ByteArrayOutputStream()
         img.compress(Bitmap.CompressFormat.PNG, 0, stream)
         val byteArray = stream.toByteArray()
-        campDbManager.updateRawToTableAvatar(byteArray, ArgumentsNAlogin.login)
+        runBlocking {
+            async {
+                campDbManager.updateRawToTableAvatar(byteArray, ArgumentsNAlogin.login)
+            }.await()
+        }
+
+    }
+
+    private fun getData(const: String): ArrayList<String> {
+        return campDbManager.selectToTableCounselor(const)
+
+    }
+
+    private fun setUpTitleText() {
+        counselorName =
+            runBlocking {
+                async {
+                    getData(COLUMN_NAME_COUNSELOR_NAME)
+                }.await()
+            }
+        counselorSurname =
+            runBlocking {
+                async {
+                    getData(COLUMN_NAME_COUNSELOR_SURNAME)
+                }.await()
+            }
+        counselorLoginCounselor =
+            runBlocking {
+                async {
+                    getData(COLUMN_NAME_LOGIN_COUNSELOR)
+                }.await()
+            }
+        for ((i, _) in counselorLoginCounselor.withIndex()) {
+            if (counselorLoginCounselor[i] ==
+                ArgumentsNAlogin.login
+            ) {
+                headerProfileText.text =  if (counselorName[i].isNotEmpty())
+                  "${counselorName[i]} \n ${counselorSurname[i]}"
+                    else
+                    getString(R.string.name_surname)
+            }
+        }
+
+        bottomProfileText.text = ArgumentsNAlogin.login
+
+
     }
 
     override fun onDestroy() {
@@ -186,5 +264,10 @@ class NavigationActivity : AppCompatActivity() {
 
         val alert = builder.create()
         alert.show()
+    }
+
+    override fun onDataPass(data: Boolean?) {
+        if(data == true)
+            setUpTitleText()
     }
 }

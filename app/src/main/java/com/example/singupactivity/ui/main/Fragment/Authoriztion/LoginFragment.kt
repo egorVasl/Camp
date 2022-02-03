@@ -98,7 +98,8 @@ class LoginFragment : Fragment() {
                         passwordIsTrue = true
                     }
                 }
-                val squadList = runBlocking {
+                val squadList =
+                    runBlocking {
                     async {
                         getData(COLUMN_NAME_SQUAD)
 
@@ -110,7 +111,7 @@ class LoginFragment : Fragment() {
                     }
                 }
 
-                if (squadIsTrue and passwordIsTrue and loginIsTrue) {
+                if (loginIsTrue and passwordIsTrue and squadIsTrue) {
 
                     ArgumentsNAlogin.login = etLogin.text.toString()
 

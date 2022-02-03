@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
+import com.example.singupactivity.ui.main.Data.CounselorDataClass
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_ACHIEVEMENTS_PLACE
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_AVATAR
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_CHILD_BIRTHDAY
@@ -45,6 +46,7 @@ import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.TABLE_NAME_LI
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.TABLE_NAME_ROOM
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.TABLE_NAME_SQUAD
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.TABLE_NAME_WEEK_EVENT
+import com.example.singupactivity.ui.main.Objects.Counselor.ArgumentsCounselorItem
 
 
 class CampDbManager(context: Context) {
@@ -231,6 +233,8 @@ class CampDbManager(context: Context) {
 
     @SuppressLint("Range")
     fun selectToTableCounselor(const: String): ArrayList<String> {
+        openDb()
+
         val dataList = ArrayList<String>()
         val cursor = db.query(
             TABLE_NAME_COUNSELOR, null, null,
@@ -265,12 +269,6 @@ class CampDbManager(context: Context) {
         )
         closeDb()
 
-    }
-
-    fun deleteRawToTableCounselor(const: String) {
-        openDb()
-        val delCount = db.delete(TABLE_NAME_COUNSELOR, "login_counselor = '$const'", null)
-        closeDb()
     }
 
     /**

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,39 +20,30 @@
         app:riv_oval="true"
         />
 
-    <View
-        android:id="@+id/viewSupporter"
-        android:layout_width="1dp"
-        android:layout_height="1dp"
-        app:layout_constraintStart_toStartOf="@id/imageHeaderProfile"
-        app:layout_constraintTop_toTopOf="@id/imageHeaderProfile"
-        app:layout_constraintBottom_toBottomOf="@id/imageHeaderProfile"
-        app:layout_constraintEnd_toEndOf="@id/imageHeaderProfile"
-        />
 
     <TextView
         android:id="@+id/textHeaderProfile"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
+        android:layout_marginStart="10dp"
+        android:maxLines="2"
         android:text="@string/name_default"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/viewSupporter"
-        app:layout_constraintStart_toEndOf="@id/imageHeaderProfile"
-        />
+        app:layout_constraintStart_toEndOf="@+id/imageHeaderProfile"
+        app:layout_constraintTop_toTopOf="@+id/imageHeaderProfile" />
 
     <TextView
         android:id="@+id/bottomProfileTest"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="20dp"
         android:text="@string/user_name"
         android:textSize="18sp"
         android:textStyle="italic"
-        app:layout_constraintStart_toEndOf="@id/imageHeaderProfile"
-        app:layout_constraintTop_toBottomOf="@id/viewSupporter" />
+        app:layout_constraintStart_toEndOf="@+id/imageHeaderProfile"
+        app:layout_constraintTop_toBottomOf="@+id/textHeaderProfile" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

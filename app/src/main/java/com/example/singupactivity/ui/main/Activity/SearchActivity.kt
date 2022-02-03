@@ -35,7 +35,7 @@ class SearchActivity : AppCompatActivity() {
             setDisplayUseLogoEnabled(true)
         }
         super.onCreate(savedInstanceState)
-        setContentView(com.example.singupactivity.R.layout.activity_search)
+        setContentView(R.layout.activity_search)
 
         addFragmentToActivity(R.id.container, SearchFragment.newInstance())
 

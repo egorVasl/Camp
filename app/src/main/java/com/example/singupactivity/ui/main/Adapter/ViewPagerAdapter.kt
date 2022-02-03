@@ -26,15 +26,4 @@ class ViewPagerAdapter(supportFragmentManager: FragmentManager):
         fragmentList.add(fragment)
         fragmentListTitle.add(title)
     }
-    /* override fun getItemCount(): Int {
-        return 2
-     }
-
-     override fun createFragment(position: Int): Fragment {
-         return if (position == 0){
-             LoginFragment()
-         }else {
-             SignupFragment()
-         }
-     }*/
 }
