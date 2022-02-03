@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import android.text.TextUtils
-import android.content.DialogInterface
 import com.example.singupactivity.R
 import android.app.AlertDialog
 import android.icu.text.SimpleDateFormat
@@ -22,12 +21,12 @@ import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_D
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_NAME_EVENT
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_TIME_EVENT
 import android.widget.Toast
+import com.example.singupactivity.databinding.AddDailyScheduleBinding
 import com.example.singupactivity.ui.main.Fragment.*
-import com.example.singupactivity.ui.main.Fragment.BottomSheet.DailyScheduleBottomSheetDialog
+import com.example.singupactivity.ui.main.Fragment.BottomSheet.BottomSheetDialogWithThreeButton
 import com.example.singupactivity.ui.main.Fragment.BottomSheet.RATES_BOTTOM_REQUEST_KEY
 import com.example.singupactivity.ui.main.Fragment.BottomSheet.RATES_BOTTOM_REQUEST_KEY_IMPORT_PDF
 import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentDSdataClass
-import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentsDS
 import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentsDSFlag
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
@@ -35,9 +34,8 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.util.*
-import java.util.concurrent.Callable
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
+import androidx.databinding.DataBindingUtil
+import com.example.singupactivity.ui.main.Objects.Search.ArgumentsSearchFragmentSelected
 
 
 class DailyScheduleFragment : Fragment() {
@@ -56,7 +54,7 @@ class DailyScheduleFragment : Fragment() {
             importTextFile()
         }
 
-        campDbManager = activity?.let { CampDbManager(it) }!!
+        campDbManager = CampDbManager(act)
 
         adapter = DailyScheduleAdapter(this@DailyScheduleFragment)
         val eventTimeList =
@@ -103,8 +101,9 @@ class DailyScheduleFragment : Fragment() {
 
         fabDailySchedule.setOnClickListener {
 
-            DailyScheduleBottomSheetDialog.newInstance()
+            BottomSheetDialogWithThreeButton.newInstance()
                 .show(this.parentFragmentManager, "bottomDialogDS")
+            ArgumentsSearchFragmentSelected.arg = "DailySchedule"
 
         }
 
@@ -180,85 +179,88 @@ class DailyScheduleFragment : Fragment() {
         dailyScheduleDataClass: DailyScheduleDataClass?,
         position: Int
     ) {
-        val view = LayoutInflater.from(context).inflate(R.layout.add_daily_schedule, null)
-
-
-        val alertDialogBuilderUserInput: AlertDialog.Builder =
-            AlertDialog.Builder(requireActivity())
-        alertDialogBuilderUserInput.setView(view)
-
-        val newDayTitle = view.findViewById<TextView>(R.id.newDayTitle)
-        val etName = view.findViewById<EditText>(R.id.etName)
-        val etData = view.findViewById<EditText>(R.id.etData)
-        val etTime = view.findViewById<EditText>(R.id.etTime)
+        val binding: AddDailyScheduleBinding = DataBindingUtil.inflate(
+            LayoutInflater.from(
+                context
+            ), R.layout.add_daily_schedule, null, false
+        )
         val etNameUpdate: String? = dailyScheduleDataClass?.nameEvent
 
-        newDayTitle.text = if (!isUpdate) "Добавить" else "Редактировать"
+        val alertDialogBuilderUserInput: AlertDialog.Builder =
+            AlertDialog.Builder(act)
+        alertDialogBuilderUserInput.setView(binding.root)
 
-        if (isUpdate && dailyScheduleDataClass != null) {
-            etName.setText(dailyScheduleDataClass.nameEvent)
-            etData.setText(dailyScheduleDataClass.dateEvent)
-            etTime.setText(dailyScheduleDataClass.timeEvent)
-        }
-        alertDialogBuilderUserInput
-            .setCancelable(false)
-            .setPositiveButton(
-                if (isUpdate) "Обновить" else "Сохранить"
-            ) { _, _ -> }
-            .setNegativeButton(if (isUpdate) "Удалить" else "Закрыть",
-                DialogInterface.OnClickListener { dialogBox, id ->
-                    if (isUpdate) {
-                        deleteDailySchedule(
-                            position = position,
-                            const = etName.text.toString()
-                        )
-                    } else {
-                        dialogBox.cancel()
-                    }
-                })
+       with(binding) {
 
-        val alertDialog: AlertDialog = alertDialogBuilderUserInput.create()
-        alertDialog.show()
-        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(View.OnClickListener {
-            when {
-                TextUtils.isEmpty(etName.text.toString()) -> {
-                    Toast.makeText(requireActivity(), R.string.enter_name_event, Toast.LENGTH_SHORT)
-                        .show()
-                    return@OnClickListener
-                }
-                TextUtils.isEmpty(etData.text.toString()) -> {
-                    Toast.makeText(requireActivity(), R.string.enter_data_event, Toast.LENGTH_SHORT)
-                        .show()
-                    return@OnClickListener
-                }
-                TextUtils.isEmpty(etTime.text.toString()) -> {
-                    Toast.makeText(requireActivity(), R.string.enter_time_event, Toast.LENGTH_SHORT)
-                        .show()
-                    return@OnClickListener
-                }
-                else -> {
-                    alertDialog.dismiss()
-                }
-            }
-            if (isUpdate && dailyScheduleDataClass != null) {
-                if (etNameUpdate != null) {
-                    updateDailySchedule(
-                        nameEventUpdate = etName.text.toString(),
-                        dateEventUpdate = etData.text.toString(),
-                        timeEventUpdate = etTime.text.toString(),
-                        nameEventUpdatePosition = etNameUpdate,
-                        position = position
-                    )
-                }
+           newDayTitle.text = if (!isUpdate) getString(R.string.add) else getString(R.string.edit)
 
-            } else {
-                createDailySchedule(
-                    nameEventCreate = etName.text.toString(),
-                    dateEventCreate = etData.text.toString(),
-                    timeEventCreate = etTime.text.toString()
-                )
-            }
-        })
+           if (isUpdate && dailyScheduleDataClass != null) {
+               tiName.editText?.setText(dailyScheduleDataClass.nameEvent)
+               tiDate.editText?.setText(dailyScheduleDataClass.dateEvent)
+               tiTime.editText?.setText(dailyScheduleDataClass.timeEvent)
+           }
+           alertDialogBuilderUserInput
+               .setCancelable(false)
+               .setPositiveButton(
+                   if (isUpdate) getString(R.string.update) else getString(R.string.save)
+               ) { _, _ -> }
+               .setNegativeButton(if (isUpdate) getString(R.string.delete) else getString(R.string.close)
+               ) { dialogBox, _ ->
+                       if (isUpdate) {
+                           deleteDailySchedule(
+                               position = position,
+                               const = tiName.editText?.text.toString()
+                           )
+                       } else {
+                           dialogBox.cancel()
+                       }
+                   }
+
+           val alertDialog: AlertDialog = alertDialogBuilderUserInput.create()
+           alertDialog.window?.decorView?.setBackgroundResource(R.drawable.add_dialog_shape)
+           alertDialog.show()
+           alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+               .setOnClickListener(View.OnClickListener {
+                   when {
+                       TextUtils.isEmpty(tiName.editText?.text.toString()) -> {
+                           binding.tiName.error = getString(R.string.enter_name_event)
+                           binding.tiName.defaultHintTextColor = ctx.getColorStateList(R.color.errorColor)
+                           return@OnClickListener
+                       }
+                       TextUtils.isEmpty(tiDate.editText?.text.toString()) -> {
+                           binding.tiDate.error = getString(R.string.enter_data_event)
+                           binding.tiDate.defaultHintTextColor = ctx.getColorStateList(R.color.errorColor)
+                           return@OnClickListener
+                       }
+                       TextUtils.isEmpty(tiTime.editText?.text.toString()) -> {
+                           binding.tiTime.error = getString(R.string.enter_time_event)
+                           binding.tiTime.defaultHintTextColor = ctx.getColorStateList(R.color.errorColor)
+                           return@OnClickListener
+                       }
+                       else -> {
+                           alertDialog.dismiss()
+                       }
+                   }
+                   if (isUpdate && dailyScheduleDataClass != null) {
+                       if (etNameUpdate != null) {
+                           updateDailySchedule(
+                               nameEventUpdate = tiName.editText?.text.toString(),
+                               dateEventUpdate = tiDate.editText?.text.toString(),
+                               timeEventUpdate = tiTime.editText?.text.toString(),
+                               nameEventUpdatePosition = etNameUpdate,
+                               position = position
+                           )
+                       }
+
+                   } else {
+                       createDailySchedule(
+                           nameEventCreate = tiName.editText?.text.toString(),
+                           dateEventCreate = tiDate.editText?.text.toString(),
+                           timeEventCreate = tiTime.editText?.text.toString()
+                       )
+                   }
+               })
+       }
     }
 
     @SuppressLint("NotifyDataSetChanged")

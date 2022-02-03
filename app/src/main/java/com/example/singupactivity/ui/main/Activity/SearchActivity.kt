@@ -12,7 +12,10 @@ import android.view.Menu
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_DATE_EVENT
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_NAME_EVENT
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_TIME_EVENT
+import com.example.singupactivity.ui.main.Fragment.BottomSheet.TYPE
+import com.example.singupactivity.ui.main.Fragment.Search.SearchFragmentEvents
 import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentsDS
+import com.example.singupactivity.ui.main.Objects.Search.ArgumentsSearchFragmentSelected
 
 
 class SearchActivity : AppCompatActivity() {
@@ -37,7 +40,14 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        addFragmentToActivity(R.id.container, SearchFragment.newInstance())
+        if (ArgumentsSearchFragmentSelected.arg.isEmpty()){
+            when(intent.getStringExtra(TYPE)){
+                "DailySchedule" ->  addFragmentToActivity(R.id.container, SearchFragment.newInstance())
+                "Events" ->  addFragmentToActivity(R.id.container, SearchFragmentEvents.newInstance())
+            }
+        }
+
+
 
 
     }

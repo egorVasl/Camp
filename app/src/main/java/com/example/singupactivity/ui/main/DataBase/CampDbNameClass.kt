@@ -17,7 +17,7 @@ object CampDbNameClass : BaseColumns{
 
     const val TABLE_NAME_AVATAR = "avatar"
 
-    const val COLUMN_NAME_ID_AVATAR = "id_avatar"
+    private const val COLUMN_NAME_ID_AVATAR = "id_avatar"
     const val COLUMN_NAME_LOGIN_AVATAR = "login_avatar"
     const val COLUMN_NAME_AVATAR = "avatar"
 
@@ -35,7 +35,7 @@ object CampDbNameClass : BaseColumns{
 
     const val TABLE_NAME_AUTHORIZATION = "authorization"
 
-    const val COLUMN_NAME_ID_AUTHORIZATION = "id_authorization"
+    private const val COLUMN_NAME_ID_AUTHORIZATION = "id_authorization"
     const val COLUMN_NAME_LOGIN = "login"
     const val COLUMN_NAME_PASSWORD = "password"
     const val COLUMN_NAME_SQUAD = "squad"
@@ -55,7 +55,7 @@ object CampDbNameClass : BaseColumns{
 
     const val TABLE_NAME_SQUAD = "squad"
 
-    const val COLUMN_NAME_ID_SQUAD = "id_squad"
+    private const val COLUMN_NAME_ID_SQUAD = "id_squad"
     const val COLUMN_NAME_SQUAD_NAME = "squad_name"
     const val COLUMN_NAME_SQUAD_NUMBER = "squad_number"
 
@@ -74,7 +74,7 @@ object CampDbNameClass : BaseColumns{
 
     const val TABLE_NAME_COUNSELOR = "counselor"
 
-    const val COLUMN_NAME_ID_COUNSELOR = "id_counselor"
+    private const val COLUMN_NAME_ID_COUNSELOR = "id_counselor"
     const val COLUMN_NAME_COUNSELOR_NAME = "counselor_name"
     const val COLUMN_NAME_COUNSELOR_SURNAME = "counselor_surname"
     const val COLUMN_NAME_COUNSELOR_PATRONYMIC = "counselor_patronymic"
@@ -101,7 +101,7 @@ object CampDbNameClass : BaseColumns{
 
     const val TABLE_NAME_WEEK_EVENT = "week_event"
 
-    const val COLUMN_NAME_ID_EVENT = "id_event"
+    private const val COLUMN_NAME_ID_EVENT = "id_event"
     const val COLUMN_NAME_DATE = "date"
     const val COLUMN_NAME_TIME = "time"
     const val COLUMN_NAME_EVENT_NAME = "event_name"

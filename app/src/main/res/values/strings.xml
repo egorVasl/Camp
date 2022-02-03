@@ -86,16 +86,21 @@
     <string name="exit_layout">Для отмены или подтверждения нажмите кнопку \"Назад\" </string>
     <string name="enter_data">Ввести данные</string>
     <string name="error_empty_field">Поле пустое!</string>
-    <string name="add_counselor_correct">Данные пользователя успешно добавлены</string>
+    <string name="add_counselor_correct">Данные пользователя успешно добавлены.</string>
     <string name="error_uploading_data">Ошибка при загрузке данных</string>
     <string name="delete_data">Удалить данные</string>
     <string name="name_surname">Имя Фамилия</string>
-
     <string name="item_surname">Фамилия: </string>
     <string name="item_name">Имя: </string>
     <string name="item_patronymic">Отчество: </string>
     <string name="item_birthday">Дата рождения: </string>
     <string name="item_phone_number">Номер телефона: </string>
+    <string name="add">Добавить</string>
+    <string name="edit">Редактировать</string>
+    <string name="update">Обновить</string>
+    <string name="save">Сохранить</string>
+    <string name="delete">Удалить</string>
+
 
 
 

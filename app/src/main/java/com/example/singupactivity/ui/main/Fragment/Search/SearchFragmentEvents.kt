@@ -2,18 +2,16 @@ package com.example.singupactivity.ui.main.Fragment.Search
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.text.TextUtils
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageButton
-import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,22 +21,13 @@ import com.example.singupactivity.ui.main.Adapter.SearchDSAdapter
 import com.example.singupactivity.ui.main.Data.DailyScheduleDataClass
 import com.example.singupactivity.ui.main.DataBase.CampDbManager
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass
-import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_DATE_EVENT
-import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_NAME_EVENT
-import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_TIME_EVENT
 import com.example.singupactivity.ui.main.Fragment.act
 import com.example.singupactivity.ui.main.Fragment.ctx
-import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentDSdataClass
 import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentsDS
-import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentsDSFlag
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
-import java.util.concurrent.Callable
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 
-
-class SearchFragment : Fragment() {
+class SearchFragmentEvents : Fragment() {
 
     lateinit var adapter: SearchDSAdapter
     lateinit var campDbManager: CampDbManager
@@ -51,7 +40,7 @@ class SearchFragment : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance() =
-            SearchFragment()
+            SearchFragmentEvents()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,7 +65,7 @@ class SearchFragment : Fragment() {
         rv = view.findViewById(R.id.rcDailyScheduleSearch)
         rv.layoutManager = LinearLayoutManager(activity)
         rv.itemAnimator = DefaultItemAnimator()
-        adapter = SearchDSAdapter(this@SearchFragment)
+        adapter = SearchDSAdapter(SearchFragment())
         rv.adapter = adapter
         val ibSearch = view.findViewById<ImageButton>(R.id.imageButtonSearch)
         etCardSearch = view.findViewById(R.id.etSearchDailySchedule)
@@ -89,21 +78,21 @@ class SearchFragment : Fragment() {
                     val eventTimeList =
                         runBlocking {
                             async {
-                                getData(COLUMN_NAME_TIME_EVENT, searchText)
+                                getData(CampDbNameClass.COLUMN_NAME_TIME_EVENT, searchText)
                             }.await()
                         }
 
                     val eventNameList =
                         runBlocking {
                             async {
-                                getData(COLUMN_NAME_NAME_EVENT, searchText)
+                                getData(CampDbNameClass.COLUMN_NAME_NAME_EVENT, searchText)
                             }.await()
                         }
 
                     val eventDateList =
                         runBlocking {
                             async {
-                                getData(COLUMN_NAME_DATE_EVENT, searchText)
+                                getData(CampDbNameClass.COLUMN_NAME_DATE_EVENT, searchText)
                             }.await()
                         }
 
@@ -252,11 +241,11 @@ class SearchFragment : Fragment() {
         runBlocking {
             async {
                 campDbManager.updateRawToTableDailySchedule(
-                nameEvent = nameEventUpdate,
-                dateEvent = dateEventUpdate,
-                timeEvent = timeEventUpdate,
-                nameEventUpdatePosition = nameEventUpdatePosition
-            )
+                    nameEvent = nameEventUpdate,
+                    dateEvent = dateEventUpdate,
+                    timeEvent = timeEventUpdate,
+                    nameEventUpdatePosition = nameEventUpdatePosition
+                )
             }.await()
         }
 
