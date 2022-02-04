@@ -1,6 +1,7 @@
 package com.example.singupactivity.ui.main.Activity
 
 import android.os.Bundle
+import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.example.singupactivity.R
@@ -29,6 +30,10 @@ class CampMainActivity : AppCompatActivity() {
 
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.app_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
     private fun setUpTabs() {
         val viewPager: ViewPager = binding.viewPager
         val tabs: TabLayout = binding.tabs

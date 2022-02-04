@@ -6,10 +6,8 @@
         <entry key="..\:/TestTask/app/src/main/res/drawable-v24/ic_navigate_next.xml" value="0.33229166666666665" />
         <entry key="..\:/TestTask/app/src/main/res/drawable-v24/ic_navigate_next_compat.xml" value="0.33229166666666665" />
         <entry key="..\:/TestTask/app/src/main/res/drawable-v24/shape_bottom_sheet_pull.xml" value="0.33229166666666665" />
-        <entry key="..\:/TestTask/app/src/main/res/drawable/add_dialog_shape.xml" value="0.30416666666666664" />
         <entry key="..\:/TestTask/app/src/main/res/drawable/bottom_sheet_shape.xml" value="0.35208333333333336" />
         <entry key="..\:/TestTask/app/src/main/res/drawable/ic_action_overflow.xml" value="0.33229166666666665" />
-        <entry key="..\:/TestTask/app/src/main/res/drawable/ic_action_overflowwi_with_primaryColor.xml" value="0.3452502553626149" />
         <entry key="..\:/TestTask/app/src/main/res/drawable/ic_baseline_playlist_add_24.xml" value="0.33229166666666665" />
         <entry key="..\:/TestTask/app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.35208333333333336" />
         <entry key="..\:/TestTask/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.35208333333333336" />
@@ -19,23 +17,20 @@
         <entry key="..\:/TestTask/app/src/main/res/layout/activity_navigtion.xml" value="0.22" />
         <entry key="..\:/TestTask/app/src/main/res/layout/activity_search.xml" value="0.31197916666666664" />
         <entry key="..\:/TestTask/app/src/main/res/layout/add_counselor.xml" value="0.20555555555555555" />
-        <entry key="..\:/TestTask/app/src/main/res/layout/add_daily_schedule.xml" value="0.33" />
+        <entry key="..\:/TestTask/app/src/main/res/layout/add_daily_schedule.xml" value="0.21912350597609562" />
         <entry key="..\:/TestTask/app/src/main/res/layout/add_edit_achievements.xml" value="0.20241691842900303" />
         <entry key="..\:/TestTask/app/src/main/res/layout/add_edit_child.xml" value="0.18" />
         <entry key="..\:/TestTask/app/src/main/res/layout/add_edit_room.xml" value="0.3359375" />
         <entry key="..\:/TestTask/app/src/main/res/layout/add_edit_squads.xml" value="0.3359375" />
         <entry key="..\:/TestTask/app/src/main/res/layout/bottom_dialog_rates.xml" value="0.5" />
         <entry key="..\:/TestTask/app/src/main/res/layout/child_list_list_item.xml" value="0.5" />
-        <entry key="..\:/TestTask/app/src/main/res/layout/counselor_bottom_heet_dialog.xml" value="0.10294117647058823" />
-        <entry key="..\:/TestTask/app/src/main/res/layout/counselor_list_item.xml" value="0.67" />
         <entry key="..\:/TestTask/app/src/main/res/layout/daily_scedule_list_item.xml" value="0.5" />
-        <entry key="..\:/TestTask/app/src/main/res/layout/daily_schedule_bottom_heet_dialog.xml" value="0.31197916666666664" />
         <entry key="..\:/TestTask/app/src/main/res/layout/fragment_achievements.xml" value="0.1" />
         <entry key="..\:/TestTask/app/src/main/res/layout/fragment_child_list.xml" value="0.23703703703703705" />
-        <entry key="..\:/TestTask/app/src/main/res/layout/fragment_counselor.xml" value="0.44854368932038835" />
+        <entry key="..\:/TestTask/app/src/main/res/layout/fragment_counselor.xml" value="0.22" />
         <entry key="..\:/TestTask/app/src/main/res/layout/fragment_daily_schedule.xml" value="0.33" />
-        <entry key="..\:/TestTask/app/src/main/res/layout/fragment_events.xml" value="0.33" />
-        <entry key="..\:/TestTask/app/src/main/res/layout/fragment_login.xml" value="0.42638623326959846" />
+        <entry key="..\:/TestTask/app/src/main/res/layout/fragment_events.xml" value="0.1" />
+        <entry key="..\:/TestTask/app/src/main/res/layout/fragment_login.xml" value="0.5" />
         <entry key="..\:/TestTask/app/src/main/res/layout/fragment_main.xml" value="0.36666666666666664" />
         <entry key="..\:/TestTask/app/src/main/res/layout/fragment_room.xml" value="0.1" />
         <entry key="..\:/TestTask/app/src/main/res/layout/fragment_search.xml" value="0.33177083333333335" />
@@ -57,14 +52,34 @@
         <entry key="..\:/TestTask/app/src/main/res/menu/search_payments_menu.xml" value="0.31197916666666664" />
         <entry key="..\:/TestTask/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.35208333333333336" />
         <entry key="..\:/TestTask/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.35208333333333336" />
+        <entry key="..\:/Users/vaslavenok_e/Camp/app/src/main/res/drawable/bottom_sheet_shape.xml" value="0.3615" />
+        <entry key="..\:/Users/vaslavenok_e/Camp/app/src/main/res/drawable/ic_action_overflow.xml" value="0.3245" />
+        <entry key="..\:/Users/vaslavenok_e/Camp/app/src/main/res/drawable/ic_action_overflowwi_with_primaryColor.xml" value="0.3245" />
+        <entry key="..\:/Users/vaslavenok_e/Camp/app/src/main/res/drawable/ic_action_with_primary_color.xml" value="0.3525" />
         <entry key="..\:/Users/vaslavenok_e/Camp/app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.3525" />
+        <entry key="..\:/Users/vaslavenok_e/Camp/app/src/main/res/drawable/ic_delete.xml" value="0.3245" />
         <entry key="..\:/Users/vaslavenok_e/Camp/app/src/main/res/layout/activity_conteiner.xml" value="0.33" />
+        <entry key="..\:/Users/vaslavenok_e/Camp/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/vaslavenok_e/Camp/app/src/main/res/layout/activity_navigtion.xml" value="0.1" />
+        <entry key="..\:/Users/vaslavenok_e/Camp/app/src/main/res/layout/activity_search.xml" value="0.321875" />
+        <entry key="..\:/Users/vaslavenok_e/Camp/app/src/main/res/layout/add_counselor.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/vaslavenok_e/Camp/app/src/main/res/layout/add_daily_schedule.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/vaslavenok_e/Camp/app/src/main/res/layout/add_edit_achievements.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/vaslavenok_e/Camp/app/src/main/res/layout/add_edit_child.xml" value="0.34375" />
+        <entry key="..\:/Users/vaslavenok_e/Camp/app/src/main/res/layout/add_edit_room.xml" value="0.3066123188405797" />
+        <entry key="..\:/Users/vaslavenok_e/Camp/app/src/main/res/layout/add_edit_squads.xml" value="0.34375" />
+        <entry key="..\:/Users/vaslavenok_e/Camp/app/src/main/res/layout/child_list_list_item.xml" value="0.34375" />
         <entry key="..\:/Users/vaslavenok_e/Camp/app/src/main/res/layout/counselor_bottom_heet_dialog.xml" value="0.26301369863013696" />
-        <entry key="..\:/Users/vaslavenok_e/Camp/app/src/main/res/layout/daily_scedule_list_item.xml" value="0.33061594202898553" />
-        <entry key="..\:/Users/vaslavenok_e/Camp/app/src/main/res/layout/fragment_counselor.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/vaslavenok_e/Camp/app/src/main/res/layout/counselor_list_item.xml" value="0.5" />
+        <entry key="..\:/Users/vaslavenok_e/Camp/app/src/main/res/layout/daily_scedule_list_item.xml" value="0.5753803596127247" />
+        <entry key="..\:/Users/vaslavenok_e/Camp/app/src/main/res/layout/fragment_counselor.xml" value="0.5" />
         <entry key="..\:/Users/vaslavenok_e/Camp/app/src/main/res/layout/fragment_daily_schedule.xml" value="0.33061594202898553" />
+        <entry key="..\:/Users/vaslavenok_e/Camp/app/src/main/res/layout/fragment_search.xml" value="0.321875" />
         <entry key="..\:/Users/vaslavenok_e/Camp/app/src/main/res/layout/navigation_header.xml" value="0.4683808200138985" />
         <entry key="..\:/Users/vaslavenok_e/Camp/app/src/main/res/layout/partial_empty_list.xml" value="0.33061594202898553" />
+        <entry key="..\:/Users/vaslavenok_e/Camp/app/src/main/res/menu/app_menu.xml" value="0.35104166666666664" />
+        <entry key="..\:/Users/vaslavenok_e/Camp/app/src/main/res/menu/delete_menu.xml" value="0.33" />
+        <entry key="..\:/Users/vaslavenok_e/Camp/app/src/main/res/menu/search_parameters_menu.xml" value="0.321875" />
         <entry key="..\:/Users/vaslavenok_e/StudioProjects/SingUpActivity/app/src/main/res/layout/fragment_login.xml" value="0.2826086956521739" />
         <entry key="..\:/Users/vaslavenok_e/StudioProjects/SingUpActivity/app/src/main/res/layout/fragment_signup.xml" value="0.36666666666666664" />
       </map>

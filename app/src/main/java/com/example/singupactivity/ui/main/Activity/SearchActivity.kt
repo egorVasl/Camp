@@ -9,22 +9,27 @@ import com.example.singupactivity.R
 import com.example.singupactivity.ui.main.Fragment.Search.SearchFragment
 import com.example.singupactivity.ui.main.Fragment.addFragmentToActivity
 import android.view.Menu
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_DATE
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_DATE_EVENT
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_EVENT_NAME
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_NAME_EVENT
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_TIME
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_TIME_EVENT
 import com.example.singupactivity.ui.main.Fragment.BottomSheet.TYPE
 import com.example.singupactivity.ui.main.Fragment.Search.SearchFragmentEvents
 import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentsDS
-import com.example.singupactivity.ui.main.Objects.Search.ArgumentsSearchFragmentSelected
 
+
+const val TYPE_ACTIVITY = "TYPE_ACTIVITY"
 
 class SearchActivity : AppCompatActivity() {
 
 
 
     companion object {
-        fun start(context: Context) {
+        fun start(context: Context, typeActivity: String) {
             val intent = Intent(context, SearchActivity::class.java)
+                .putExtra(TYPE_ACTIVITY, typeActivity)
             context.startActivity(intent)
         }
     }
@@ -40,8 +45,8 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        if (ArgumentsSearchFragmentSelected.arg.isEmpty()){
-            when(intent.getStringExtra(TYPE)){
+        if (intent.getStringExtra(TYPE_ACTIVITY)!!.isNotEmpty()){
+            when(intent.getStringExtra(TYPE_ACTIVITY)){
                 "DailySchedule" ->  addFragmentToActivity(R.id.container, SearchFragment.newInstance())
                 "Events" ->  addFragmentToActivity(R.id.container, SearchFragmentEvents.newInstance())
             }
@@ -63,15 +68,24 @@ class SearchActivity : AppCompatActivity() {
                 true
             }
             R.id.menuArgName -> {
-                ArgumentsDS.arg = COLUMN_NAME_NAME_EVENT
+                when(intent.getStringExtra(TYPE_ACTIVITY)){
+                    "DailySchedule" ->   ArgumentsDS.arg = COLUMN_NAME_NAME_EVENT
+                    "Events" ->   ArgumentsDS.arg = COLUMN_NAME_EVENT_NAME
+                }
                 true
             }
             R.id.menuArgTime -> {
-                ArgumentsDS.arg = COLUMN_NAME_TIME_EVENT
+                when(intent.getStringExtra(TYPE_ACTIVITY)){
+                    "DailySchedule" ->   ArgumentsDS.arg = COLUMN_NAME_TIME_EVENT
+                    "Events" ->   ArgumentsDS.arg = COLUMN_NAME_TIME
+                }
                 true
             }
             R.id.menuArgDate -> {
-                ArgumentsDS.arg = COLUMN_NAME_DATE_EVENT
+                when(intent.getStringExtra(TYPE_ACTIVITY)){
+                    "DailySchedule" ->   ArgumentsDS.arg = COLUMN_NAME_DATE_EVENT
+                    "Events" ->   ArgumentsDS.arg = COLUMN_NAME_DATE
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)

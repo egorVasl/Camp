@@ -30,7 +30,7 @@
     <string name="verified">Статус</string>
     <string name="back">Назад</string>
     <string name="daily_schedule">Расписание дня</string>
-    <string name="data">Дата :</string>
+    <string name="data">Дата: </string>
     <string name="new_day">Новый день</string>
     <string name="data_event_add_schedule">Дата :</string>
     <string name="name_event_add_schedule">Название события :</string>

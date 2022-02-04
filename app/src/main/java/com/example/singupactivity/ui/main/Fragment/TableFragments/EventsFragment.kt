@@ -2,7 +2,6 @@ package com.example.singupactivity.ui.main.Fragment.TableFragments
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.text.TextUtils
@@ -10,13 +9,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.setFragmentResultListener
 import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.singupactivity.R
@@ -24,16 +20,14 @@ import com.example.singupactivity.databinding.AddDailyScheduleBinding
 import com.example.singupactivity.ui.main.Adapter.EventsAdapter
 import com.example.singupactivity.ui.main.Data.EventsDataClass
 import com.example.singupactivity.ui.main.DataBase.CampDbManager
-import com.example.singupactivity.ui.main.DataBase.CampDbNameClass
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_DATE
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_EVENT_NAME
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_TIME
-import com.example.singupactivity.ui.main.Fragment.BottomSheet.BottomSheetDialogWithThreeButton
-import com.example.singupactivity.ui.main.Fragment.BottomSheet.RATES_BOTTOM_REQUEST_KEY
-import com.example.singupactivity.ui.main.Fragment.BottomSheet.RATES_BOTTOM_REQUEST_KEY_IMPORT_PDF
+import com.example.singupactivity.ui.main.Fragment.BottomSheet.*
 import com.example.singupactivity.ui.main.Fragment.act
 import com.example.singupactivity.ui.main.Fragment.ctx
-import com.example.singupactivity.ui.main.Objects.Search.ArgumentsSearchFragmentSelected
+import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentDSdataClass
+import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentsDSFlag
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
@@ -55,14 +49,15 @@ class EventsFragment : Fragment() {
         )
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setFragmentResultListener(RATES_BOTTOM_REQUEST_KEY) { _, _ ->
+        setFragmentResultListener(RATES_BOTTOM_REQUEST_KEY_EVENTS) { _, _ ->
             addAndEditEvents(false, null, -1)
         }
 
-        setFragmentResultListener(RATES_BOTTOM_REQUEST_KEY_IMPORT_PDF) { _, _ ->
+        setFragmentResultListener(RATES_BOTTOM_REQUEST_KEY_IMPORT_PDF_EVENTS) { _, _ ->
             importTextFile()
         }
 
@@ -97,6 +92,38 @@ class EventsFragment : Fragment() {
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onStart() {
+        super.onStart()
+        val response = EventsDataClass(
+            time = ArgumentDSdataClass.timeEvent,
+            eventName = ArgumentDSdataClass.nameEvent,
+            date = ArgumentDSdataClass.dateEvent
+        )
+        val responseUpdate = EventsDataClass(
+            time = ArgumentDSdataClass.timeEventUpdate,
+            eventName = ArgumentDSdataClass.nameEventUpdate,
+            date = ArgumentDSdataClass.dateEventUpdate
+        )
+        if (ArgumentsDSFlag.isUpdate) {
+            adapter.let {
+                for ((i, _) in it.eventsList.withIndex()) {
+                    if (it.eventsList[i] == response)
+                        it.updateEvents(i, responseUpdate)
+                    it.notifyDataSetChanged()
+                }
+            }
+        } else {
+            adapter.let {
+                for ((i, _) in it.eventsList.withIndex()) {
+                    if (it.eventsList[i] == response)
+                        it.removeEvents(i)
+                    it.notifyDataSetChanged()
+                }
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -111,9 +138,8 @@ class EventsFragment : Fragment() {
         rv.itemAnimator = DefaultItemAnimator()
 
         fabEvents.setOnClickListener {
-            BottomSheetDialogWithThreeButton.newInstance()
+            EventsBottomSheet.newInstance()
                 .show(this.parentFragmentManager, "bottomDialogDS")
-            ArgumentsSearchFragmentSelected.arg = "Events"
 
         }
 
@@ -183,7 +209,8 @@ class EventsFragment : Fragment() {
                 .setPositiveButton(
                     if (isUpdate) getString(R.string.update) else getString(R.string.save)
                 ) { _, _ -> }
-                .setNegativeButton(if (isUpdate) getString(R.string.delete) else getString(R.string.close)
+                .setNegativeButton(
+                    if (isUpdate) getString(R.string.delete) else getString(R.string.close)
                 ) { dialogBox, _ ->
                     if (isUpdate) {
                         deleteEvents(
@@ -203,17 +230,20 @@ class EventsFragment : Fragment() {
                     when {
                         TextUtils.isEmpty(tiName.editText?.text.toString()) -> {
                             binding.tiName.error = getString(R.string.enter_name_event)
-                            binding.tiName.defaultHintTextColor = ctx.getColorStateList(R.color.errorColor)
+                            binding.tiName.defaultHintTextColor =
+                                ctx.getColorStateList(R.color.errorColor)
                             return@OnClickListener
                         }
                         TextUtils.isEmpty(tiDate.editText?.text.toString()) -> {
                             binding.tiDate.error = getString(R.string.enter_data_event)
-                            binding.tiDate.defaultHintTextColor = ctx.getColorStateList(R.color.errorColor)
+                            binding.tiDate.defaultHintTextColor =
+                                ctx.getColorStateList(R.color.errorColor)
                             return@OnClickListener
                         }
                         TextUtils.isEmpty(tiTime.editText?.text.toString()) -> {
                             binding.tiTime.error = getString(R.string.enter_time_event)
-                            binding.tiTime.defaultHintTextColor = ctx.getColorStateList(R.color.errorColor)
+                            binding.tiTime.defaultHintTextColor =
+                                ctx.getColorStateList(R.color.errorColor)
                             return@OnClickListener
                         }
                         else -> {
@@ -280,7 +310,7 @@ class EventsFragment : Fragment() {
             date = dateUpdate
         )
 
-        adapter.updateEvents(position,eventsDataClassUpdate)
+        adapter.updateEvents(position, eventsDataClassUpdate)
 
     }
 

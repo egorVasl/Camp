@@ -9,18 +9,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.singupactivity.R
 import com.example.singupactivity.databinding.DailySceduleListItemBinding
 import com.example.singupactivity.ui.main.Data.EventsDataClass
+import com.example.singupactivity.ui.main.Fragment.Search.SearchFragmentEvents
 import com.example.singupactivity.ui.main.Fragment.TableFragments.EventsFragment
+
 
 private const val ITEM_EVENTS: Int = 0
 private const val ITEM_EMPTY_LIST: Int = 1
 
 
-class EventsAdapter (fragment1: EventsFragment) :
+class SearchEventsAdapter (fragment1: SearchFragmentEvents) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var eventsList = ArrayList<EventsDataClass>()
 
-    val fragment: EventsFragment = fragment1
+    val fragment: SearchFragmentEvents = fragment1
 
     class EventsHolder(item: View) : RecyclerView.ViewHolder(item) {
 
@@ -38,8 +40,9 @@ class EventsAdapter (fragment1: EventsFragment) :
 
 
     }
-    override fun getItemViewType(position: Int) : Int {
-        return when{
+
+    override fun getItemViewType(position: Int): Int {
+        return when {
             eventsList.isNullOrEmpty() -> ITEM_EMPTY_LIST
             else -> ITEM_EVENTS
         }
@@ -48,7 +51,7 @@ class EventsAdapter (fragment1: EventsFragment) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
-        return when(viewType) {
+        return when (viewType) {
             ITEM_EVENTS -> EventsHolder(parent.inflate(R.layout.daily_scedule_list_item))
             else -> EmptyListViewHolder(parent.inflate(R.layout.partial_empty_list))
         }
@@ -73,15 +76,15 @@ class EventsAdapter (fragment1: EventsFragment) :
 
     }
 
-    inner class EmptyListViewHolder(item: View): RecyclerView.ViewHolder(item) {
+    inner class EmptyListViewHolder(item: View) : RecyclerView.ViewHolder(item) {
 
-        fun bind(){
+        fun bind() {
         }
     }
 
     override fun getItemCount(): Int {
 
-        return if(eventsList.isNullOrEmpty()) 1 else eventsList.size
+        return if (eventsList.isNullOrEmpty()) 1 else eventsList.size
 
     }
 
@@ -108,7 +111,7 @@ class EventsAdapter (fragment1: EventsFragment) :
         notifyDataSetChanged()
 
     }
+
     fun ViewGroup.inflate(@LayoutRes resId: Int) =
         LayoutInflater.from(this.context).inflate(resId, this, false)!!
-
 }

@@ -11,7 +11,6 @@ import android.text.TextUtils
 import com.example.singupactivity.R
 import android.app.AlertDialog
 import android.icu.text.SimpleDateFormat
-import android.widget.*
 import androidx.fragment.app.setFragmentResultListener
 import androidx.recyclerview.widget.*
 import com.example.singupactivity.ui.main.Adapter.DailyScheduleAdapter
@@ -23,7 +22,7 @@ import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_T
 import android.widget.Toast
 import com.example.singupactivity.databinding.AddDailyScheduleBinding
 import com.example.singupactivity.ui.main.Fragment.*
-import com.example.singupactivity.ui.main.Fragment.BottomSheet.BottomSheetDialogWithThreeButton
+import com.example.singupactivity.ui.main.Fragment.BottomSheet.EventsBottomSheet
 import com.example.singupactivity.ui.main.Fragment.BottomSheet.RATES_BOTTOM_REQUEST_KEY
 import com.example.singupactivity.ui.main.Fragment.BottomSheet.RATES_BOTTOM_REQUEST_KEY_IMPORT_PDF
 import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentDSdataClass
@@ -35,7 +34,7 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.util.*
 import androidx.databinding.DataBindingUtil
-import com.example.singupactivity.ui.main.Objects.Search.ArgumentsSearchFragmentSelected
+import com.example.singupactivity.ui.main.Fragment.BottomSheet.DSBottomSheetDialog
 
 
 class DailyScheduleFragment : Fragment() {
@@ -101,9 +100,8 @@ class DailyScheduleFragment : Fragment() {
 
         fabDailySchedule.setOnClickListener {
 
-            BottomSheetDialogWithThreeButton.newInstance()
+            DSBottomSheetDialog.newInstance()
                 .show(this.parentFragmentManager, "bottomDialogDS")
-            ArgumentsSearchFragmentSelected.arg = "DailySchedule"
 
         }
 

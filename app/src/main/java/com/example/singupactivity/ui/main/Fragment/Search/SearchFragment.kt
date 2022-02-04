@@ -2,7 +2,6 @@ package com.example.singupactivity.ui.main.Fragment.Search
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.text.TextUtils
 import androidx.fragment.app.Fragment
@@ -11,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageButton
-import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -22,7 +20,6 @@ import com.example.singupactivity.databinding.AddDailyScheduleBinding
 import com.example.singupactivity.ui.main.Adapter.SearchDSAdapter
 import com.example.singupactivity.ui.main.Data.DailyScheduleDataClass
 import com.example.singupactivity.ui.main.DataBase.CampDbManager
-import com.example.singupactivity.ui.main.DataBase.CampDbNameClass
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_DATE_EVENT
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_NAME_EVENT
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_TIME_EVENT
@@ -33,9 +30,6 @@ import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentsDS
 import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentsDSFlag
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
-import java.util.concurrent.Callable
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 
 
 class SearchFragment : Fragment() {
@@ -125,6 +119,7 @@ class SearchFragment : Fragment() {
                         )
                         etCardSearch.text.clear()
                     }
+                    ArgumentsDS.arg = ""
                 } else {
                     Toast.makeText(
                         requireActivity(),
@@ -179,6 +174,10 @@ class SearchFragment : Fragment() {
                 .setNegativeButton(if (isUpdate) getString(R.string.delete) else getString(R.string.close)
                 ) { dialogBox, id ->
                     if (isUpdate) {
+                        ArgumentsDSFlag.isUpdate = false
+                        ArgumentDSdataClass.nameEvent = adapter.searchList[position].nameEvent
+                        ArgumentDSdataClass.timeEvent = adapter.searchList[position].timeEvent
+                        ArgumentDSdataClass.dateEvent = adapter.searchList[position].dateEvent
                         deleteDailySchedule(
                             position = position,
                             const = tiName.editText?.text.toString()
@@ -215,6 +214,13 @@ class SearchFragment : Fragment() {
                     }
                     if (isUpdate && dailyScheduleDataClass != null) {
                         if (etNameUpdate != null) {
+                            ArgumentsDSFlag.isUpdate = true
+                            ArgumentDSdataClass.nameEvent = adapter.searchList[position].nameEvent
+                            ArgumentDSdataClass.timeEvent = adapter.searchList[position].timeEvent
+                            ArgumentDSdataClass.dateEvent = adapter.searchList[position].dateEvent
+                            ArgumentDSdataClass.nameEventUpdate = tiName.editText?.text.toString()
+                            ArgumentDSdataClass.timeEventUpdate = tiTime.editText?.text.toString()
+                            ArgumentDSdataClass.dateEventUpdate = tiDate.editText?.text.toString()
                             updateDailySchedule(
                                 nameEventUpdate = tiName.editText?.text.toString(),
                                 dateEventUpdate = tiDate.editText?.text.toString(),
