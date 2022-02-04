@@ -9,16 +9,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.singupactivity.R
 import com.example.singupactivity.databinding.DailySceduleListItemBinding
 import com.example.singupactivity.ui.main.Data.DailyScheduleDataClass
-import com.example.singupactivity.ui.main.Fragment.Search.SearchFragment
+import com.example.singupactivity.ui.main.Fragment.Search.SearchDSFragment
 
 private const val ITEM_DAILY_SCHEDULE: Int = 0
 private const val ITEM_EMPTY_LIST: Int = 1
 
-class SearchDSAdapter(fragment1: SearchFragment) :
+class SearchDSAdapter(fragment1: SearchDSFragment) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var searchList = ArrayList<DailyScheduleDataClass>()
 
-    val fragment: SearchFragment = fragment1
+    val fragment: SearchDSFragment = fragment1
 
     class SearchHolder(item: View) : RecyclerView.ViewHolder(item) {
 

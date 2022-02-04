@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import com.example.singupactivity.R
-import com.example.singupactivity.ui.main.Fragment.Search.SearchFragment
+import com.example.singupactivity.ui.main.Fragment.Search.SearchDSFragment
 import com.example.singupactivity.ui.main.Fragment.addFragmentToActivity
 import android.view.Menu
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_DATE
@@ -15,8 +15,7 @@ import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_E
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_NAME_EVENT
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_TIME
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_TIME_EVENT
-import com.example.singupactivity.ui.main.Fragment.BottomSheet.TYPE
-import com.example.singupactivity.ui.main.Fragment.Search.SearchFragmentEvents
+import com.example.singupactivity.ui.main.Fragment.Search.SearchEventsFragment
 import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentsDS
 
 
@@ -47,8 +46,8 @@ class SearchActivity : AppCompatActivity() {
 
         if (intent.getStringExtra(TYPE_ACTIVITY)!!.isNotEmpty()){
             when(intent.getStringExtra(TYPE_ACTIVITY)){
-                "DailySchedule" ->  addFragmentToActivity(R.id.container, SearchFragment.newInstance())
-                "Events" ->  addFragmentToActivity(R.id.container, SearchFragmentEvents.newInstance())
+                "DailySchedule" ->  addFragmentToActivity(R.id.container, SearchDSFragment.newInstance())
+                "Events" ->  addFragmentToActivity(R.id.container, SearchEventsFragment.newInstance())
             }
         }
 

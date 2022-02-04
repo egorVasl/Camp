@@ -13,6 +13,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SingUpActivity">
+
+        <activity
+        android:name=".ui.main.Activity.SplashActivity"
+            android:exported="true"
+            >
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+    </activity>
+        <activity
+            android:name=".ui.main.Activity.CampMainActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.main.Activity.ConteinerActivityExit"
             android:exported="false" />
@@ -22,16 +36,7 @@
         <activity
             android:name=".ui.main.Activity.NavigationActivity"
             android:exported="true" />
-        <activity
-            android:name=".ui.main.Activity.CampMainActivity"
-            android:exported="true"
-            android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>

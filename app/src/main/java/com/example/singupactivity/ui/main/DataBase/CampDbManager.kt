@@ -184,6 +184,22 @@ class CampDbManager(context: Context) {
         return dataList
     }
 
+    @SuppressLint("Range")
+    fun selectToTableSquad(const: String, searchText: String, selectionArguments: String): ArrayList<String> {
+        openDb()
+        val sqlQuery = ("select * from $TABLE_NAME_SQUAD where $selectionArguments = '$searchText';")
+        val dataList = ArrayList<String>()
+        val cursor = db.rawQuery(sqlQuery, null)
+
+        while (cursor?.moveToNext()!!) {
+            val dataText = cursor.getString(cursor.getColumnIndex(const))
+            dataList.add(dataText.toString())
+        }
+        cursor.close()
+        closeDb()
+        return dataList
+    }
+
 
     fun deleteRawToTableSquads(const: String) {
         openDb()

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Bundle
 import android.text.TextUtils
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,17 +11,18 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.singupactivity.R
 import com.example.singupactivity.databinding.AddDailyScheduleBinding
-import com.example.singupactivity.ui.main.Adapter.SearchDSAdapter
-import com.example.singupactivity.ui.main.Data.DailyScheduleDataClass
+import com.example.singupactivity.ui.main.Adapter.SearchEventsAdapter
+import com.example.singupactivity.ui.main.Data.EventsDataClass
 import com.example.singupactivity.ui.main.DataBase.CampDbManager
-import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_DATE_EVENT
-import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_NAME_EVENT
-import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_TIME_EVENT
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_DATE
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_EVENT_NAME
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_TIME
 import com.example.singupactivity.ui.main.Fragment.act
 import com.example.singupactivity.ui.main.Fragment.ctx
 import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentDSdataClass
@@ -31,10 +31,9 @@ import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentsDSFlag
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 
+class SearchEventsFragment : Fragment() {
 
-class SearchFragment : Fragment() {
-
-    lateinit var adapter: SearchDSAdapter
+    lateinit var adapter: SearchEventsAdapter
     lateinit var campDbManager: CampDbManager
 
     lateinit var rv: RecyclerView
@@ -45,7 +44,7 @@ class SearchFragment : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance() =
-            SearchFragment()
+            SearchEventsFragment()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,7 +54,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun getData(const: String, searchText: String): ArrayList<String> {
-        return  campDbManager.selectToTableDailySchedule(
+        return  campDbManager.selectToTableWeekEvent(
             const,
             searchText,
             ArgumentsDS.arg
@@ -70,7 +69,7 @@ class SearchFragment : Fragment() {
         rv = view.findViewById(R.id.rcDailyScheduleSearch)
         rv.layoutManager = LinearLayoutManager(activity)
         rv.itemAnimator = DefaultItemAnimator()
-        adapter = SearchDSAdapter(this@SearchFragment)
+        adapter = SearchEventsAdapter(this@SearchEventsFragment)
         rv.adapter = adapter
         val ibSearch = view.findViewById<ImageButton>(R.id.imageButtonSearch)
         etCardSearch = view.findViewById(R.id.etSearchDailySchedule)
@@ -79,40 +78,40 @@ class SearchFragment : Fragment() {
             if (ArgumentsDS.arg.isNotBlank()) {
                 val searchText = etCardSearch.text.toString()
                 if (searchText.isNotEmpty()) {
-                    adapter.searchList.clear()
+                    adapter.eventsList.clear()
                     val eventTimeList =
                         runBlocking {
                             async {
-                                getData(COLUMN_NAME_TIME_EVENT, searchText)
+                                getData(COLUMN_NAME_TIME, searchText)
                             }.await()
                         }
 
                     val eventNameList =
                         runBlocking {
                             async {
-                                getData(COLUMN_NAME_NAME_EVENT, searchText)
+                                getData(COLUMN_NAME_EVENT_NAME, searchText)
                             }.await()
                         }
 
                     val eventDateList =
                         runBlocking {
                             async {
-                                getData(COLUMN_NAME_DATE_EVENT, searchText)
+                                getData(COLUMN_NAME_DATE, searchText)
                             }.await()
                         }
 
                     for ((i, _) in eventTimeList.withIndex()) {
-                        adapter.addDailySchedule(
-                            DailyScheduleDataClass(
+                        adapter.addEvents(
+                            EventsDataClass(eventDateList[i],
                                 eventTimeList[i],
-                                eventNameList[i],
-                                eventDateList[i]
+                                eventNameList[i]
+
                             )
                         )
 
                     }
                     rv.adapter = adapter
-                    if (adapter.searchList.isEmpty()) {
+                    if (adapter.eventsList.isEmpty()) {
                         alert(
                             getString(R.string.no_data_after_search_title),
                             getString(R.string.no_data_after_search)
@@ -120,6 +119,7 @@ class SearchFragment : Fragment() {
                         etCardSearch.text.clear()
                     }
                     ArgumentsDS.arg = ""
+
                 } else {
                     Toast.makeText(
                         requireActivity(),
@@ -141,9 +141,9 @@ class SearchFragment : Fragment() {
     }
 
     @SuppressLint("InflateParams")
-    fun addAndEditSchedule(
+    fun addAndEditEvents(
         isUpdate: Boolean,
-        dailyScheduleDataClass: DailyScheduleDataClass?,
+        eventsDataClass: EventsDataClass?,
         position: Int
     ) {
         val binding: AddDailyScheduleBinding = DataBindingUtil.inflate(
@@ -151,7 +151,7 @@ class SearchFragment : Fragment() {
                 context
             ), R.layout.add_daily_schedule, null, false
         )
-        val etNameUpdate: String? = dailyScheduleDataClass?.nameEvent
+        val etNameUpdate: String? = eventsDataClass?.eventName
 
         val alertDialogBuilderUserInput: AlertDialog.Builder =
             AlertDialog.Builder(act)
@@ -161,10 +161,10 @@ class SearchFragment : Fragment() {
 
             newDayTitle.text = if (!isUpdate) getString(R.string.add) else getString(R.string.edit)
 
-            if (isUpdate && dailyScheduleDataClass != null) {
-                tiName.editText?.setText(dailyScheduleDataClass.nameEvent)
-                tiDate.editText?.setText(dailyScheduleDataClass.dateEvent)
-                tiTime.editText?.setText(dailyScheduleDataClass.timeEvent)
+            if (isUpdate && eventsDataClass != null) {
+                tiName.editText?.setText(eventsDataClass.eventName)
+                tiDate.editText?.setText(eventsDataClass.date)
+                tiTime.editText?.setText(eventsDataClass.time)
             }
             alertDialogBuilderUserInput
                 .setCancelable(false)
@@ -172,13 +172,13 @@ class SearchFragment : Fragment() {
                     if (isUpdate) getString(R.string.update) else getString(R.string.save)
                 ) { _, _ -> }
                 .setNegativeButton(if (isUpdate) getString(R.string.delete) else getString(R.string.close)
-                ) { dialogBox, id ->
+                ) { dialogBox, _ ->
                     if (isUpdate) {
                         ArgumentsDSFlag.isUpdate = false
-                        ArgumentDSdataClass.nameEvent = adapter.searchList[position].nameEvent
-                        ArgumentDSdataClass.timeEvent = adapter.searchList[position].timeEvent
-                        ArgumentDSdataClass.dateEvent = adapter.searchList[position].dateEvent
-                        deleteDailySchedule(
+                        ArgumentDSdataClass.nameEvent = adapter.eventsList[position].eventName
+                        ArgumentDSdataClass.timeEvent = adapter.eventsList[position].time
+                        ArgumentDSdataClass.dateEvent = adapter.eventsList[position].date
+                        deleteEvents(
                             position = position,
                             const = tiName.editText?.text.toString()
                         )
@@ -212,70 +212,69 @@ class SearchFragment : Fragment() {
                             alertDialog.dismiss()
                         }
                     }
-                    if (isUpdate && dailyScheduleDataClass != null) {
+                    if (isUpdate && eventsDataClass != null) {
                         if (etNameUpdate != null) {
                             ArgumentsDSFlag.isUpdate = true
-                            ArgumentDSdataClass.nameEvent = adapter.searchList[position].nameEvent
-                            ArgumentDSdataClass.timeEvent = adapter.searchList[position].timeEvent
-                            ArgumentDSdataClass.dateEvent = adapter.searchList[position].dateEvent
+                            ArgumentDSdataClass.nameEvent = adapter.eventsList[position].eventName
+                            ArgumentDSdataClass.timeEvent = adapter.eventsList[position].time
+                            ArgumentDSdataClass.dateEvent = adapter.eventsList[position].date
                             ArgumentDSdataClass.nameEventUpdate = tiName.editText?.text.toString()
                             ArgumentDSdataClass.timeEventUpdate = tiTime.editText?.text.toString()
                             ArgumentDSdataClass.dateEventUpdate = tiDate.editText?.text.toString()
-                            updateDailySchedule(
-                                nameEventUpdate = tiName.editText?.text.toString(),
-                                dateEventUpdate = tiDate.editText?.text.toString(),
-                                timeEventUpdate = tiTime.editText?.text.toString(),
-                                nameEventUpdatePosition = etNameUpdate,
+                            updateEvents(
+                                eventNameUpdate = tiName.editText?.text.toString(),
+                                dateUpdate = tiDate.editText?.text.toString(),
+                                timeUpdate = tiTime.editText?.text.toString(),
+                                eventNameUpdatePosition = etNameUpdate,
                                 position = position
                             )
                         }
                     }
                 })
-        }
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    private fun deleteDailySchedule(const: String, position: Int) {
-        runBlocking {
-            async {
-                campDbManager.deleteRawToTableDailySchedule(const)
-
-            }.await()
-        }
-        adapter.removeDailySchedule(position)
-
 
     }
+    }
+        @SuppressLint("NotifyDataSetChanged")
+        private fun deleteEvents(const: String, position: Int) {
 
-    private fun updateDailySchedule(
-        timeEventUpdate: String,
-        nameEventUpdate: String,
-        dateEventUpdate: String,
-        nameEventUpdatePosition: String,
-        position: Int
-    ) {
+            runBlocking {
+                async {
+                    campDbManager.deleteRawToTableWeekEvents(const)
+                }.await()
+            }
 
-        runBlocking {
-            async {
-                campDbManager.updateRawToTableDailySchedule(
-                nameEvent = nameEventUpdate,
-                dateEvent = dateEventUpdate,
-                timeEvent = timeEventUpdate,
-                nameEventUpdatePosition = nameEventUpdatePosition
+            adapter.removeEvents(position)
+
+        }
+
+        private fun updateEvents(
+            timeUpdate: String,
+            eventNameUpdate: String,
+            dateUpdate: String,
+            eventNameUpdatePosition: String,
+            position: Int
+        ) {
+            runBlocking {
+                async {
+                    campDbManager.updateRawToTableWeekEvents(
+                        nameEvent = eventNameUpdate,
+                        dateEvent = dateUpdate,
+                        timeEvent = timeUpdate,
+                        nameEventUpdatePosition = eventNameUpdatePosition
+                    )
+                }.await()
+            }
+
+
+            val eventsDataClassUpdate = EventsDataClass(
+                time = timeUpdate,
+                eventName = eventNameUpdate,
+                date = dateUpdate
             )
-            }.await()
+
+            adapter.updateEvents(position,eventsDataClassUpdate)
+
         }
-
-
-        val dailyScheduleDataClassUpdate = DailyScheduleDataClass(
-            timeEvent = timeEventUpdate,
-            nameEvent = nameEventUpdate,
-            dateEvent = dateEventUpdate
-        )
-
-        adapter.updateDailySchedule(position, dailyScheduleDataClassUpdate)
-
-    }
 
     private fun alert(title: String, massage: String) {
         val builder = AlertDialog.Builder(act)

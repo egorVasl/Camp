@@ -8,32 +8,34 @@ import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 import com.example.singupactivity.R
 import com.example.singupactivity.databinding.DailySceduleListItemBinding
+import com.example.singupactivity.databinding.SquadaListItemBinding
 import com.example.singupactivity.ui.main.Data.EventsDataClass
+import com.example.singupactivity.ui.main.Data.SquadsDataClass
 import com.example.singupactivity.ui.main.Fragment.Search.SearchEventsFragment
+import com.example.singupactivity.ui.main.Fragment.Search.SearchSquadsFragment
 
 
 private const val ITEM_EVENTS: Int = 0
 private const val ITEM_EMPTY_LIST: Int = 1
 
 
-class SearchEventsAdapter (fragment1: SearchEventsFragment) :
+class SearchSquadsAdapter (fragment1: SearchSquadsFragment) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var eventsList = ArrayList<EventsDataClass>()
+    var squadsList = ArrayList<SquadsDataClass>()
 
-    val fragment: SearchEventsFragment = fragment1
+    val fragment: SearchSquadsFragment = fragment1
 
     class EventsHolder(item: View) : RecyclerView.ViewHolder(item) {
 
 
-        private val binding = DailySceduleListItemBinding.bind(item)
+        private val binding = SquadaListItemBinding.bind(item)
 
         @SuppressLint("SetTextI18n")
-        fun bind(eventsDataClass: EventsDataClass) = with(binding) {
+        fun bind(squadsDataClass: SquadsDataClass) = with(binding) {
 
-            tvNameEvent.text = "Название: ${eventsDataClass.eventName}"
-            tvData.text = eventsDataClass.date
-            tvTime.text = "Время: ${eventsDataClass.time}"
+            tvSquadsName.text = squadsDataClass.squadName
+            tvSquadsNumber.text = "№ ${squadsDataClass.squadNumber}"
 
         }
 
@@ -42,7 +44,7 @@ class SearchEventsAdapter (fragment1: SearchEventsFragment) :
 
     override fun getItemViewType(position: Int): Int {
         return when {
-            eventsList.isNullOrEmpty() -> ITEM_EMPTY_LIST
+            squadsList.isNullOrEmpty() -> ITEM_EMPTY_LIST
             else -> ITEM_EVENTS
         }
 
@@ -59,13 +61,13 @@ class SearchEventsAdapter (fragment1: SearchEventsFragment) :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is EventsHolder) {
-            holder.bind(eventsList[position])
+            holder.bind(squadsList[position])
 
-            val eventsDataClass: EventsDataClass = eventsList[position]
+            val squadsDataClass: SquadsDataClass = squadsList[position]
 
             holder.itemView.setOnClickListener {
 
-                fragment.addAndEditEvents(true, eventsDataClass, position)
+                fragment.addAndEditSquads(true, squadsDataClass, position)
 
             }
         } else if (holder is EmptyListViewHolder) {
@@ -83,14 +85,14 @@ class SearchEventsAdapter (fragment1: SearchEventsFragment) :
 
     override fun getItemCount(): Int {
 
-        return if (eventsList.isNullOrEmpty()) 1 else eventsList.size
+        return if (squadsList.isNullOrEmpty()) 1 else squadsList.size
 
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun addEvents(eventsDataClass: EventsDataClass) {
+    fun addEvents(squadsDataClass: SquadsDataClass) {
 
-        eventsList.add(eventsDataClass)
+        squadsList.add(squadsDataClass)
         notifyDataSetChanged()
 
     }
@@ -98,15 +100,15 @@ class SearchEventsAdapter (fragment1: SearchEventsFragment) :
     @SuppressLint("NotifyDataSetChanged")
     fun removeEvents(position: Int) {
 
-        eventsList.removeAt(position)
+        squadsList.removeAt(position)
         notifyDataSetChanged()
 
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateEvents(position: Int, eventsDataClass: EventsDataClass) {
+    fun updateEvents(position: Int, squadsDataClass: SquadsDataClass) {
 
-        eventsList[position] = eventsDataClass
+        squadsList[position] = squadsDataClass
         notifyDataSetChanged()
 
     }

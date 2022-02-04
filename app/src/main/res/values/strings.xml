@@ -100,11 +100,7 @@
     <string name="update">Обновить</string>
     <string name="save">Сохранить</string>
     <string name="delete">Удалить</string>
-
-
-
-
-
+    <string name="splash_text">Детский лагерь\n \"Неман\"</string>
 
 
 </resources>
