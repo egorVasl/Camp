@@ -12,19 +12,20 @@ import com.example.singupactivity.databinding.DailyScheduleBottomHeetDialogBindi
 import com.example.singupactivity.ui.main.Activity.SearchActivity
 import com.example.singupactivity.ui.main.Fragment.act
 
-const val RATES_BOTTOM_REQUEST_KEY_SQUADS = "RATES_BOTTOM_REQUEST_KEY_SQUADS"
-const val RATES_BOTTOM_BUNDLE_KEY_SQUADS = "RATES_BOTTOM_BUNDLE_KEY_SQUADS"
 
-const val RATES_BOTTOM_REQUEST_KEY_IMPORT_PDF_SQUADS = "RATES_BOTTOM_REQUEST_KEY_IMPORT_PDF_SQUADS"
-const val RATES_BOTTOM_BUNDLE_KEY_IMPORT_PDF_SQUADS = "RATES_BOTTOM_BUNDLE_KEY_IMPORT_PDF_SQUADS"
+const val RATES_BOTTOM_REQUEST_KEY_ROOM = "RATES_BOTTOM_REQUEST_KEY_ROOM"
+const val RATES_BOTTOM_BUNDLE_KEY_ROOM = "RATES_BOTTOM_BUNDLE_KEY_ROOM"
 
-class SquadsBottomSheet :
+const val RATES_BOTTOM_REQUEST_KEY_IMPORT_PDF_ROOM = "RATES_BOTTOM_REQUEST_KEY_IMPORT_PDF_ROOM"
+const val RATES_BOTTOM_BUNDLE_KEY_IMPORT_PDF_ROOM = "RATES_BOTTOM_BUNDLE_KEY_IMPORT_PDF_ROOM"
+
+class RoomBottomSheetDialog :
     BaseBottomSheetDialog<DailyScheduleBottomHeetDialogBinding>(
         R.layout.daily_schedule_bottom_heet_dialog
     ) {
     companion object {
-        fun newInstance(): SquadsBottomSheet {
-            return SquadsBottomSheet()
+        fun newInstance(): RoomBottomSheetDialog {
+            return RoomBottomSheetDialog()
         }
     }
 
@@ -41,20 +42,22 @@ class SquadsBottomSheet :
 
         dialog?.window?.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
 
+        binding.tvInsertEvent.text = getString(R.string.add_room)
+
         binding.tvInsertEvent.setOnClickListener {
-            setFragmentResult(RATES_BOTTOM_REQUEST_KEY_SQUADS, bundleOf(RATES_BOTTOM_BUNDLE_KEY_SQUADS to true))
+            setFragmentResult(RATES_BOTTOM_REQUEST_KEY_ROOM, bundleOf(RATES_BOTTOM_BUNDLE_KEY_ROOM to true))
             dismiss()
         }
 
         binding.tvSearch.setOnClickListener {
-            SearchActivity.start(act, "Squads")
+            SearchActivity.start(act, "Room")
             dismiss()
         }
 
         binding.tvImportPDF.setOnClickListener {
             setFragmentResult(
-                RATES_BOTTOM_REQUEST_KEY_IMPORT_PDF_SQUADS,
-                bundleOf(RATES_BOTTOM_BUNDLE_KEY_IMPORT_PDF_SQUADS to true)
+                RATES_BOTTOM_REQUEST_KEY_IMPORT_PDF_ROOM,
+                bundleOf(RATES_BOTTOM_BUNDLE_KEY_IMPORT_PDF_ROOM to true)
             )
             dismiss()
 

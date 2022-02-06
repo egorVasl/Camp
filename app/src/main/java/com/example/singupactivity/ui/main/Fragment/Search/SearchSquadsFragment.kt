@@ -16,19 +16,17 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.singupactivity.R
-import com.example.singupactivity.databinding.AddDailyScheduleBinding
-import com.example.singupactivity.ui.main.Adapter.SearchSquadsAdapter
-import com.example.singupactivity.ui.main.Data.EventsDataClass
+import com.example.singupactivity.databinding.AddEditSquadsBinding
+import com.example.singupactivity.ui.main.Adapter.SearchAdapters.SearchSquadsAdapter
 import com.example.singupactivity.ui.main.Data.SquadsDataClass
 import com.example.singupactivity.ui.main.DataBase.CampDbManager
-import com.example.singupactivity.ui.main.DataBase.CampDbNameClass
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_SQUAD_NAME
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_SQUAD_NUMBER
 import com.example.singupactivity.ui.main.Fragment.act
 import com.example.singupactivity.ui.main.Fragment.ctx
-import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentDSdataClass
-import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentsDS
-import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentsDSFlag
+import com.example.singupactivity.ui.main.Objects.Arguments
+import com.example.singupactivity.ui.main.Objects.Squads.ArgumentsSquadsDataClass
+import com.example.singupactivity.ui.main.Objects.Squads.ArgumentsSquadsFlag
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 
@@ -50,7 +48,9 @@ class SearchSquadsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        campDbManager = activity?.let { CampDbManager(it) }!!
+        campDbManager = CampDbManager(act)
+        adapter = SearchSquadsAdapter(this@SearchSquadsFragment)
+
 
     }
 
@@ -58,7 +58,7 @@ class SearchSquadsFragment : Fragment() {
         return campDbManager.selectToTableSquad(
             const,
             searchText,
-            ArgumentsDS.arg
+            Arguments.arg
         )
     }
 
@@ -68,15 +68,16 @@ class SearchSquadsFragment : Fragment() {
     ): View {
         val view: View = inflater.inflate(R.layout.fragment_search, container, false)
         rv = view.findViewById(R.id.rcDailyScheduleSearch)
-        rv.layoutManager = LinearLayoutManager(activity)
+        rv.layoutManager = LinearLayoutManager(act)
         rv.itemAnimator = DefaultItemAnimator()
-        adapter = SearchSquadsAdapter(this@SearchSquadsFragment)
+
+
         rv.adapter = adapter
         val ibSearch = view.findViewById<ImageButton>(R.id.imageButtonSearch)
         etCardSearch = view.findViewById(R.id.etSearchDailySchedule)
 
         ibSearch?.setOnClickListener {
-            if (ArgumentsDS.arg.isNotBlank()) {
+            if (Arguments.arg.isNotBlank()) {
                 val searchText = etCardSearch.text.toString()
                 if (searchText.isNotEmpty()) {
                     adapter.squadsList.clear()
@@ -96,7 +97,7 @@ class SearchSquadsFragment : Fragment() {
 
 
                     for ((i, _) in squadNameList.withIndex()) {
-                        adapter.addEvents(
+                        adapter.addSquads(
                             SquadsDataClass(
                                 squadName = squadNameList[i],
                                 squadNumber = squadNumberList[i]
@@ -112,7 +113,7 @@ class SearchSquadsFragment : Fragment() {
                         )
                         etCardSearch.text.clear()
                     }
-                    ArgumentsDS.arg = ""
+                    Arguments.arg = ""
 
                 } else {
                     Toast.makeText(
@@ -134,144 +135,137 @@ class SearchSquadsFragment : Fragment() {
 
     }
 
-//    @SuppressLint("InflateParams")
-//    fun addAndEditSquads(
-//        isUpdate: Boolean,
-//        squadsDataClass: SquadsDataClass?,
-//        position: Int
-//    ) {
-//        val binding: AddDailyScheduleBinding = DataBindingUtil.inflate(
-//            LayoutInflater.from(
-//                context
-//            ), R.layout.add_daily_schedule, null, false
-//        )
-//        val etNameUpdate: String? = squadsDataClass?.squadName
-//
-//        val alertDialogBuilderUserInput: AlertDialog.Builder =
-//            AlertDialog.Builder(act)
-//        alertDialogBuilderUserInput.setView(binding.root)
-//
-//        with(binding) {
-//
-//            newDayTitle.text = if (!isUpdate) getString(R.string.add) else getString(R.string.edit)
-//
-//            if (isUpdate && squadsDataClass != null) {
-//                tiName.editText?.setText(squadsDataClass.eventName)
-//                tiDate.editText?.setText(squadsDataClass.date)
-//                tiTime.editText?.setText(eventsDataClass.time)
-//            }
-//            alertDialogBuilderUserInput
-//                .setCancelable(false)
-//                .setPositiveButton(
-//                    if (isUpdate) getString(R.string.update) else getString(R.string.save)
-//                ) { _, _ -> }
-//                .setNegativeButton(
-//                    if (isUpdate) getString(R.string.delete) else getString(R.string.close)
-//                ) { dialogBox, _ ->
-//                    if (isUpdate) {
-//                        ArgumentsDSFlag.isUpdate = false
-//                        ArgumentDSdataClass.nameEvent = adapter.eventsList[position].eventName
-//                        ArgumentDSdataClass.timeEvent = adapter.eventsList[position].time
-//                        ArgumentDSdataClass.dateEvent = adapter.eventsList[position].date
-//                        deleteEvents(
-//                            position = position,
-//                            const = tiName.editText?.text.toString()
-//                        )
-//                    } else {
-//                        dialogBox.cancel()
-//                    }
-//                }
-//
-//            val alertDialog: AlertDialog = alertDialogBuilderUserInput.create()
-//            alertDialog.window?.decorView?.setBackgroundResource(R.drawable.add_dialog_shape)
-//            alertDialog.show()
-//            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
-//                .setOnClickListener(View.OnClickListener {
-//                    when {
-//                        TextUtils.isEmpty(tiName.editText?.text.toString()) -> {
-//                            binding.tiName.error = getString(R.string.enter_name_event)
-//                            binding.tiName.defaultHintTextColor =
-//                                ctx.getColorStateList(R.color.errorColor)
-//                            return@OnClickListener
-//                        }
-//                        TextUtils.isEmpty(tiDate.editText?.text.toString()) -> {
-//                            binding.tiDate.error = getString(R.string.enter_data_event)
-//                            binding.tiDate.defaultHintTextColor =
-//                                ctx.getColorStateList(R.color.errorColor)
-//                            return@OnClickListener
-//                        }
-//                        TextUtils.isEmpty(tiTime.editText?.text.toString()) -> {
-//                            binding.tiTime.error = getString(R.string.enter_time_event)
-//                            binding.tiTime.defaultHintTextColor =
-//                                ctx.getColorStateList(R.color.errorColor)
-//                            return@OnClickListener
-//                        }
-//                        else -> {
-//                            alertDialog.dismiss()
-//                        }
-//                    }
-//                    if (isUpdate && eventsDataClass != null) {
-//                        if (etNameUpdate != null) {
-//                            ArgumentsDSFlag.isUpdate = true
-//                            ArgumentDSdataClass.nameEvent = adapter.eventsList[position].eventName
-//                            ArgumentDSdataClass.timeEvent = adapter.eventsList[position].time
-//                            ArgumentDSdataClass.dateEvent = adapter.eventsList[position].date
-//                            ArgumentDSdataClass.nameEventUpdate = tiName.editText?.text.toString()
-//                            ArgumentDSdataClass.timeEventUpdate = tiTime.editText?.text.toString()
-//                            ArgumentDSdataClass.dateEventUpdate = tiDate.editText?.text.toString()
-//                            updateEvents(
-//                                eventNameUpdate = tiName.editText?.text.toString(),
-//                                dateUpdate = tiDate.editText?.text.toString(),
-//                                timeUpdate = tiTime.editText?.text.toString(),
-//                                eventNameUpdatePosition = etNameUpdate,
-//                                position = position
-//                            )
-//                        }
-//                    }
-//                })
-//
-//        }
-//    }
+    @SuppressLint("InflateParams")
+    fun addAndEditSquads(
+        isUpdate: Boolean,
+        squadsDataClass: SquadsDataClass?,
+        position: Int
+    ) {
+        val binding: AddEditSquadsBinding = DataBindingUtil.inflate(
+            LayoutInflater.from(
+                context
+            ), R.layout.add_edit_squads, null, false
+        )
+        val etNameUpdate: String? = squadsDataClass?.squadName
+
+        val alertDialogBuilderUserInput: AlertDialog.Builder =
+            AlertDialog.Builder(act)
+        alertDialogBuilderUserInput.setView(binding.root)
+
+        with(binding) {
+
+            newSquadsTitle.text =
+                if (!isUpdate) getString(R.string.add) else getString(R.string.edit)
+
+            if (isUpdate && squadsDataClass != null) {
+                tiNumberSquads.editText?.setText(squadsDataClass.squadNumber)
+                tiNameSquads.editText?.setText(squadsDataClass.squadName)
+            }
+            alertDialogBuilderUserInput
+                .setCancelable(false)
+                .setPositiveButton(
+                    if (isUpdate) getString(R.string.update) else getString(R.string.save)
+                ) { _, _ -> }
+                .setNegativeButton(
+                    if (isUpdate) getString(R.string.delete) else getString(R.string.close)
+                ) { dialogBox, _ ->
+                    if (isUpdate) {
+                        ArgumentsSquadsFlag.isUpdate = false
+                        ArgumentsSquadsDataClass.squadName = adapter.squadsList[position].squadName
+                        ArgumentsSquadsDataClass.squadNumber =
+                            adapter.squadsList[position].squadNumber
+                        deleteSquads(
+                            position = position,
+                            const = tiNameSquads.editText?.text.toString()
+                        )
+                    } else {
+                        dialogBox.cancel()
+                    }
+                }
+
+            val alertDialog: AlertDialog = alertDialogBuilderUserInput.create()
+            alertDialog.window?.decorView?.setBackgroundResource(R.drawable.add_dialog_shape)
+            alertDialog.show()
+            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                .setOnClickListener(View.OnClickListener {
+                    when {
+                        TextUtils.isEmpty(tiNumberSquads.editText?.text.toString()) -> {
+                            binding.tiNumberSquads.error = getString(R.string.enter_number_squads)
+                            binding.tiNumberSquads.defaultHintTextColor =
+                                ctx.getColorStateList(R.color.errorColor)
+                            return@OnClickListener
+                        }
+                        TextUtils.isEmpty(tiNameSquads.editText?.text.toString()) -> {
+                            binding.tiNameSquads.error = getString(R.string.enter_name_squads)
+                            binding.tiNameSquads.defaultHintTextColor =
+                                ctx.getColorStateList(R.color.errorColor)
+                            return@OnClickListener
+                        }
+                        else -> {
+                            alertDialog.dismiss()
+                        }
+                    }
+                    if (isUpdate && squadsDataClass != null) {
+                        if (etNameUpdate != null) {
+                            ArgumentsSquadsFlag.isUpdate = true
+                            ArgumentsSquadsDataClass.squadName =
+                                adapter.squadsList[position].squadName
+                            ArgumentsSquadsDataClass.squadNumber =
+                                adapter.squadsList[position].squadNumber
+                            ArgumentsSquadsDataClass.squadNameUpdate =
+                                tiNameSquads.editText?.text.toString()
+                            ArgumentsSquadsDataClass.squadNumberUpdate =
+                                tiNumberSquads.editText?.text.toString()
+                            updateSquads(
+                                squadsNameUpdate = tiNameSquads.editText?.text.toString(),
+                                squadsNumberUpdate = tiNumberSquads.editText?.text.toString(),
+                                squadsNameUpdatePosition = etNameUpdate,
+                                position = position
+                            )
+                        }
+                    }
+                })
+
+        }
+    }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun deleteEvents(const: String, position: Int) {
+    private fun deleteSquads(const: String, position: Int) {
 
         runBlocking {
             async {
-                campDbManager.deleteRawToTableWeekEvents(const)
+
+                campDbManager.deleteRawToTableSquads(const)
+
             }.await()
         }
-
-        adapter.removeEvents(position)
+        adapter.removeSquads(position)
 
     }
 
-    private fun updateEvents(
-        timeUpdate: String,
-        eventNameUpdate: String,
-        dateUpdate: String,
-        eventNameUpdatePosition: String,
+    private fun updateSquads(
+        squadsNameUpdate: String,
+        squadsNumberUpdate: String,
+        squadsNameUpdatePosition: String,
         position: Int
     ) {
         runBlocking {
             async {
-                campDbManager.updateRawToTableWeekEvents(
-                    nameEvent = eventNameUpdate,
-                    dateEvent = dateUpdate,
-                    timeEvent = timeUpdate,
-                    nameEventUpdatePosition = eventNameUpdatePosition
+                campDbManager.updateRawToTableSquads(
+                    squadName = squadsNameUpdate,
+                    squadNumber = squadsNumberUpdate,
+                    squadsNameUpdatePosition = squadsNameUpdatePosition
                 )
             }.await()
         }
 
 
-        val eventsDataClassUpdate = EventsDataClass(
-            time = timeUpdate,
-            eventName = eventNameUpdate,
-            date = dateUpdate
+        val squadsDataClass = SquadsDataClass(
+            squadName = squadsNameUpdate,
+            squadNumber = squadsNumberUpdate
         )
 
-//        adapter.updateEvents(position, eventsDataClassUpdate)
+        adapter.updateSquads(position, squadsDataClass)
 
     }
 

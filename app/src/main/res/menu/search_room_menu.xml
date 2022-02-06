@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_more"
+        android:icon="@drawable/ic_action_overflow"
+        android:title="@string/search_title"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/menuArgFloor"
+                android:icon="@drawable/ic_navigate_next_compat"
+                android:title="@string/floor_menu" />
+            <item
+                android:id="@+id/menuArgRoomNumber"
+                android:icon="@drawable/ic_navigate_next_compat"
+                android:title="@string/room_number_menu" />
+            <item
+                android:id="@+id/menuArgChildQuantity"
+                android:icon="@drawable/ic_navigate_next_compat"
+                android:title="@string/child_quantity_menu" />
+        </menu>
+    </item>
+</menu>

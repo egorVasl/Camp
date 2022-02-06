@@ -1,6 +1,6 @@
 package com.example.singupactivity.ui.main.Objects.DailySchedule
 
-object ArgumentDSdataClass {
+object ArgumentDSDataClass {
     var timeEvent : String = ""
     var nameEvent : String = ""
     var dateEvent : String = ""

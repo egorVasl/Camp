@@ -16,46 +16,48 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.singupactivity.R
-import com.example.singupactivity.databinding.AddDailyScheduleBinding
-import com.example.singupactivity.ui.main.Adapter.SearchAdapters.SearchEventsAdapter
+import com.example.singupactivity.databinding.AddEditRoomBinding
+import com.example.singupactivity.ui.main.Adapter.SearchAdapters.SearchRoomAdapter
 import com.example.singupactivity.ui.main.Data.EventsDataClass
+import com.example.singupactivity.ui.main.Data.RoomDataClass
 import com.example.singupactivity.ui.main.DataBase.CampDbManager
-import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_DATE
-import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_EVENT_NAME
-import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_TIME
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_FLOOR
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_QUANTITY_CHILD
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_ROOM_NUMBER
 import com.example.singupactivity.ui.main.Fragment.act
 import com.example.singupactivity.ui.main.Fragment.ctx
-import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentDSDataClass
 import com.example.singupactivity.ui.main.Objects.Arguments
+import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentDSDataClass
 import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentsDSFlag
+import com.example.singupactivity.ui.main.Objects.Room.ArgumentsRoomDataClass
+import com.example.singupactivity.ui.main.Objects.Room.ArgumentsRoomFlag
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 
-class SearchEventsFragment : Fragment() {
+class SearchRoomFragment : Fragment() {
 
-    lateinit var adapter: SearchEventsAdapter
+    lateinit var adapter: SearchRoomAdapter
     lateinit var campDbManager: CampDbManager
 
     lateinit var rv: RecyclerView
     lateinit var etCardSearch: EditText
 
 
-
     companion object {
         @JvmStatic
         fun newInstance() =
-            SearchEventsFragment()
+            SearchRoomFragment()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         campDbManager = CampDbManager(act)
-        adapter = SearchEventsAdapter(this@SearchEventsFragment)
+        adapter = SearchRoomAdapter(this@SearchRoomFragment)
 
     }
 
     private fun getData(const: String, searchText: String): ArrayList<String> {
-        return  campDbManager.selectToTableWeekEvent(
+        return  campDbManager.selectToTableRoom(
             const,
             searchText,
             Arguments.arg
@@ -68,7 +70,7 @@ class SearchEventsFragment : Fragment() {
     ): View {
         val view: View = inflater.inflate(R.layout.fragment_search, container, false)
         rv = view.findViewById(R.id.rcDailyScheduleSearch)
-        rv.layoutManager = LinearLayoutManager(activity)
+        rv.layoutManager = LinearLayoutManager(act)
         rv.itemAnimator = DefaultItemAnimator()
         rv.adapter = adapter
         val ibSearch = view.findViewById<ImageButton>(R.id.imageButtonSearch)
@@ -78,40 +80,39 @@ class SearchEventsFragment : Fragment() {
             if (Arguments.arg.isNotBlank()) {
                 val searchText = etCardSearch.text.toString()
                 if (searchText.isNotEmpty()) {
-                    adapter.eventsList.clear()
-                    val eventTimeList =
+                    adapter.roomList.clear()
+                    val floorList =
                         runBlocking {
                             async {
-                                getData(COLUMN_NAME_TIME, searchText)
+                                getData(COLUMN_NAME_FLOOR, searchText)
                             }.await()
                         }
 
-                    val eventNameList =
+                    val roomNumberList =
                         runBlocking {
                             async {
-                                getData(COLUMN_NAME_EVENT_NAME, searchText)
+                                getData(COLUMN_NAME_ROOM_NUMBER, searchText)
                             }.await()
                         }
 
-                    val eventDateList =
+                    val quantityList =
                         runBlocking {
                             async {
-                                getData(COLUMN_NAME_DATE, searchText)
+                                getData(COLUMN_NAME_QUANTITY_CHILD, searchText)
                             }.await()
                         }
 
-                    for ((i, _) in eventTimeList.withIndex()) {
-                        adapter.addEvents(
-                            EventsDataClass(eventDateList[i],
-                                eventTimeList[i],
-                                eventNameList[i]
-
+                    for ((i, elm) in floorList.withIndex()) {
+                        adapter.addRoom(
+                            RoomDataClass(
+                                floor =  floorList[i],
+                                roomNumber = roomNumberList[i],
+                                quantity =  quantityList[i]
                             )
                         )
-
                     }
                     rv.adapter = adapter
-                    if (adapter.eventsList.isEmpty()) {
+                    if (adapter.roomList.isEmpty()) {
                         alert(
                             getString(R.string.no_data_after_search_title),
                             getString(R.string.no_data_after_search)
@@ -140,18 +141,21 @@ class SearchEventsFragment : Fragment() {
 
     }
 
+
+
+
     @SuppressLint("InflateParams")
-    fun addAndEditEvents(
+    fun addAndEditRoom(
         isUpdate: Boolean,
-        eventsDataClass: EventsDataClass?,
+        roomDataClass: RoomDataClass?,
         position: Int
     ) {
-        val binding: AddDailyScheduleBinding = DataBindingUtil.inflate(
+        val binding: AddEditRoomBinding = DataBindingUtil.inflate(
             LayoutInflater.from(
                 context
-            ), R.layout.add_daily_schedule, null, false
+            ), R.layout.add_edit_room, null, false
         )
-        val etNameUpdate: String? = eventsDataClass?.eventName
+        val etNameUpdate: String? = roomDataClass?.roomNumber
 
         val alertDialogBuilderUserInput: AlertDialog.Builder =
             AlertDialog.Builder(act)
@@ -159,12 +163,12 @@ class SearchEventsFragment : Fragment() {
 
         with(binding) {
 
-            newDayTitle.text = if (!isUpdate) getString(R.string.add) else getString(R.string.edit)
+            newRoomTitle.text = if (!isUpdate) getString(R.string.add) else getString(R.string.edit)
 
-            if (isUpdate && eventsDataClass != null) {
-                tiName.editText?.setText(eventsDataClass.eventName)
-                tiDate.editText?.setText(eventsDataClass.date)
-                tiTime.editText?.setText(eventsDataClass.time)
+            if (isUpdate && roomDataClass != null) {
+                tiFloor.editText?.setText(roomDataClass.floor)
+                tiRoomNumber.editText?.setText(roomDataClass.roomNumber)
+                tiQuantity.editText?.setText(roomDataClass.quantity)
             }
             alertDialogBuilderUserInput
                 .setCancelable(false)
@@ -174,13 +178,13 @@ class SearchEventsFragment : Fragment() {
                 .setNegativeButton(if (isUpdate) getString(R.string.delete) else getString(R.string.close)
                 ) { dialogBox, _ ->
                     if (isUpdate) {
-                        ArgumentsDSFlag.isUpdate = false
-                        ArgumentDSDataClass.nameEvent = adapter.eventsList[position].eventName
-                        ArgumentDSDataClass.timeEvent = adapter.eventsList[position].time
-                        ArgumentDSDataClass.dateEvent = adapter.eventsList[position].date
-                        deleteEvents(
+                        ArgumentsRoomFlag.isUpdate = false
+                        ArgumentsRoomDataClass.floor = adapter.roomList[position].floor
+                        ArgumentsRoomDataClass.roomNumber = adapter.roomList[position].roomNumber
+                        ArgumentsRoomDataClass.quantity = adapter.roomList[position].quantity
+                        deleteRoom(
                             position = position,
-                            const = tiName.editText?.text.toString()
+                            const = tiRoomNumber.editText?.text.toString()
                         )
                     } else {
                         dialogBox.cancel()
@@ -193,88 +197,88 @@ class SearchEventsFragment : Fragment() {
             alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
                 .setOnClickListener(View.OnClickListener {
                     when {
-                        TextUtils.isEmpty(tiName.editText?.text.toString()) -> {
-                            binding.tiName.error = getString(R.string.enter_name_event)
-                            binding.tiName.defaultHintTextColor = ctx.getColorStateList(R.color.errorColor)
+                        TextUtils.isEmpty(tiFloor.editText?.text.toString()) -> {
+                            binding.tiFloor.error = getString(R.string.enter_floor)
+                            binding.tiFloor.defaultHintTextColor = ctx.getColorStateList(R.color.errorColor)
                             return@OnClickListener
                         }
-                        TextUtils.isEmpty(tiDate.editText?.text.toString()) -> {
-                            binding.tiDate.error = getString(R.string.enter_data_event)
-                            binding.tiDate.defaultHintTextColor = ctx.getColorStateList(R.color.errorColor)
+                        TextUtils.isEmpty(tiRoomNumber.editText?.text.toString()) -> {
+                            binding.tiRoomNumber.error = getString(R.string.enter_number_room)
+                            binding.tiRoomNumber.defaultHintTextColor = ctx.getColorStateList(R.color.errorColor)
                             return@OnClickListener
                         }
-                        TextUtils.isEmpty(tiTime.editText?.text.toString()) -> {
-                            binding.tiTime.error = getString(R.string.enter_time_event)
-                            binding.tiTime.defaultHintTextColor = ctx.getColorStateList(R.color.errorColor)
+                        TextUtils.isEmpty(tiQuantity.editText?.text.toString()) -> {
+                            binding.tiQuantity.error = getString(R.string.enter_quantity_child)
+                            binding.tiQuantity.defaultHintTextColor = ctx.getColorStateList(R.color.errorColor)
                             return@OnClickListener
                         }
                         else -> {
                             alertDialog.dismiss()
                         }
                     }
-                    if (isUpdate && eventsDataClass != null) {
+                    if (isUpdate && roomDataClass != null) {
                         if (etNameUpdate != null) {
-                            ArgumentsDSFlag.isUpdate = true
-                            ArgumentDSDataClass.nameEvent = adapter.eventsList[position].eventName
-                            ArgumentDSDataClass.timeEvent = adapter.eventsList[position].time
-                            ArgumentDSDataClass.dateEvent = adapter.eventsList[position].date
-                            ArgumentDSDataClass.nameEventUpdate = tiName.editText?.text.toString()
-                            ArgumentDSDataClass.timeEventUpdate = tiTime.editText?.text.toString()
-                            ArgumentDSDataClass.dateEventUpdate = tiDate.editText?.text.toString()
-                            updateEvents(
-                                eventNameUpdate = tiName.editText?.text.toString(),
-                                dateUpdate = tiDate.editText?.text.toString(),
-                                timeUpdate = tiTime.editText?.text.toString(),
-                                eventNameUpdatePosition = etNameUpdate,
+                            ArgumentsRoomFlag.isUpdate = true
+                            ArgumentsRoomDataClass.floor = adapter.roomList[position].floor
+                            ArgumentsRoomDataClass.roomNumber = adapter.roomList[position].roomNumber
+                            ArgumentsRoomDataClass.quantity = adapter.roomList[position].quantity
+                            ArgumentsRoomDataClass.floorUpdate = tiFloor.editText?.text.toString()
+                            ArgumentsRoomDataClass.roomNumberUpdate = tiRoomNumber.editText?.text.toString()
+                            ArgumentsRoomDataClass.quantityUpdate = tiQuantity.editText?.text.toString()
+                            updateRoom(
+                                floorUpdate = tiFloor.editText?.text.toString(),
+                                roomNumberUpdate = tiRoomNumber.editText?.text.toString(),
+                                quantityUpdate = tiQuantity.editText?.text.toString(),
+                                roomNumberUpdatePosition = etNameUpdate,
                                 position = position
                             )
                         }
                     }
                 })
 
+        }
     }
-    }
-        @SuppressLint("NotifyDataSetChanged")
-        private fun deleteEvents(const: String, position: Int) {
-
-            runBlocking {
-                async {
-                    campDbManager.deleteRawToTableWeekEvents(const)
-                }.await()
-            }
-
-            adapter.removeEvents(position)
-
+    @SuppressLint("NotifyDataSetChanged")
+    private fun deleteRoom(const: String, position: Int) {
+        runBlocking {
+            async {
+                campDbManager.deleteRawToTableRoom(const)
+            }.await()
         }
 
-        private fun updateEvents(
-            timeUpdate: String,
-            eventNameUpdate: String,
-            dateUpdate: String,
-            eventNameUpdatePosition: String,
-            position: Int
-        ) {
-            runBlocking {
-                async {
-                    campDbManager.updateRawToTableWeekEvents(
-                        nameEvent = eventNameUpdate,
-                        dateEvent = dateUpdate,
-                        timeEvent = timeUpdate,
-                        nameEventUpdatePosition = eventNameUpdatePosition
-                    )
-                }.await()
-            }
+        adapter.removeRoom(position)
 
+    }
 
-            val eventsDataClassUpdate = EventsDataClass(
-                time = timeUpdate,
-                eventName = eventNameUpdate,
-                date = dateUpdate
-            )
-
-            adapter.updateEvents(position,eventsDataClassUpdate)
-
+    private fun updateRoom(
+        floorUpdate: String,
+        roomNumberUpdate: String,
+        quantityUpdate: String,
+        roomNumberUpdatePosition: String,
+        position: Int
+    ) {
+        runBlocking {
+            async {
+                campDbManager.updateRawToTableRoom(
+                    floorUpdate = floorUpdate,
+                    roomNumberUpdate = roomNumberUpdate,
+                    quantityUpdate = quantityUpdate,
+                    roomNumberUpdatePosition = roomNumberUpdatePosition
+                )
+            }.await()
         }
+
+
+        val roomDataClass = RoomDataClass(
+            floor = floorUpdate,
+            roomNumber = roomNumberUpdate,
+            quantity = quantityUpdate
+        )
+
+        adapter.updateRoom(position, roomDataClass)
+
+    }
+
 
     private fun alert(title: String, massage: String) {
         val builder = AlertDialog.Builder(act)

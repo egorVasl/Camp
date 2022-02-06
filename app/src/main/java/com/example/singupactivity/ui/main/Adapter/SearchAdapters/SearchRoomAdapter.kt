@@ -1,4 +1,4 @@
-package com.example.singupactivity.ui.main.Adapter
+package com.example.singupactivity.ui.main.Adapter.SearchAdapters
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -7,43 +7,40 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 import com.example.singupactivity.R
-import com.example.singupactivity.databinding.DailySceduleListItemBinding
+import com.example.singupactivity.databinding.RoomListItemBinding
 import com.example.singupactivity.ui.main.Data.EventsDataClass
-import com.example.singupactivity.ui.main.Fragment.Search.SearchEventsFragment
+import com.example.singupactivity.ui.main.Data.RoomDataClass
+import com.example.singupactivity.ui.main.Fragment.Search.SearchRoomFragment
 
-
-private const val ITEM_EVENTS: Int = 0
+private const val ITEM_ROOM: Int = 0
 private const val ITEM_EMPTY_LIST: Int = 1
 
-
-class SearchEventsAdapter (fragment1: SearchEventsFragment) :
+class SearchRoomAdapter(fragment1: SearchRoomFragment) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    var roomList = ArrayList<RoomDataClass>()
 
-    var eventsList = ArrayList<EventsDataClass>()
+    val fragment: SearchRoomFragment = fragment1
 
-    val fragment: SearchEventsFragment = fragment1
-
-    class EventsHolder(item: View) : RecyclerView.ViewHolder(item) {
+    class RoomHolder(item: View) : RecyclerView.ViewHolder(item) {
 
 
-        private val binding = DailySceduleListItemBinding.bind(item)
+        private val binding = RoomListItemBinding.bind(item)
 
         @SuppressLint("SetTextI18n")
-        fun bind(eventsDataClass: EventsDataClass) = with(binding) {
+        fun bind(roomDataClass: RoomDataClass) = with(binding) {
 
-            tvNameEvent.text = "Название: ${eventsDataClass.eventName}"
-            tvData.text = eventsDataClass.date
-            tvTime.text = "Время: ${eventsDataClass.time}"
+            tvFloor.text = "Этаж: ${roomDataClass.floor}"
+            tvRoomNumber.text = "Номер комнаты: ${roomDataClass.roomNumber}"
+            tvQuantity.text = "Детей: ${roomDataClass.quantity}"
 
         }
 
 
     }
-
     override fun getItemViewType(position: Int): Int {
         return when {
-            eventsList.isNullOrEmpty() -> ITEM_EMPTY_LIST
-            else -> ITEM_EVENTS
+            roomList.isNullOrEmpty() -> ITEM_EMPTY_LIST
+            else -> ITEM_ROOM
         }
 
     }
@@ -51,21 +48,21 @@ class SearchEventsAdapter (fragment1: SearchEventsFragment) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
         return when (viewType) {
-            ITEM_EVENTS -> EventsHolder(parent.inflate(R.layout.daily_scedule_list_item))
+            ITEM_ROOM -> RoomHolder(parent.inflate(R.layout.room_list_item))
             else -> EmptyListViewHolder(parent.inflate(R.layout.partial_empty_list))
         }
 
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is EventsHolder) {
-            holder.bind(eventsList[position])
+        if (holder is RoomHolder) {
+            holder.bind(roomList[position])
 
-            val eventsDataClass: EventsDataClass = eventsList[position]
+            val roomDataClass: RoomDataClass = roomList[position]
 
             holder.itemView.setOnClickListener {
 
-                fragment.addAndEditEvents(true, eventsDataClass, position)
+                fragment.addAndEditRoom(true, roomDataClass, position)
 
             }
         } else if (holder is EmptyListViewHolder) {
@@ -83,30 +80,30 @@ class SearchEventsAdapter (fragment1: SearchEventsFragment) :
 
     override fun getItemCount(): Int {
 
-        return if (eventsList.isNullOrEmpty()) 1 else eventsList.size
+        return if (roomList.isNullOrEmpty()) 1 else roomList.size
 
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun addEvents(eventsDataClass: EventsDataClass) {
+    fun addRoom(roomDataClass: RoomDataClass) {
 
-        eventsList.add(eventsDataClass)
+        roomList.add(roomDataClass)
         notifyDataSetChanged()
 
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun removeEvents(position: Int) {
+    fun removeRoom(position: Int) {
 
-        eventsList.removeAt(position)
+        roomList.removeAt(position)
         notifyDataSetChanged()
 
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateEvents(position: Int, eventsDataClass: EventsDataClass) {
+    fun updateRoom(position: Int, roomDataClass: RoomDataClass) {
 
-        eventsList[position] = eventsDataClass
+        roomList[position] = roomDataClass
         notifyDataSetChanged()
 
     }

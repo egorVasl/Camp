@@ -22,10 +22,9 @@ import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_T
 import android.widget.Toast
 import com.example.singupactivity.databinding.AddDailyScheduleBinding
 import com.example.singupactivity.ui.main.Fragment.*
-import com.example.singupactivity.ui.main.Fragment.BottomSheet.EventsBottomSheet
 import com.example.singupactivity.ui.main.Fragment.BottomSheet.RATES_BOTTOM_REQUEST_KEY
 import com.example.singupactivity.ui.main.Fragment.BottomSheet.RATES_BOTTOM_REQUEST_KEY_IMPORT_PDF
-import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentDSdataClass
+import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentDSDataClass
 import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentsDSFlag
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
@@ -50,7 +49,13 @@ class DailyScheduleFragment : Fragment() {
         }
 
         setFragmentResultListener(RATES_BOTTOM_REQUEST_KEY_IMPORT_PDF) { _, _ ->
-            importTextFile()
+            if (adapter.dailyScheduleList.isEmpty())
+                alert(
+                    getString(R.string.no_data_to_save_title),
+                    getString(R.string.no_data_to_save)
+                )
+            else
+                importTextFile()
         }
 
         campDbManager = CampDbManager(act)
@@ -113,27 +118,29 @@ class DailyScheduleFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         val response = DailyScheduleDataClass(
-            timeEvent = ArgumentDSdataClass.timeEvent,
-            nameEvent = ArgumentDSdataClass.nameEvent,
-            dateEvent = ArgumentDSdataClass.dateEvent
+            timeEvent = ArgumentDSDataClass.timeEvent,
+            nameEvent = ArgumentDSDataClass.nameEvent,
+            dateEvent = ArgumentDSDataClass.dateEvent
         )
         val responseUpdate = DailyScheduleDataClass(
-            timeEvent = ArgumentDSdataClass.timeEventUpdate,
-            nameEvent = ArgumentDSdataClass.nameEventUpdate,
-            dateEvent = ArgumentDSdataClass.dateEventUpdate
+            timeEvent = ArgumentDSDataClass.timeEventUpdate,
+            nameEvent = ArgumentDSDataClass.nameEventUpdate,
+            dateEvent = ArgumentDSDataClass.dateEventUpdate
         )
         if (ArgumentsDSFlag.isUpdate) {
             adapter.let {
                 for ((i, _) in it.dailyScheduleList.withIndex()) {
                     if (it.dailyScheduleList[i] == response)
                         it.updateDailySchedule(i, responseUpdate)
+                    it.notifyDataSetChanged()
                 }
             }
         } else {
             adapter.let {
                 for ((i, _) in it.dailyScheduleList.withIndex()) {
                     if (it.dailyScheduleList[i] == response)
-                        it.removeDailySchedule(i)
+                            it.removeDailySchedule(i)
+                    it.notifyDataSetChanged()
                 }
             }
         }

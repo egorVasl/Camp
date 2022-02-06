@@ -26,7 +26,7 @@ import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_T
 import com.example.singupactivity.ui.main.Fragment.BottomSheet.*
 import com.example.singupactivity.ui.main.Fragment.act
 import com.example.singupactivity.ui.main.Fragment.ctx
-import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentDSdataClass
+import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentDSDataClass
 import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentsDSFlag
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.async
@@ -58,7 +58,13 @@ class EventsFragment : Fragment() {
         }
 
         setFragmentResultListener(RATES_BOTTOM_REQUEST_KEY_IMPORT_PDF_EVENTS) { _, _ ->
-            importTextFile()
+            if (adapter.eventsList.isEmpty())
+                alert(
+                    getString(R.string.no_data_to_save_title),
+                    getString(R.string.no_data_to_save)
+                )
+            else
+                importTextFile()
         }
 
         campDbManager = CampDbManager(act)
@@ -96,14 +102,14 @@ class EventsFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         val response = EventsDataClass(
-            time = ArgumentDSdataClass.timeEvent,
-            eventName = ArgumentDSdataClass.nameEvent,
-            date = ArgumentDSdataClass.dateEvent
+            time = ArgumentDSDataClass.timeEvent,
+            eventName = ArgumentDSDataClass.nameEvent,
+            date = ArgumentDSDataClass.dateEvent
         )
         val responseUpdate = EventsDataClass(
-            time = ArgumentDSdataClass.timeEventUpdate,
-            eventName = ArgumentDSdataClass.nameEventUpdate,
-            date = ArgumentDSdataClass.dateEventUpdate
+            time = ArgumentDSDataClass.timeEventUpdate,
+            eventName = ArgumentDSDataClass.nameEventUpdate,
+            date = ArgumentDSDataClass.dateEventUpdate
         )
         if (ArgumentsDSFlag.isUpdate) {
             adapter.let {
@@ -138,7 +144,7 @@ class EventsFragment : Fragment() {
         rv.itemAnimator = DefaultItemAnimator()
 
         fabEvents.setOnClickListener {
-            EventsBottomSheet.newInstance()
+            EventsBottomSheetDialog.newInstance()
                 .show(this.parentFragmentManager, "bottomDialogDS")
 
         }

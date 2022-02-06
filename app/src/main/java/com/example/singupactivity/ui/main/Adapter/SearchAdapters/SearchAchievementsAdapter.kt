@@ -1,4 +1,4 @@
-package com.example.singupactivity.ui.main.Adapter
+package com.example.singupactivity.ui.main.Adapter.SearchAdapters
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -9,15 +9,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.singupactivity.R
 import com.example.singupactivity.databinding.AchievementsListItemBinding
 import com.example.singupactivity.ui.main.Data.AchievementsDataClass
-import com.example.singupactivity.ui.main.Fragment.TableFragments.AchievementsFragment
+import com.example.singupactivity.ui.main.Data.RoomDataClass
+import com.example.singupactivity.ui.main.Fragment.Search.SearchAchievementsFragment
+import com.example.singupactivity.ui.main.Fragment.Search.SearchRoomFragment
+
 
 private const val ITEM_ACHIEVEMENTS: Int = 0
 private const val ITEM_EMPTY_LIST: Int = 1
-class AchievementsAdapter(fragment1: AchievementsFragment) :
+
+class SearchAchievementsAdapter(fragment1: SearchAchievementsFragment) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var achievementsList = ArrayList<AchievementsDataClass>()
 
-    val fragment: AchievementsFragment = fragment1
+    val fragment: SearchAchievementsFragment = fragment1
 
     class AchievementsHolder(item: View) : RecyclerView.ViewHolder(item) {
 

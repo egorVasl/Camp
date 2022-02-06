@@ -22,7 +22,7 @@ class SplashActivity : AppCompatActivity() {
             startActivity(Intent(this, CampMainActivity::class.java))
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
             finish()
-        }, 1500)
+        }, 1000)
 
     }
 

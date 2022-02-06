@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
-import com.example.singupactivity.ui.main.Data.CounselorDataClass
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_ACHIEVEMENTS_PLACE
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_AVATAR
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_CHILD_BIRTHDAY
@@ -20,9 +19,8 @@ import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_D
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_DATE_EVENT
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_EVENT_NAME
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_FLOOR
-import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_ID_EVENT_ACHIEVEMENTS
-import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_ID_SQUAD_ACHIEVEMENTS
-import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_ID_SQUAD_CHILD
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_EVENT_ACHIEVEMENTS
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_SQUAD_ACHIEVEMENTS
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_LOGIN
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_LOGIN_AVATAR
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_LOGIN_COUNSELOR
@@ -46,7 +44,6 @@ import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.TABLE_NAME_LI
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.TABLE_NAME_ROOM
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.TABLE_NAME_SQUAD
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.TABLE_NAME_WEEK_EVENT
-import com.example.singupactivity.ui.main.Objects.Counselor.ArgumentsCounselorItem
 
 
 class CampDbManager(context: Context) {
@@ -369,12 +366,12 @@ class CampDbManager(context: Context) {
      *  Table Achievements
      */
 
-    fun insertToTableAchievements(achievementsPlace: String) {
+    fun insertToTableAchievements(achievementsPlace: String, achievementsSquad:  String, achievementsEvent: String) {
         openDb()
         val cv = ContentValues().apply {
             put(COLUMN_NAME_ACHIEVEMENTS_PLACE, achievementsPlace)
-            put(COLUMN_NAME_ID_SQUAD_ACHIEVEMENTS, "null")
-            put(COLUMN_NAME_ID_EVENT_ACHIEVEMENTS, "null")
+            put(COLUMN_NAME_SQUAD_ACHIEVEMENTS, achievementsSquad)
+            put(COLUMN_NAME_EVENT_ACHIEVEMENTS, achievementsEvent)
 
         }
         val rowID = db.insert(TABLE_NAME_ACHIEVEMENTS, null, cv)
@@ -398,6 +395,22 @@ class CampDbManager(context: Context) {
         return dataList
     }
 
+    @SuppressLint("Range")
+    fun selectToTableAchievements(const: String, searchText: String, selectionArguments: String): ArrayList<String> {
+        openDb()
+        val sqlQuery = ("select * from $TABLE_NAME_ACHIEVEMENTS where $selectionArguments = '$searchText';")
+        val dataList = ArrayList<String>()
+        val cursor = db.rawQuery(sqlQuery, null)
+
+        while (cursor?.moveToNext()!!) {
+            val dataText = cursor.getString(cursor.getColumnIndex(const))
+            dataList.add(dataText.toString())
+        }
+        cursor.close()
+        closeDb()
+        return dataList
+    }
+
     fun deleteRawToTableAchievements(const: String) {
         openDb()
         val delCount = db.delete(TABLE_NAME_ACHIEVEMENTS, "achievements_place = '$const'", null)
@@ -406,12 +419,15 @@ class CampDbManager(context: Context) {
 
     fun updateRawToTableAchievements(
         place: String,
+        achievementsSquad:  String,
+        achievementsEvent: String,
         placeUpdatePosition: String
     ) {
         openDb()
         val cv = ContentValues().apply {
             put(COLUMN_NAME_ACHIEVEMENTS_PLACE, place)
-
+            put(COLUMN_NAME_SQUAD_ACHIEVEMENTS, achievementsSquad)
+            put(COLUMN_NAME_EVENT_ACHIEVEMENTS, achievementsEvent)
         }
 
         val updCount = db.update(
@@ -480,8 +496,6 @@ class CampDbManager(context: Context) {
             put(COLUMN_NAME_CHILD_PATRONYMIC, patronamycChildUpdate)
             put(COLUMN_NAME_CHILD_BIRTHDAY, parentsPhoneNumberUpdate)
             put(COLUMN_NAME_PARENTS_NUMBER, birthdayChildUpdate)
-            put(COLUMN_NAME_ID_SQUAD_CHILD, "null")
-
 
         }
 
@@ -525,6 +539,22 @@ class CampDbManager(context: Context) {
             dataList.add(dataText.toString())
         }
         cursor.close()
+        return dataList
+    }
+
+    @SuppressLint("Range")
+    fun selectToTableRoom(const: String, searchText: String, selectionArguments: String): ArrayList<String> {
+        openDb()
+        val sqlQuery = ("select * from $TABLE_NAME_ROOM where $selectionArguments = '$searchText';")
+        val dataList = ArrayList<String>()
+        val cursor = db.rawQuery(sqlQuery, null)
+
+        while (cursor?.moveToNext()!!) {
+            val dataText = cursor.getString(cursor.getColumnIndex(const))
+            dataList.add(dataText.toString())
+        }
+        cursor.close()
+        closeDb()
         return dataList
     }
 

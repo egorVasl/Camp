@@ -6,17 +6,24 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import com.example.singupactivity.R
-import com.example.singupactivity.ui.main.Fragment.Search.SearchDSFragment
 import com.example.singupactivity.ui.main.Fragment.addFragmentToActivity
 import android.view.Menu
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_ACHIEVEMENTS_PLACE
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_DATE
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_DATE_EVENT
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_EVENT_ACHIEVEMENTS
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_EVENT_NAME
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_FLOOR
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_NAME_EVENT
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_QUANTITY_CHILD
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_ROOM_NUMBER
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_SQUAD_ACHIEVEMENTS
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_SQUAD_NAME
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_SQUAD_NUMBER
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_TIME
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_TIME_EVENT
-import com.example.singupactivity.ui.main.Fragment.Search.SearchEventsFragment
-import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentsDS
+import com.example.singupactivity.ui.main.Fragment.Search.*
+import com.example.singupactivity.ui.main.Objects.Arguments
 
 
 const val TYPE_ACTIVITY = "TYPE_ACTIVITY"
@@ -48,6 +55,9 @@ class SearchActivity : AppCompatActivity() {
             when(intent.getStringExtra(TYPE_ACTIVITY)){
                 "DailySchedule" ->  addFragmentToActivity(R.id.container, SearchDSFragment.newInstance())
                 "Events" ->  addFragmentToActivity(R.id.container, SearchEventsFragment.newInstance())
+                "Squads" -> addFragmentToActivity(R.id.container, SearchSquadsFragment.newInstance())
+                "Room" -> addFragmentToActivity(R.id.container, SearchRoomFragment.newInstance())
+                "Achievements" -> addFragmentToActivity(R.id.container, SearchAchievementsFragment.newInstance())
             }
         }
 
@@ -56,7 +66,14 @@ class SearchActivity : AppCompatActivity() {
 
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.search_parameters_menu, menu)
+        when(intent.getStringExtra(TYPE_ACTIVITY)){
+            "DailySchedule" -> menuInflater.inflate(R.menu.search_ds_events_menu, menu)
+            "Events" -> menuInflater.inflate(R.menu.search_ds_events_menu, menu)
+            "Squads" -> menuInflater.inflate(R.menu.search_squads_menu, menu)
+            "Room" -> menuInflater.inflate(R.menu.search_room_menu, menu)
+            "Achievements" -> menuInflater.inflate(R.menu.search_achievemenets_menu, menu)
+        }
+
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -68,23 +85,56 @@ class SearchActivity : AppCompatActivity() {
             }
             R.id.menuArgName -> {
                 when(intent.getStringExtra(TYPE_ACTIVITY)){
-                    "DailySchedule" ->   ArgumentsDS.arg = COLUMN_NAME_NAME_EVENT
-                    "Events" ->   ArgumentsDS.arg = COLUMN_NAME_EVENT_NAME
+                    "DailySchedule" ->   Arguments.arg = COLUMN_NAME_NAME_EVENT
+                    "Events" ->   Arguments.arg = COLUMN_NAME_EVENT_NAME
                 }
                 true
             }
             R.id.menuArgTime -> {
                 when(intent.getStringExtra(TYPE_ACTIVITY)){
-                    "DailySchedule" ->   ArgumentsDS.arg = COLUMN_NAME_TIME_EVENT
-                    "Events" ->   ArgumentsDS.arg = COLUMN_NAME_TIME
+                    "DailySchedule" ->   Arguments.arg = COLUMN_NAME_TIME_EVENT
+                    "Events" ->   Arguments.arg = COLUMN_NAME_TIME
                 }
                 true
             }
             R.id.menuArgDate -> {
                 when(intent.getStringExtra(TYPE_ACTIVITY)){
-                    "DailySchedule" ->   ArgumentsDS.arg = COLUMN_NAME_DATE_EVENT
-                    "Events" ->   ArgumentsDS.arg = COLUMN_NAME_DATE
+                    "DailySchedule" ->   Arguments.arg = COLUMN_NAME_DATE_EVENT
+                    "Events" ->   Arguments.arg = COLUMN_NAME_DATE
                 }
+                true
+            }
+            R.id.menuArgSquadsNumber ->{
+                Arguments.arg = COLUMN_NAME_SQUAD_NUMBER
+                true
+            }
+            R.id.menuArgSquadsName ->{
+                Arguments.arg = COLUMN_NAME_SQUAD_NAME
+                true
+            }
+            R.id.menuArgFloor ->{
+                Arguments.arg = COLUMN_NAME_FLOOR
+                true
+            }
+            R.id.menuArgRoomNumber ->{
+                Arguments.arg = COLUMN_NAME_ROOM_NUMBER
+                true
+            }
+            R.id.menuArgChildQuantity ->{
+                Arguments.arg = COLUMN_NAME_QUANTITY_CHILD
+                true
+            }
+
+            R.id.menuPlaceAchievements ->{
+                Arguments.arg = COLUMN_NAME_ACHIEVEMENTS_PLACE
+                true
+            }
+            R.id.menuSquadNumberAchievements ->{
+                Arguments.arg = COLUMN_NAME_SQUAD_ACHIEVEMENTS
+                true
+            }
+            R.id.menuNameEventAchievements ->{
+                Arguments.arg = COLUMN_NAME_EVENT_ACHIEVEMENTS
                 true
             }
             else -> super.onOptionsItemSelected(item)

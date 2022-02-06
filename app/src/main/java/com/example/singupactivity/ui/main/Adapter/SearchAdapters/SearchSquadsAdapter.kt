@@ -1,4 +1,4 @@
-package com.example.singupactivity.ui.main.Adapter
+package com.example.singupactivity.ui.main.Adapter.SearchAdapters
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -8,19 +8,20 @@ import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 import com.example.singupactivity.R
 import com.example.singupactivity.databinding.SquadaListItemBinding
-import com.example.singupactivity.ui.main.Adapter.SearchAdapters.SearchSquadsAdapter
 import com.example.singupactivity.ui.main.Data.SquadsDataClass
-import com.example.singupactivity.ui.main.Fragment.TableFragments.SquadsFragment
+import com.example.singupactivity.ui.main.Fragment.Search.SearchSquadsFragment
+
 
 private const val ITEM_SQUADS: Int = 0
 private const val ITEM_EMPTY_LIST: Int = 1
 
-class SquadsAdapter(fragment1: SquadsFragment) :
+
+class SearchSquadsAdapter (fragment1: SearchSquadsFragment) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var squadsList = ArrayList<SquadsDataClass>()
 
-    val fragment: SquadsFragment = fragment1
+    val fragment: SearchSquadsFragment = fragment1
 
     class SquadsHolder(item: View) : RecyclerView.ViewHolder(item) {
 
@@ -37,6 +38,7 @@ class SquadsAdapter(fragment1: SquadsFragment) :
 
 
     }
+
     override fun getItemViewType(position: Int): Int {
         return when {
             squadsList.isNullOrEmpty() -> ITEM_EMPTY_LIST
@@ -45,13 +47,30 @@ class SquadsAdapter(fragment1: SquadsFragment) :
 
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
         return when (viewType) {
             ITEM_SQUADS -> SquadsHolder(parent.inflate(R.layout.squada_list_item))
             else -> EmptyListViewHolder(parent.inflate(R.layout.partial_empty_list))
         }
+
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (holder is SquadsHolder) {
+            holder.bind(squadsList[position])
+
+            val squadsDataClass: SquadsDataClass = squadsList[position]
+
+            holder.itemView.setOnClickListener {
+
+                fragment.addAndEditSquads(true, squadsDataClass, position)
+
+            }
+        } else if (holder is EmptyListViewHolder) {
+            holder.bind()
+        }
+
 
     }
 
@@ -66,26 +85,6 @@ class SquadsAdapter(fragment1: SquadsFragment) :
         return if (squadsList.isNullOrEmpty()) 1 else squadsList.size
 
     }
-
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
-        if (holder is SearchSquadsAdapter.SquadsHolder) {
-            holder.bind(squadsList[position])
-
-            val squadsDataClass: SquadsDataClass = squadsList[position]
-
-            holder.itemView.setOnClickListener {
-
-                fragment.addAndEditSquads(true, squadsDataClass, position)
-
-            }
-        } else if (holder is SearchSquadsAdapter.EmptyListViewHolder) {
-            holder.bind()
-        }
-
-    }
-
 
     @SuppressLint("NotifyDataSetChanged")
     fun addSquads(squadsDataClass: SquadsDataClass) {
@@ -110,6 +109,7 @@ class SquadsAdapter(fragment1: SquadsFragment) :
         notifyDataSetChanged()
 
     }
+
     fun ViewGroup.inflate(@LayoutRes resId: Int) =
         LayoutInflater.from(this.context).inflate(resId, this, false)!!
 }

@@ -3,6 +3,7 @@ package com.example.singupactivity.ui.main.Fragment.TableFragments
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.text.TextUtils
 import androidx.fragment.app.Fragment
@@ -12,29 +13,163 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.setFragmentResultListener
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.singupactivity.R
+import com.example.singupactivity.databinding.AddEditAchievementsBinding
 import com.example.singupactivity.ui.main.Adapter.AchievementsAdapter
 import com.example.singupactivity.ui.main.Data.AchievementsDataClass
+import com.example.singupactivity.ui.main.Data.DailyScheduleDataClass
 import com.example.singupactivity.ui.main.DataBase.CampDbManager
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_ACHIEVEMENTS_PLACE
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_EVENT_ACHIEVEMENTS
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_EVENT_NAME
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_NAME_EVENT
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_SQUAD_ACHIEVEMENTS
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_SQUAD_NAME
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_SQUAD_NUMBER
+import com.example.singupactivity.ui.main.Fragment.BottomSheet.*
+import com.example.singupactivity.ui.main.Fragment.act
 import com.example.singupactivity.ui.main.Fragment.ctx
+import com.example.singupactivity.ui.main.Objects.Achievements.ArgumentsAchievementsDataClass
+import com.example.singupactivity.ui.main.Objects.Achievements.ArgumentsAchievementsFlag
+import com.example.singupactivity.ui.main.Objects.Arguments
+import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentDSDataClass
+import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentsDSFlag
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.util.*
 
 class AchievementsFragment : Fragment() {
 
     lateinit var adapter: AchievementsAdapter
     lateinit var campDbManager: CampDbManager
+    lateinit var rv: RecyclerView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        campDbManager = activity?.let { CampDbManager(it) }!!
+        campDbManager = CampDbManager(act)
         adapter = AchievementsAdapter(this@AchievementsFragment)
+        setFragmentResultListener(RATES_BOTTOM_REQUEST_KEY_ACHIEVEMENTS) { _, _ ->
+            addAndEditAchievements(false, null, -1)
+        }
 
+        setFragmentResultListener(RATES_BOTTOM_REQUEST_KEY_IMPORT_PDF_ACHIEVEMENTS) { _, _ ->
+            if (adapter.achievementsList.isEmpty())
+                alert(
+                    getString(R.string.no_data_to_save_title),
+                    getString(R.string.no_data_to_save)
+                )
+            else
+                importTextFile()
+        }
+
+        val squadNameAchievementsList =
+            runBlocking {
+                async {
+                    getData(COLUMN_NAME_SQUAD_ACHIEVEMENTS)
+                }.await()
+            }
+
+        val placeList =
+            runBlocking {
+                async {
+                    getData(COLUMN_NAME_ACHIEVEMENTS_PLACE)
+                }.await()
+            }
+
+        val eventNameList =
+            runBlocking {
+                async {
+                    getData(COLUMN_NAME_EVENT_ACHIEVEMENTS)
+                }.await()
+            }
+        for ((i, _) in squadNameAchievementsList.withIndex()) {
+            adapter.addAchievements(
+                AchievementsDataClass(
+                    squadName = squadNameAchievementsList[i],
+                    place = placeList[i],
+                    eventName = eventNameList[i]
+                )
+            )
+
+        }
     }
 
+    @SuppressLint("SimpleDateFormat")
+    private fun importTextFile() {
+        val sdf = SimpleDateFormat("dd.MM.yyyy")
+        val currentDate = sdf.format(Date())
+
+        val path = context?.getExternalFilesDir(null)
+
+        val letDirectory = File(path, "Achievements")
+        letDirectory.mkdirs()
+        val file = File(letDirectory, "Achievements $currentDate.txt")
+        try {
+            FileOutputStream(file).use { stream ->
+                adapter.let {
+                    for ((i, _) in it.achievementsList.withIndex()) {
+                        stream.write("Награда:${i + 1}\n".toByteArray())
+                        stream.write("Мероприятие: ${it.achievementsList[i].eventName}\n".toByteArray())
+                        stream.write("Занфтое место: ${it.achievementsList[i].place}\n".toByteArray())
+                        stream.write("Название отряда: ${it.achievementsList[i].squadName}\n\n".toByteArray())
+
+                    }
+                }
+                stream.close()
+                alert(
+                    "Файл успешно создан!",
+                    "Путь: $path/Achievements/Achievements $currentDate.txt"
+                )
+            }
+        } catch (exe: IOException) {
+            Toast.makeText(ctx, "Ошибка создания файла: $exe", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onStart() {
+        super.onStart()
+        val response = AchievementsDataClass(
+            eventName = ArgumentsAchievementsDataClass.eventName,
+            place = ArgumentsAchievementsDataClass.place,
+            squadName = ArgumentsAchievementsDataClass.squadName
+        )
+        val responseUpdate = AchievementsDataClass(
+            eventName = ArgumentsAchievementsDataClass.eventNameUpdate,
+            place = ArgumentsAchievementsDataClass.placeUpdate,
+            squadName = ArgumentsAchievementsDataClass.squadNameUpdate
+        )
+        if (ArgumentsAchievementsFlag.isUpdate) {
+            adapter.let {
+                for ((i, _) in it.achievementsList.withIndex()) {
+                    if (it.achievementsList[i] == response)
+                        it.updateAchievements(i, responseUpdate)
+                    it.notifyDataSetChanged()
+                }
+            }
+        } else {
+            adapter.let {
+                for ((i, _) in it.achievementsList.withIndex()) {
+                    if (it.achievementsList[i] == response)
+                        it.removeAchievements(i)
+                    it.notifyDataSetChanged()
+                }
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,11 +181,12 @@ class AchievementsFragment : Fragment() {
         val rv = view.findViewById<RecyclerView>(R.id.rcAchievements)
         val fabAchievements = view.findViewById<FloatingActionButton>(R.id.fabAchievements)
 
-        rv.layoutManager = GridLayoutManager(activity, 2)
+        rv.layoutManager = LinearLayoutManager(act)
         rv.itemAnimator = DefaultItemAnimator()
 
         fabAchievements.setOnClickListener {
-            addAndEditAchievements(false, null, -1)
+            AchievementsBottomSheetDialog.newInstance()
+                .show(this.parentFragmentManager, "bottomDialogAchievements")
         }
 
         rv.adapter = adapter
@@ -63,90 +199,141 @@ class AchievementsFragment : Fragment() {
         achievementsDataClass: AchievementsDataClass?,
         position: Int
     ) {
-        val view = LayoutInflater.from(ctx).inflate(R.layout.add_edit_achievements, null)
-
-
-        val alertDialogBuilderUserInput: AlertDialog.Builder =
-            AlertDialog.Builder(requireActivity())
-        alertDialogBuilderUserInput.setView(view)
-
-        val newAchievementTitle = view.findViewById<TextView>(R.id.newAchievementTitle)
-        val etAchievementSquad = view.findViewById<EditText>(R.id.etAchievementSquad)
-        val etAchievementPlace = view.findViewById<EditText>(R.id.etAchievementPlace)
-        val etAchievementEvent = view.findViewById<EditText>(R.id.etAchievementEvent)
+        val binding: AddEditAchievementsBinding = DataBindingUtil.inflate(
+            LayoutInflater.from(
+                context
+            ), R.layout.add_edit_achievements, null, false
+        )
         val etNameUpdate: String? = achievementsDataClass?.place
 
-        newAchievementTitle.text = if (!isUpdate) "Добавить" else "Редактировать"
+        val alertDialogBuilderUserInput: AlertDialog.Builder =
+            AlertDialog.Builder(act)
+        alertDialogBuilderUserInput.setView(binding.root)
 
-        if (isUpdate && achievementsDataClass != null) {
-            etAchievementSquad.setText(achievementsDataClass.squadName)
-            etAchievementPlace.setText(achievementsDataClass.place)
-            etAchievementEvent.setText(achievementsDataClass.eventName)
-        }
-        alertDialogBuilderUserInput
-            .setCancelable(false)
-            .setPositiveButton(if (isUpdate) "Обновить" else "Сохранить",
-                DialogInterface.OnClickListener { dialogBox, id -> })
-            .setNegativeButton(if (isUpdate) "Удалить" else "Закрыть",
-                DialogInterface.OnClickListener { dialogBox, id ->
+        with(binding) {
+
+            newAchievementTitle.text =
+                if (!isUpdate) getString(R.string.add) else getString(R.string.edit)
+
+            if (isUpdate && achievementsDataClass != null) {
+                tiAchievementEvent.editText?.setText(achievementsDataClass.eventName)
+                tiAchievementPlace.editText?.setText(achievementsDataClass.place)
+                tiAchievementSquad.editText?.setText(achievementsDataClass.squadName)
+
+            }
+            alertDialogBuilderUserInput
+                .setCancelable(false)
+                .setPositiveButton(
+                    if (isUpdate) getString(R.string.update) else getString(R.string.save)
+                ) { _, _ -> }
+                .setNegativeButton(
+                    if (isUpdate) getString(R.string.delete) else getString(R.string.close)
+                ) { dialogBox, _ ->
                     if (isUpdate) {
                         deleteAchievements(
                             position = position,
-                            const = etAchievementPlace.text.toString()
+                            const = tiAchievementPlace.editText?.text.toString()
                         )
                     } else {
                         dialogBox.cancel()
                     }
+                }
+
+            val alertDialog: AlertDialog = alertDialogBuilderUserInput.create()
+            alertDialog.window?.decorView?.setBackgroundResource(R.drawable.add_dialog_shape)
+            alertDialog.show()
+            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                .setOnClickListener(View.OnClickListener {
+                    when {
+                        TextUtils.isEmpty(tiAchievementEvent.editText?.text.toString()) -> {
+                            binding.tiAchievementEvent.error =
+                                getString(R.string.enter_achievemenets_name_event)
+                            binding.tiAchievementEvent.defaultHintTextColor =
+                                ctx.getColorStateList(R.color.errorColor)
+                            return@OnClickListener
+                        }
+                        TextUtils.isEmpty(tiAchievementPlace.editText?.text.toString()) -> {
+                            binding.tiAchievementPlace.error =
+                                getString(R.string.enter_achievemenets_plase)
+                            binding.tiAchievementPlace.defaultHintTextColor =
+                                ctx.getColorStateList(R.color.errorColor)
+                            return@OnClickListener
+                        }
+                        TextUtils.isEmpty(tiAchievementSquad.editText?.text.toString()) -> {
+                            binding.tiAchievementSquad.error = getString(R.string.enter_name_squads)
+                            binding.tiAchievementSquad.defaultHintTextColor =
+                                ctx.getColorStateList(R.color.errorColor)
+                            return@OnClickListener
+                        }
+                        else -> {
+                            alertDialog.dismiss()
+                        }
+                    }
+                    if (isUpdate && achievementsDataClass != null) {
+                        if (etNameUpdate != null) {
+
+                            updateAchievements(
+                                squadNameUpdate = tiAchievementSquad.editText?.text.toString(),
+                                placeUpdate = tiAchievementPlace.editText?.text.toString(),
+                                eventNameUpdate = tiAchievementEvent.editText?.text.toString(),
+                                placeUpdatePosition = etNameUpdate,
+                                position = position
+                            )
+                        }
+                    } else {
+                        val squadNameList =
+                            runBlocking {
+                                async {
+                                    getDataSquads(COLUMN_NAME_SQUAD_NAME,tiAchievementSquad.editText?.text.toString() )
+                                }.await()
+                            }
+
+                        val eventNameList =
+                            runBlocking {
+                                async {
+                                    getDataEvents(COLUMN_NAME_EVENT_NAME, tiAchievementEvent.editText?.text.toString())
+                                }.await()
+                            }
+                        if ( eventNameList.isNotEmpty() && squadNameList.isNotEmpty()) {
+                            if (eventNameList.isNotEmpty()) {
+                                if (squadNameList.isNotEmpty()) {
+                                    createAchievements(
+                                        squadName = tiAchievementSquad.editText?.text.toString(),
+                                        place = tiAchievementPlace.editText?.text.toString(),
+                                        eventName = tiAchievementEvent.editText?.text.toString()
+                                    )
+                                } else {
+
+                                    alert(
+                                        getString(R.string.notification),
+                                        getString(R.string.no_squad)
+                                    )
+                                }
+                            } else {
+                                alert(
+                                    getString(R.string.notification),
+                                    getString(R.string.no_event)
+                                )
+                            }
+                        } else {
+                            alert(
+                                getString(R.string.notification),
+                                getString(R.string.no_dat)
+                            )
+                        }
+                    }
                 })
-
-        val alertDialog: AlertDialog = alertDialogBuilderUserInput.create()
-        alertDialog.show()
-        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(View.OnClickListener {
-            when {
-                TextUtils.isEmpty(etAchievementSquad.text.toString()) -> {
-                    Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
-                        .show()
-                    return@OnClickListener
-                }
-                TextUtils.isEmpty(etAchievementPlace.text.toString()) -> {
-                    Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
-                        .show()
-                    return@OnClickListener
-                }
-                TextUtils.isEmpty(etAchievementEvent.text.toString()) -> {
-                    Toast.makeText(requireActivity(), R.string.no_dat, Toast.LENGTH_SHORT)
-                        .show()
-                    return@OnClickListener
-                }
-                else -> {
-                    alertDialog.dismiss()
-                }
-            }
-            if (isUpdate && achievementsDataClass != null) {
-                if (etNameUpdate != null) {
-                    updateAchievements(
-                        squadNameUpdate = etAchievementSquad.text.toString(),
-                        placeUpdate = etAchievementPlace.text.toString(),
-                        eventNameUpdate = etAchievementEvent.text.toString(),
-                        placeUpdatePosition = etNameUpdate,
-                        position = position
-                    )
-                }
-
-            } else {
-                createAchievements(
-                    squadName  = etAchievementSquad.text.toString(),
-                    place = etAchievementPlace.text.toString(),
-                    eventName = etAchievementEvent.text.toString()
-                )
-            }
-        })
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
     private fun deleteAchievements(const: String, position: Int) {
 
-        campDbManager.deleteRawToTableAchievements(const)
+        runBlocking {
+            async {
+                campDbManager.deleteRawToTableAchievements(const)
+            }.await()
+        }
 
         adapter.removeAchievements(position)
 
@@ -159,10 +346,18 @@ class AchievementsFragment : Fragment() {
         placeUpdatePosition: String,
         position: Int
     ) {
-        campDbManager.updateRawToTableAchievements(
-            place = placeUpdate,
-            placeUpdatePosition = placeUpdatePosition
-        )
+
+        runBlocking {
+            async {
+                campDbManager.updateRawToTableAchievements(
+                    place = placeUpdate,
+                    achievementsEvent = eventNameUpdate,
+                    achievementsSquad = squadNameUpdate,
+                    placeUpdatePosition = placeUpdatePosition
+                )
+            }.await()
+        }
+
 
         val achievementsDataClass = AchievementsDataClass(
             squadName = squadNameUpdate,
@@ -170,7 +365,7 @@ class AchievementsFragment : Fragment() {
             eventName = eventNameUpdate
         )
 
-        adapter.updateAchievements(position,achievementsDataClass)
+        adapter.updateAchievements(position, achievementsDataClass)
 
     }
 
@@ -179,9 +374,17 @@ class AchievementsFragment : Fragment() {
         place: String,
         eventName: String
     ) {
-        campDbManager.insertToTableAchievements(
-            achievementsPlace = place
-        )
+
+        runBlocking {
+            async {
+                campDbManager.insertToTableAchievements(
+                    achievementsPlace = place,
+                    achievementsEvent = eventName,
+                    achievementsSquad = squadName
+                )
+
+            }.await()
+        }
 
         val achievementsDataClass = AchievementsDataClass(
             squadName = squadName,
@@ -194,5 +397,40 @@ class AchievementsFragment : Fragment() {
     }
 
 
+    private fun alert(title: String, massage: String) {
+        val builder = AlertDialog.Builder(act)
+        builder.setTitle(title)
+            .setMessage(massage)
+            .setCancelable(false)
+            .setPositiveButton(R.string.contin) { dialog, _ ->
+                dialog.dismiss()
 
+            }
+
+        val alert = builder.create()
+        alert.show()
+    }
+
+    private fun getData(const: String): ArrayList<String> {
+        return campDbManager.selectToTableAchievements(
+            const
+        )
+    }
+
+
+    private fun getDataEvents(const: String, searchText: String): ArrayList<String> {
+        return  campDbManager.selectToTableWeekEvent(
+            const,
+            searchText,
+            COLUMN_NAME_EVENT_NAME
+        )
+    }
+
+    private fun getDataSquads(const: String, searchText: String): ArrayList<String> {
+        return campDbManager.selectToTableSquad(
+            const,
+            searchText,
+            COLUMN_NAME_SQUAD_NAME
+        )
+    }
 }

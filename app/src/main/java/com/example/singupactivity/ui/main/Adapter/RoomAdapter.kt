@@ -4,15 +4,19 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 import com.example.singupactivity.R
 import com.example.singupactivity.databinding.RoomListItemBinding
 import com.example.singupactivity.ui.main.Data.RoomDataClass
+import com.example.singupactivity.ui.main.Fragment.Search.SearchRoomFragment
 import com.example.singupactivity.ui.main.Fragment.TableFragments.RoomFragment
 
-class RoomAdapter(fragment1: RoomFragment) :
-    RecyclerView.Adapter<RoomAdapter.RoomHolder>() {
+private const val ITEM_ROOM: Int = 0
+private const val ITEM_EMPTY_LIST: Int = 1
 
+class RoomAdapter(fragment1: RoomFragment) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var roomList = ArrayList<RoomDataClass>()
 
     val fragment: RoomFragment = fragment1
@@ -26,40 +30,57 @@ class RoomAdapter(fragment1: RoomFragment) :
         fun bind(roomDataClass: RoomDataClass) = with(binding) {
 
             tvFloor.text = "Этаж: ${roomDataClass.floor}"
-            tvRoomNumber.text = "№: ${roomDataClass.roomNumber}"
+            tvRoomNumber.text = "Номер комнаты: ${roomDataClass.roomNumber}"
             tvQuantity.text = "Детей: ${roomDataClass.quantity}"
 
         }
 
 
     }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoomHolder {
-
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.room_list_item, parent, false)
-
-        return RoomHolder(view)
-
-    }
-
-    override fun onBindViewHolder(holder: RoomHolder, position: Int) {
-
-        holder.bind(roomList[position])
-
-        val roomDataClass: RoomDataClass = roomList[position]
-
-        holder.itemView.setOnClickListener {
-
-            fragment.addAndEditRoom(true, roomDataClass, position)
-
+    override fun getItemViewType(position: Int): Int {
+        return when {
+            roomList.isNullOrEmpty() -> ITEM_EMPTY_LIST
+            else -> ITEM_ROOM
         }
 
     }
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+
+        return when (viewType) {
+            ITEM_ROOM -> RoomHolder(parent.inflate(R.layout.room_list_item))
+            else -> EmptyListViewHolder(parent.inflate(R.layout.partial_empty_list))
+        }
+
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (holder is RoomHolder) {
+            holder.bind(roomList[position])
+
+            val roomDataClass: RoomDataClass = roomList[position]
+
+            holder.itemView.setOnClickListener {
+
+                fragment.addAndEditRoom(true, roomDataClass, position)
+
+            }
+        } else if (holder is EmptyListViewHolder) {
+            holder.bind()
+        }
+
+
+    }
+
+    inner class EmptyListViewHolder(item: View) : RecyclerView.ViewHolder(item) {
+
+        fun bind() {
+        }
+    }
+
     override fun getItemCount(): Int {
 
-        return roomList.size
+        return if (roomList.isNullOrEmpty()) 1 else roomList.size
 
     }
 
@@ -87,4 +108,6 @@ class RoomAdapter(fragment1: RoomFragment) :
 
     }
 
+    fun ViewGroup.inflate(@LayoutRes resId: Int) =
+        LayoutInflater.from(this.context).inflate(resId, this, false)!!
 }

@@ -7,9 +7,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import com.example.singupactivity.R
-import com.example.singupactivity.ui.main.DataBase.CampDbNameClass
-import com.example.singupactivity.ui.main.Fragment.act
-import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentsDS
 
 class ConteinerActivityExit : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

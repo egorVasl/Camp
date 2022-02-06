@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.singupactivity.R
 import com.example.singupactivity.databinding.AddDailyScheduleBinding
-import com.example.singupactivity.ui.main.Adapter.SearchDSAdapter
+import com.example.singupactivity.ui.main.Adapter.SearchAdapters.SearchDSAdapter
 import com.example.singupactivity.ui.main.Data.DailyScheduleDataClass
 import com.example.singupactivity.ui.main.DataBase.CampDbManager
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_DATE_EVENT
@@ -25,8 +25,8 @@ import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_N
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_TIME_EVENT
 import com.example.singupactivity.ui.main.Fragment.act
 import com.example.singupactivity.ui.main.Fragment.ctx
-import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentDSdataClass
-import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentsDS
+import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentDSDataClass
+import com.example.singupactivity.ui.main.Objects.Arguments
 import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentsDSFlag
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
@@ -50,7 +50,8 @@ class SearchDSFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        campDbManager = activity?.let { CampDbManager(it) }!!
+        campDbManager = CampDbManager(act)
+        adapter = SearchDSAdapter(this@SearchDSFragment)
 
     }
 
@@ -58,7 +59,7 @@ class SearchDSFragment : Fragment() {
         return  campDbManager.selectToTableDailySchedule(
             const,
             searchText,
-            ArgumentsDS.arg
+            Arguments.arg
         )
     }
 
@@ -70,13 +71,12 @@ class SearchDSFragment : Fragment() {
         rv = view.findViewById(R.id.rcDailyScheduleSearch)
         rv.layoutManager = LinearLayoutManager(activity)
         rv.itemAnimator = DefaultItemAnimator()
-        adapter = SearchDSAdapter(this@SearchDSFragment)
         rv.adapter = adapter
         val ibSearch = view.findViewById<ImageButton>(R.id.imageButtonSearch)
         etCardSearch = view.findViewById(R.id.etSearchDailySchedule)
 
         ibSearch?.setOnClickListener {
-            if (ArgumentsDS.arg.isNotBlank()) {
+            if (Arguments.arg.isNotBlank()) {
                 val searchText = etCardSearch.text.toString()
                 if (searchText.isNotEmpty()) {
                     adapter.searchList.clear()
@@ -119,7 +119,7 @@ class SearchDSFragment : Fragment() {
                         )
                         etCardSearch.text.clear()
                     }
-                    ArgumentsDS.arg = ""
+                    Arguments.arg = ""
                 } else {
                     Toast.makeText(
                         requireActivity(),
@@ -175,9 +175,9 @@ class SearchDSFragment : Fragment() {
                 ) { dialogBox, id ->
                     if (isUpdate) {
                         ArgumentsDSFlag.isUpdate = false
-                        ArgumentDSdataClass.nameEvent = adapter.searchList[position].nameEvent
-                        ArgumentDSdataClass.timeEvent = adapter.searchList[position].timeEvent
-                        ArgumentDSdataClass.dateEvent = adapter.searchList[position].dateEvent
+                        ArgumentDSDataClass.nameEvent = adapter.searchList[position].nameEvent
+                        ArgumentDSDataClass.timeEvent = adapter.searchList[position].timeEvent
+                        ArgumentDSDataClass.dateEvent = adapter.searchList[position].dateEvent
                         deleteDailySchedule(
                             position = position,
                             const = tiName.editText?.text.toString()
@@ -215,12 +215,12 @@ class SearchDSFragment : Fragment() {
                     if (isUpdate && dailyScheduleDataClass != null) {
                         if (etNameUpdate != null) {
                             ArgumentsDSFlag.isUpdate = true
-                            ArgumentDSdataClass.nameEvent = adapter.searchList[position].nameEvent
-                            ArgumentDSdataClass.timeEvent = adapter.searchList[position].timeEvent
-                            ArgumentDSdataClass.dateEvent = adapter.searchList[position].dateEvent
-                            ArgumentDSdataClass.nameEventUpdate = tiName.editText?.text.toString()
-                            ArgumentDSdataClass.timeEventUpdate = tiTime.editText?.text.toString()
-                            ArgumentDSdataClass.dateEventUpdate = tiDate.editText?.text.toString()
+                            ArgumentDSDataClass.nameEvent = adapter.searchList[position].nameEvent
+                            ArgumentDSDataClass.timeEvent = adapter.searchList[position].timeEvent
+                            ArgumentDSDataClass.dateEvent = adapter.searchList[position].dateEvent
+                            ArgumentDSDataClass.nameEventUpdate = tiName.editText?.text.toString()
+                            ArgumentDSDataClass.timeEventUpdate = tiTime.editText?.text.toString()
+                            ArgumentDSDataClass.dateEventUpdate = tiDate.editText?.text.toString()
                             updateDailySchedule(
                                 nameEventUpdate = tiName.editText?.text.toString(),
                                 dateEventUpdate = tiDate.editText?.text.toString(),
