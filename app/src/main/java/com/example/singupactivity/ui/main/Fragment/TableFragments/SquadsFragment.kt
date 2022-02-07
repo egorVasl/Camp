@@ -92,7 +92,7 @@ class SquadsFragment : Fragment() {
                     getData(COLUMN_NAME_SQUAD_NUMBER)
                 }.await()
             }
-        for ((i, elm) in squadNameList.withIndex()) {
+        for ((i, _) in squadNameList.withIndex()) {
             adapter.addSquads(
                 SquadsDataClass(
                     squadName = squadNameList[i],

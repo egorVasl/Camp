@@ -1,4 +1,4 @@
-package com.example.singupactivity.ui.main.Adapter
+package com.example.singupactivity.ui.main.Adapter.SearchAdapters
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -9,18 +9,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.singupactivity.R
 import com.example.singupactivity.databinding.ChildListListItemBinding
 import com.example.singupactivity.ui.main.Data.ChildListDataClass
+import com.example.singupactivity.ui.main.Data.EventsDataClass
 import com.example.singupactivity.ui.main.Fragment.Search.SearchChildFragment
-import com.example.singupactivity.ui.main.Fragment.TableFragments.ChildListFragment
+import com.example.singupactivity.ui.main.Fragment.Search.SearchEventsFragment
 
 
 private const val ITEM_CHILD: Int = 0
 private const val ITEM_EMPTY_LIST: Int = 1
 
-class ChildListAdapter(fragment1: ChildListFragment) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class SearchChildAdapter(fragment1: SearchChildFragment) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var childList = ArrayList<ChildListDataClass>()
 
-    val fragment: ChildListFragment = fragment1
+    val fragment: SearchChildFragment = fragment1
 
     class ChildListHolder(item: View) : RecyclerView.ViewHolder(item) {
 
@@ -41,7 +42,7 @@ class ChildListAdapter(fragment1: ChildListFragment) : RecyclerView.Adapter<Recy
 
     override fun getItemViewType(position: Int): Int {
         return when {
-            childList.isNullOrEmpty() ->ITEM_EMPTY_LIST
+            childList.isNullOrEmpty() -> ITEM_EMPTY_LIST
             else -> ITEM_CHILD
         }
 
@@ -50,7 +51,7 @@ class ChildListAdapter(fragment1: ChildListFragment) : RecyclerView.Adapter<Recy
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
         return when (viewType) {
-           ITEM_CHILD -> ChildListHolder(parent.inflate(R.layout.child_list_list_item))
+            ITEM_CHILD -> ChildListHolder(parent.inflate(R.layout.child_list_list_item))
             else -> EmptyListViewHolder(parent.inflate(R.layout.partial_empty_list))
         }
 
@@ -108,6 +109,7 @@ class ChildListAdapter(fragment1: ChildListFragment) : RecyclerView.Adapter<Recy
         notifyDataSetChanged()
 
     }
+
     fun ViewGroup.inflate(@LayoutRes resId: Int) =
         LayoutInflater.from(this.context).inflate(resId, this, false)!!
 }

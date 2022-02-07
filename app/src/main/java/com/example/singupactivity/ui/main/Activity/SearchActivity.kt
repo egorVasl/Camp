@@ -9,12 +9,17 @@ import com.example.singupactivity.R
 import com.example.singupactivity.ui.main.Fragment.addFragmentToActivity
 import android.view.Menu
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_ACHIEVEMENTS_PLACE
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_CHILD_BIRTHDAY
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_CHILD_NAME
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_CHILD_PATRONYMIC
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_CHILD_SURNAME
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_DATE
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_DATE_EVENT
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_EVENT_ACHIEVEMENTS
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_EVENT_NAME
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_FLOOR
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_NAME_EVENT
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_PARENTS_NUMBER
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_QUANTITY_CHILD
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_ROOM_NUMBER
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_SQUAD_ACHIEVEMENTS
@@ -58,6 +63,7 @@ class SearchActivity : AppCompatActivity() {
                 "Squads" -> addFragmentToActivity(R.id.container, SearchSquadsFragment.newInstance())
                 "Room" -> addFragmentToActivity(R.id.container, SearchRoomFragment.newInstance())
                 "Achievements" -> addFragmentToActivity(R.id.container, SearchAchievementsFragment.newInstance())
+                "Child" -> addFragmentToActivity(R.id.container, SearchChildFragment.newInstance())
             }
         }
 
@@ -72,6 +78,7 @@ class SearchActivity : AppCompatActivity() {
             "Squads" -> menuInflater.inflate(R.menu.search_squads_menu, menu)
             "Room" -> menuInflater.inflate(R.menu.search_room_menu, menu)
             "Achievements" -> menuInflater.inflate(R.menu.search_achievemenets_menu, menu)
+            "Child" -> menuInflater.inflate(R.menu.search_child_menu, menu)
         }
 
         return super.onCreateOptionsMenu(menu)
@@ -135,6 +142,26 @@ class SearchActivity : AppCompatActivity() {
             }
             R.id.menuNameEventAchievements ->{
                 Arguments.arg = COLUMN_NAME_EVENT_ACHIEVEMENTS
+                true
+            }
+            R.id.menuNameChild ->{
+                Arguments.arg = COLUMN_NAME_CHILD_NAME
+                true
+            }
+            R.id.menuSurnameChild ->{
+                Arguments.arg = COLUMN_NAME_CHILD_SURNAME
+                true
+            }
+            R.id.menuPatronymicChild ->{
+                Arguments.arg = COLUMN_NAME_CHILD_PATRONYMIC
+                true
+            }
+            R.id.menuBirthdayChild ->{
+                Arguments.arg = COLUMN_NAME_CHILD_BIRTHDAY
+                true
+            }
+            R.id.menuParentNumberChild ->{
+                Arguments.arg = COLUMN_NAME_PARENTS_NUMBER
                 true
             }
             else -> super.onOptionsItemSelected(item)

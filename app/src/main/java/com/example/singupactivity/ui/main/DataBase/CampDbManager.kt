@@ -475,6 +475,22 @@ class CampDbManager(context: Context) {
         return dataList
     }
 
+    @SuppressLint("Range")
+    fun selectToTableChild(const: String, searchText: String, selectionArguments: String): ArrayList<String> {
+        openDb()
+        val sqlQuery = ("select * from $TABLE_NAME_CHILD where $selectionArguments = '$searchText';")
+        val dataList = ArrayList<String>()
+        val cursor = db.rawQuery(sqlQuery, null)
+
+        while (cursor?.moveToNext()!!) {
+            val dataText = cursor.getString(cursor.getColumnIndex(const))
+            dataList.add(dataText.toString())
+        }
+        cursor.close()
+        closeDb()
+        return dataList
+    }
+
     fun deleteRawToTableChild(const: String) {
         openDb()
         val delCount = db.delete(TABLE_NAME_CHILD, "child_name = '$const'", null)
@@ -494,8 +510,8 @@ class CampDbManager(context: Context) {
             put(COLUMN_NAME_CHILD_NAME, nameChildUpdate)
             put(COLUMN_NAME_CHILD_SURNAME, surnameChildUpdate)
             put(COLUMN_NAME_CHILD_PATRONYMIC, patronamycChildUpdate)
-            put(COLUMN_NAME_CHILD_BIRTHDAY, parentsPhoneNumberUpdate)
-            put(COLUMN_NAME_PARENTS_NUMBER, birthdayChildUpdate)
+            put(COLUMN_NAME_CHILD_BIRTHDAY, birthdayChildUpdate)
+            put(COLUMN_NAME_PARENTS_NUMBER, parentsPhoneNumberUpdate)
 
         }
 

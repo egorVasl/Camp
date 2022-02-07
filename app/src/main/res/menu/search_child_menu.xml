@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_more"
+        android:icon="@drawable/ic_action_overflow"
+        android:title="@string/search_title"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/menuNameChild"
+                android:icon="@drawable/ic_navigate_next_compat"
+                android:title="@string/name_search" />
+            <item
+                android:id="@+id/menuSurnameChild"
+                android:icon="@drawable/ic_navigate_next_compat"
+                android:title="@string/surname_search" />
+            <item
+                android:id="@+id/menuPatronymicChild"
+                android:icon="@drawable/ic_navigate_next_compat"
+                android:title="@string/patronamyc_search" />
+            <item
+                android:id="@+id/menuBirthdayChild"
+                android:icon="@drawable/ic_navigate_next_compat"
+                android:title="@string/birthday_search" />
+            <item
+                android:id="@+id/menuParentNumberChild"
+                android:icon="@drawable/ic_navigate_next_compat"
+                android:title="@string/phone_number_search" />
+        </menu>
+    </item>
+</menu>

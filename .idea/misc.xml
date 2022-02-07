@@ -22,7 +22,7 @@
         <entry key="..\:/TestTask/app/src/main/res/layout/add_counselor.xml" value="0.20555555555555555" />
         <entry key="..\:/TestTask/app/src/main/res/layout/add_daily_schedule.xml" value="0.33" />
         <entry key="..\:/TestTask/app/src/main/res/layout/add_edit_achievements.xml" value="0.20241691842900303" />
-        <entry key="..\:/TestTask/app/src/main/res/layout/add_edit_child.xml" value="0.18" />
+        <entry key="..\:/TestTask/app/src/main/res/layout/add_edit_child.xml" value="0.33" />
         <entry key="..\:/TestTask/app/src/main/res/layout/add_edit_room.xml" value="0.3359375" />
         <entry key="..\:/TestTask/app/src/main/res/layout/add_edit_squads.xml" value="0.3359375" />
         <entry key="..\:/TestTask/app/src/main/res/layout/bottom_dialog_rates.xml" value="0.5" />
@@ -55,6 +55,8 @@
         <entry key="..\:/TestTask/app/src/main/res/menu/choice_action_profile_image.xml" value="0.28888888888888886" />
         <entry key="..\:/TestTask/app/src/main/res/menu/navigation_menu.xml" value="0.33" />
         <entry key="..\:/TestTask/app/src/main/res/menu/points.xml" value="0.31197916666666664" />
+        <entry key="..\:/TestTask/app/src/main/res/menu/search_achievemenets_menu.xml" value="0.31197916666666664" />
+        <entry key="..\:/TestTask/app/src/main/res/menu/search_child_menu.xml" value="0.31197916666666664" />
         <entry key="..\:/TestTask/app/src/main/res/menu/search_ds_events_menu.xml" value="0.33177083333333335" />
         <entry key="..\:/TestTask/app/src/main/res/menu/search_parameters_menu.xml" value="0.31197916666666664" />
         <entry key="..\:/TestTask/app/src/main/res/menu/search_payments_menu.xml" value="0.31197916666666664" />

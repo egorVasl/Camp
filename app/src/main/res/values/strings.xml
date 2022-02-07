@@ -43,6 +43,11 @@
     <string name="enter_number_room">Введите номер комнаты.</string>
     <string name="enter_quantity_child">Введите кол-во детей.</string>
     <string name="name">Имя: </string>
+    <string name="name_search">Имя ребёнка</string>
+    <string name="surname_search">Фамилия ребёнка</string>
+    <string name="patronamyc_search">Отчество ребёнка</string>
+    <string name="birthday_search">Дата рождения ребёнка</string>
+    <string name="phone_number_search">Номер телефона родителей</string>
     <string name="search">Поиск</string>
     <string name="surname">Фамилия: </string>
     <string name="patronamyc">Отчество: </string>
@@ -123,5 +128,12 @@
     <string name="no_event">Такого мероприятия нет.</string>
     <string name="no_squad">Такого отряда нет.</string>
     <string name="no_data">Такого мероприятия или отряда нет.</string>
+    <string name="add_child">Добавить ребёнка</string>
+    <string name="add_event">Добавить мероприятие</string>
+    <string name="enter_child_name">Введите имя ребёнка.</string>
+    <string name="enter_child_surname">Введите фамилию ребёнка.</string>
+    <string name="enter_child_patronymic">Введите отчество ребёнка.</string>
+    <string name="enter_child_birthday">Введите дату рождения ребёнка.</string>
+    <string name="enter_parent_phone_number">Введите номер телефона родителей.</string>
 
 </resources>

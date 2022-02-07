@@ -70,7 +70,7 @@ class SquadsAdapter(fragment1: SquadsFragment) :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
-        if (holder is SearchSquadsAdapter.SquadsHolder) {
+        if (holder is SquadsHolder) {
             holder.bind(squadsList[position])
 
             val squadsDataClass: SquadsDataClass = squadsList[position]
@@ -80,7 +80,7 @@ class SquadsAdapter(fragment1: SquadsFragment) :
                 fragment.addAndEditSquads(true, squadsDataClass, position)
 
             }
-        } else if (holder is SearchSquadsAdapter.EmptyListViewHolder) {
+        } else if (holder is EmptyListViewHolder) {
             holder.bind()
         }
 
