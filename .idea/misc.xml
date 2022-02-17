@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/TestTask/app/src/main/res/drawable-v24/ic_arrow_dropdown.xml" value="0.1" />
         <entry key="..\:/TestTask/app/src/main/res/drawable-v24/ic_navigate_next.xml" value="0.33229166666666665" />
         <entry key="..\:/TestTask/app/src/main/res/drawable-v24/ic_navigate_next_compat.xml" value="0.33229166666666665" />
         <entry key="..\:/TestTask/app/src/main/res/drawable-v24/shape_bottom_sheet_pull.xml" value="0.33229166666666665" />
@@ -11,6 +12,7 @@
         <entry key="..\:/TestTask/app/src/main/res/drawable/ic_action_overflow.xml" value="0.33229166666666665" />
         <entry key="..\:/TestTask/app/src/main/res/drawable/ic_action_overflowwi_with_primaryColor.xml" value="0.3452502553626149" />
         <entry key="..\:/TestTask/app/src/main/res/drawable/ic_action_with_primary_color.xml" value="0.35208333333333336" />
+        <entry key="..\:/TestTask/app/src/main/res/drawable/ic_arrow_dropdown.xml" value="0.1" />
         <entry key="..\:/TestTask/app/src/main/res/drawable/ic_baseline_playlist_add_24.xml" value="0.33229166666666665" />
         <entry key="..\:/TestTask/app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.35208333333333336" />
         <entry key="..\:/TestTask/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.35208333333333336" />
@@ -23,7 +25,7 @@
         <entry key="..\:/TestTask/app/src/main/res/layout/add_daily_schedule.xml" value="0.33" />
         <entry key="..\:/TestTask/app/src/main/res/layout/add_edit_achievements.xml" value="0.20241691842900303" />
         <entry key="..\:/TestTask/app/src/main/res/layout/add_edit_child.xml" value="0.33" />
-        <entry key="..\:/TestTask/app/src/main/res/layout/add_edit_room.xml" value="0.3359375" />
+        <entry key="..\:/TestTask/app/src/main/res/layout/add_edit_room.xml" value="0.5" />
         <entry key="..\:/TestTask/app/src/main/res/layout/add_edit_squads.xml" value="0.3359375" />
         <entry key="..\:/TestTask/app/src/main/res/layout/bottom_dialog_rates.xml" value="0.5" />
         <entry key="..\:/TestTask/app/src/main/res/layout/child_list_list_item.xml" value="0.5" />

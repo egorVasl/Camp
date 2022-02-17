@@ -70,7 +70,6 @@
             android:layout_marginStart="40dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="40dp"
-            android:layout_marginBottom="10dp"
             android:hint="@string/child_quantity">
 
             <androidx.appcompat.widget.AppCompatEditText
@@ -78,6 +77,21 @@
                 android:layout_height="wrap_content"
                 android:inputType="textNoSuggestions|number" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <com.example.singupactivity.ui.main.Fragment.MaterialSpinner
+            android:id="@+id/spChild"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginBottom="10dp"
+            android:hint="@string/child_spinner"
+            android:inputType="textNoSuggestions"
+            android:longClickable="false"
+            app:layout_constraintTop_toTopOf="parent"
+            app:met_floatingLabel="normal"
+            app:met_primaryColor="@color/teal_700" />
 
     </LinearLayout>
 
