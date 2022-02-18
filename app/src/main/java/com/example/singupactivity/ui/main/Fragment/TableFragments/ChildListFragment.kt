@@ -106,7 +106,7 @@ ChildListFragment : Fragment() {
             }
 
 
-        for ((i, elm) in nameChildList.withIndex()) {
+        for ((i, _) in nameChildList.withIndex()) {
             adapter.addChildList(
                 ChildListDataClass(
                     nameChild = nameChildList[i],

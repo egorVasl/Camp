@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
@@ -16,9 +15,9 @@
             android:id="@+id/newRoomTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:lineSpacingExtra="10sp"
             android:layout_marginStart="40dp"
             android:layout_marginTop="@dimen/vertical_margin"
+            android:lineSpacingExtra="10sp"
             android:text="@string/new_room"
             android:textColor="@color/black"
             android:textSize="21sp"
@@ -26,33 +25,31 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tiFloor"
-            app:boxBackgroundColor="@android:color/transparent"
-            android:background="@android:color/transparent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
             android:layout_marginTop="@dimen/vertical_margin"
             android:layout_marginEnd="40dp"
-            android:hint="@string/floor">
+            android:background="@android:color/transparent"
+            android:hint="@string/floor"
+            app:boxBackgroundColor="@android:color/transparent">
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textNoSuggestions"
-                />
+                android:inputType="textNoSuggestions" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tiRoomNumber"
-            app:boxBackgroundColor="@android:color/transparent"
-            android:background="@android:color/transparent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="40dp"
+            android:background="@android:color/transparent"
             android:hint="@string/room_number"
-            >
+            app:boxBackgroundColor="@android:color/transparent">
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:layout_width="match_parent"
@@ -63,14 +60,14 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tiQuantity"
-            app:boxBackgroundColor="@android:color/transparent"
-            android:background="@android:color/transparent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="40dp"
-            android:hint="@string/child_quantity">
+            android:background="@android:color/transparent"
+            android:hint="@string/child_quantity"
+            app:boxBackgroundColor="@android:color/transparent">
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:layout_width="match_parent"
@@ -78,21 +75,41 @@
                 android:inputType="textNoSuggestions|number" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.example.singupactivity.ui.main.Fragment.MaterialSpinner
-            android:id="@+id/spChild"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="40dp"
-            android:layout_marginBottom="10dp"
-            android:hint="@string/child_spinner"
-            android:inputType="textNoSuggestions"
-            android:longClickable="false"
-            app:layout_constraintTop_toTopOf="parent"
-            app:met_floatingLabel="normal"
-            app:met_primaryColor="@color/teal_700" />
+                <com.example.singupactivity.ui.main.Fragment.MaterialSpinner
+                    android:id="@+id/spChild"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="55dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="53dp"
+                    android:layout_marginBottom="10dp"
+                    android:textColorHint="@color/gray"
+                    android:hint="@string/child_spinner"
+                    android:inputType="textNoSuggestions"
+                    android:longClickable="false"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:met_floatingLabel="normal"
+                    app:met_primaryColor="@color/teal_700" />
 
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:id="@+id/spChild"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="55dp"-->
+<!--            android:layout_marginTop="15dp"-->
+<!--            android:layout_marginEnd="53dp"-->
+<!--            android:layout_marginBottom="10dp"-->
+<!--            android:hint="@string/child_spinner"-->
+<!--            android:textColorHint="@color/gray"-->
+<!--            app:boxBackgroundColor="@android:color/transparent">-->
+
+<!--            <com.example.singupactivity.ui.main.Fragment.TextInputAutoCompleteTextView-->
+<!--                android:id="@+id/tiPayItem"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:inputType="textNoSuggestions"-->
+<!--                android:longClickable="false" />-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
     </LinearLayout>
 
 </layout>
