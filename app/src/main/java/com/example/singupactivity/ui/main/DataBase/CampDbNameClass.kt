@@ -173,13 +173,17 @@ object CampDbNameClass : BaseColumns{
     const val COLUMN_NAME_FLOOR = "floor"
     const val COLUMN_NAME_ROOM_NUMBER = "room_number"
     const val COLUMN_NAME_QUANTITY_CHILD = "quantity_child"
+    const val COLUMN_NAME_FIO_CHILD = "fio_child"
+
 
     const val CREATE_TABLE_ROOM =
         "CREATE TABLE IF NOT EXISTS $TABLE_NAME_ROOM (" +
                 "$COLUMN_NAME_ID_ROOM  INTEGER PRIMARY KEY AUTOINCREMENT ," +
                 "$COLUMN_NAME_FLOOR  INTEGER," +
                 "$COLUMN_NAME_ROOM_NUMBER INTEGER,"+
-                "$COLUMN_NAME_QUANTITY_CHILD INTEGER)"
+                "$COLUMN_NAME_QUANTITY_CHILD INTEGER," +
+                "$COLUMN_NAME_FIO_CHILD TEXT" +
+                ")"
 
     const val DELETE_TABLE_ROOM = "DROP TABLE IF EXISTS $TABLE_NAME_ROOM"
 

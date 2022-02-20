@@ -4,6 +4,7 @@ data class RoomDataClass(
 
     var floor : String,
     var roomNumber : String,
-    var quantity : String
+    var quantity : String,
+    var FIOChild: String
 
 )

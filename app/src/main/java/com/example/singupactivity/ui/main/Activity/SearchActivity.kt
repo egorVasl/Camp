@@ -8,6 +8,7 @@ import android.view.MenuItem
 import com.example.singupactivity.R
 import com.example.singupactivity.ui.main.Fragment.addFragmentToActivity
 import android.view.Menu
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_ACHIEVEMENTS_PLACE
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_CHILD_BIRTHDAY
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_CHILD_NAME
@@ -17,6 +18,7 @@ import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_D
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_DATE_EVENT
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_EVENT_ACHIEVEMENTS
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_EVENT_NAME
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_FIO_CHILD
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_FLOOR
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_NAME_EVENT
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_PARENTS_NUMBER
@@ -164,6 +166,12 @@ class SearchActivity : AppCompatActivity() {
                 Arguments.arg = COLUMN_NAME_PARENTS_NUMBER
                 true
             }
+            R.id.menuArgFIOChild ->{
+
+                Arguments.arg = COLUMN_NAME_FIO_CHILD
+                true
+            }
+
             else -> super.onOptionsItemSelected(item)
         }
     }

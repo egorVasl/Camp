@@ -75,41 +75,26 @@
                 android:inputType="textNoSuggestions|number" />
         </com.google.android.material.textfield.TextInputLayout>
 
-                <com.example.singupactivity.ui.main.Fragment.MaterialSpinner
-                    android:id="@+id/spChild"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="55dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="53dp"
-                    android:layout_marginBottom="10dp"
-                    android:textColorHint="@color/gray"
-                    android:hint="@string/child_spinner"
-                    android:inputType="textNoSuggestions"
-                    android:longClickable="false"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:met_floatingLabel="normal"
-                    app:met_primaryColor="@color/teal_700" />
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/spinnerChildStyle"
+            android:layout_width="match_parent"
+            android:id="@+id/spChild"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="40dp"
+            android:textColorHint="@color/gray"
+            >
 
-<!--        <com.google.android.material.textfield.TextInputLayout-->
-<!--            android:id="@+id/spChild"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="55dp"-->
-<!--            android:layout_marginTop="15dp"-->
-<!--            android:layout_marginEnd="53dp"-->
-<!--            android:layout_marginBottom="10dp"-->
-<!--            android:hint="@string/child_spinner"-->
-<!--            android:textColorHint="@color/gray"-->
-<!--            app:boxBackgroundColor="@android:color/transparent">-->
-
-<!--            <com.example.singupactivity.ui.main.Fragment.TextInputAutoCompleteTextView-->
-<!--                android:id="@+id/tiPayItem"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:inputType="textNoSuggestions"-->
-<!--                android:longClickable="false" />-->
-<!--        </com.google.android.material.textfield.TextInputLayout>-->
+        <AutoCompleteTextView
+            android:id="@+id/spChildAutoCompleteTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="none"
+            android:hint="@string/child_spinner"
+            android:textColorHint="@color/gray"/>
+        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
 </layout>

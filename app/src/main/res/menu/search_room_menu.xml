@@ -19,6 +19,10 @@
                 android:id="@+id/menuArgChildQuantity"
                 android:icon="@drawable/ic_navigate_next_compat"
                 android:title="@string/child_quantity_menu" />
+            <item
+                android:id="@+id/menuArgFIOChild"
+                android:icon="@drawable/ic_navigate_next_compat"
+                android:title="@string/FIO_Child" />
         </menu>
     </item>
 </menu>

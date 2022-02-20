@@ -32,6 +32,7 @@ class RoomAdapter(fragment1: RoomFragment) :
             tvFloor.text = "Этаж: ${roomDataClass.floor}"
             tvRoomNumber.text = "Номер комнаты: ${roomDataClass.roomNumber}"
             tvQuantity.text = "Детей: ${roomDataClass.quantity}"
+            tvFIOChild.text = "Ребёнок: ${roomDataClass.FIOChild}"
 
         }
 

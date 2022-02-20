@@ -20,6 +20,7 @@ import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_D
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_EVENT_NAME
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_FLOOR
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_EVENT_ACHIEVEMENTS
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_FIO_CHILD
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_SQUAD_ACHIEVEMENTS
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_LOGIN
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_LOGIN_AVATAR
@@ -528,13 +529,14 @@ class CampDbManager(context: Context) {
 
     fun insertToTableRoom(
         floor: String, roomNumber: String,
-        quantityChild: String
+        quantityChild: String, FIOChild: String
     ) {
         openDb()
         val cv = ContentValues().apply {
             put(COLUMN_NAME_FLOOR, floor)
             put(COLUMN_NAME_ROOM_NUMBER, roomNumber)
             put(COLUMN_NAME_QUANTITY_CHILD, quantityChild)
+            put(COLUMN_NAME_FIO_CHILD, FIOChild)
 
         }
         val rowID = db.insert(TABLE_NAME_ROOM, null, cv)
@@ -584,6 +586,7 @@ class CampDbManager(context: Context) {
         floorUpdate: String,
         roomNumberUpdate: String,
         quantityUpdate: String,
+        FIOChild: String,
         roomNumberUpdatePosition: String
     ) {
         openDb()
@@ -591,7 +594,7 @@ class CampDbManager(context: Context) {
             put(COLUMN_NAME_FLOOR, floorUpdate)
             put(COLUMN_NAME_ROOM_NUMBER, roomNumberUpdate)
             put(COLUMN_NAME_QUANTITY_CHILD, quantityUpdate)
-
+            put(COLUMN_NAME_FIO_CHILD, FIOChild)
         }
 
         val updCount = db.update(

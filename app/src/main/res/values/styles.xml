@@ -26,5 +26,7 @@
 
         <item name="android:windowBackground">@color/teal_700</item>
     </style>
-
+    <style name="spinnerChildStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="endIconDrawable">@drawable/ic_arrow_dropdown</item>
+    </style>
 </resources>

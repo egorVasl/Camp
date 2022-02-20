@@ -7,6 +7,7 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
@@ -21,6 +22,8 @@ import com.example.singupactivity.ui.main.Adapter.SearchAdapters.SearchRoomAdapt
 import com.example.singupactivity.ui.main.Data.EventsDataClass
 import com.example.singupactivity.ui.main.Data.RoomDataClass
 import com.example.singupactivity.ui.main.DataBase.CampDbManager
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass
+import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_FIO_CHILD
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_FLOOR
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_QUANTITY_CHILD
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_ROOM_NUMBER
@@ -102,12 +105,20 @@ class SearchRoomFragment : Fragment() {
                             }.await()
                         }
 
-                    for ((i, elm) in floorList.withIndex()) {
+                    val fioChildList =
+                        runBlocking {
+                            async {
+                                getData(COLUMN_NAME_FIO_CHILD, searchText)
+                            }.await()
+                        }
+
+                    for ((i, _) in floorList.withIndex()) {
                         adapter.addRoom(
                             RoomDataClass(
                                 floor =  floorList[i],
                                 roomNumber = roomNumberList[i],
-                                quantity =  quantityList[i]
+                                quantity =  quantityList[i],
+                                FIOChild = fioChildList[i]
                             )
                         )
                     }
@@ -144,12 +155,14 @@ class SearchRoomFragment : Fragment() {
 
 
 
-    @SuppressLint("InflateParams")
+    @SuppressLint("InflateParams", "WrongConstant")
     fun addAndEditRoom(
         isUpdate: Boolean,
         roomDataClass: RoomDataClass?,
         position: Int
     ) {
+        var selectedFIO = ""
+
         val binding: AddEditRoomBinding = DataBindingUtil.inflate(
             LayoutInflater.from(
                 context
@@ -169,6 +182,7 @@ class SearchRoomFragment : Fragment() {
                 tiFloor.editText?.setText(roomDataClass.floor)
                 tiRoomNumber.editText?.setText(roomDataClass.roomNumber)
                 tiQuantity.editText?.setText(roomDataClass.quantity)
+                spChild.editText?.setText(roomDataClass.FIOChild)
             }
             alertDialogBuilderUserInput
                 .setCancelable(false)
@@ -182,6 +196,7 @@ class SearchRoomFragment : Fragment() {
                         ArgumentsRoomDataClass.floor = adapter.roomList[position].floor
                         ArgumentsRoomDataClass.roomNumber = adapter.roomList[position].roomNumber
                         ArgumentsRoomDataClass.quantity = adapter.roomList[position].quantity
+                        ArgumentsRoomDataClass.FIOChild = adapter.roomList[position].FIOChild
                         deleteRoom(
                             position = position,
                             const = tiRoomNumber.editText?.text.toString()
@@ -190,7 +205,22 @@ class SearchRoomFragment : Fragment() {
                         dialogBox.cancel()
                     }
                 }
-
+            if (getDataForMaterialSpinner().isNullOrEmpty())
+                alert(getString(R.string.notification), getString(R.string.child_list_empty))
+            else
+                spChildAutoCompleteTextView.setAdapter(
+                    ArrayAdapter(
+                        ctx,
+                        R.layout.drop_down_child_item,
+                        getDataForMaterialSpinner()
+                    )
+                )
+            spChildAutoCompleteTextView.setOnItemClickListener { _, _, _, _ ->
+                selectedFIO = spChildAutoCompleteTextView.text.toString()
+            }
+            if(spChild.isFocused) {
+                spChild.endIconMode = R.color.teal_700
+            }
             val alertDialog: AlertDialog = alertDialogBuilderUserInput.create()
             alertDialog.window?.decorView?.setBackgroundResource(R.drawable.add_dialog_shape)
             alertDialog.show()
@@ -212,6 +242,12 @@ class SearchRoomFragment : Fragment() {
                             binding.tiQuantity.defaultHintTextColor = ctx.getColorStateList(R.color.errorColor)
                             return@OnClickListener
                         }
+                        selectedFIO.isEmpty() -> {
+                            binding.spChild.error = getString(R.string.select_FIO_child)
+                            binding.spChild.defaultHintTextColor =
+                                ctx.getColorStateList(R.color.errorColor)
+                            return@OnClickListener
+                        }
                         else -> {
                             alertDialog.dismiss()
                         }
@@ -222,15 +258,19 @@ class SearchRoomFragment : Fragment() {
                             ArgumentsRoomDataClass.floor = adapter.roomList[position].floor
                             ArgumentsRoomDataClass.roomNumber = adapter.roomList[position].roomNumber
                             ArgumentsRoomDataClass.quantity = adapter.roomList[position].quantity
+                            ArgumentsRoomDataClass.FIOChild = adapter.roomList[position].FIOChild
                             ArgumentsRoomDataClass.floorUpdate = tiFloor.editText?.text.toString()
                             ArgumentsRoomDataClass.roomNumberUpdate = tiRoomNumber.editText?.text.toString()
                             ArgumentsRoomDataClass.quantityUpdate = tiQuantity.editText?.text.toString()
+                            ArgumentsRoomDataClass.FIOChildUpdate = selectedFIO
+
                             updateRoom(
                                 floorUpdate = tiFloor.editText?.text.toString(),
                                 roomNumberUpdate = tiRoomNumber.editText?.text.toString(),
                                 quantityUpdate = tiQuantity.editText?.text.toString(),
                                 roomNumberUpdatePosition = etNameUpdate,
-                                position = position
+                                position = position,
+                                FIOChild = selectedFIO
                             )
                         }
                     }
@@ -238,8 +278,44 @@ class SearchRoomFragment : Fragment() {
 
         }
     }
+
+    private fun getDataChild(const: String): java.util.ArrayList<String> {
+        return campDbManager.selectToTableChild(
+            const
+        )
+    }
+
+    private fun getDataForMaterialSpinner(): Array<String?> {
+        val nameChildList =
+            runBlocking {
+                async {
+                    getDataChild(CampDbNameClass.COLUMN_NAME_CHILD_NAME)
+                }.await()
+            }
+
+        val surnameChildList =
+            runBlocking {
+                async {
+                    getDataChild(CampDbNameClass.COLUMN_NAME_CHILD_SURNAME)
+                }.await()
+            }
+
+        val patronymicChildList =
+            runBlocking {
+                async {
+                    getDataChild(CampDbNameClass.COLUMN_NAME_CHILD_PATRONYMIC)
+                }.await()
+            }
+        val childList = arrayOfNulls<String>(nameChildList.size)
+        for ((i, _) in nameChildList.withIndex()) {
+            childList[i] = "${surnameChildList[i]} ${nameChildList[i]} ${patronymicChildList[i]}"
+        }
+        return childList
+    }
+
     @SuppressLint("NotifyDataSetChanged")
     private fun deleteRoom(const: String, position: Int) {
+
         runBlocking {
             async {
                 campDbManager.deleteRawToTableRoom(const)
@@ -254,6 +330,7 @@ class SearchRoomFragment : Fragment() {
         floorUpdate: String,
         roomNumberUpdate: String,
         quantityUpdate: String,
+        FIOChild: String,
         roomNumberUpdatePosition: String,
         position: Int
     ) {
@@ -263,16 +340,17 @@ class SearchRoomFragment : Fragment() {
                     floorUpdate = floorUpdate,
                     roomNumberUpdate = roomNumberUpdate,
                     quantityUpdate = quantityUpdate,
-                    roomNumberUpdatePosition = roomNumberUpdatePosition
+                    roomNumberUpdatePosition = roomNumberUpdatePosition,
+                    FIOChild = FIOChild
                 )
             }.await()
         }
 
-
         val roomDataClass = RoomDataClass(
             floor = floorUpdate,
             roomNumber = roomNumberUpdate,
-            quantity = quantityUpdate
+            quantity = quantityUpdate,
+            FIOChild = FIOChild
         )
 
         adapter.updateRoom(position, roomDataClass)

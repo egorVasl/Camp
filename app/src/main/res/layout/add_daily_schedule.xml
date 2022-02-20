@@ -39,25 +39,49 @@
              />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tiDate"
-        app:boxBackgroundColor="@android:color/transparent"
-        android:background="@android:color/transparent"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="40dp"
-        android:hint="@string/data_event_add_schedule"
-        >
+        android:layout_height="match_parent">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tiDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:hint="@string/data_event_add_schedule"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="@dimen/vertical_margin"
+            android:layout_marginEnd="80dp"
+            android:focusableInTouchMode="false"
+            android:clickable="false"
+            app:boxBackgroundColor="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.AppCompatEditText
             android:layout_width="match_parent"
+            android:clickable="false"
             android:layout_height="wrap_content"
-            android:inputType="textNoSuggestions|datetime" />
+            android:focusableInTouchMode="false" />
     </com.google.android.material.textfield.TextInputLayout>
 
+        <ImageButton
+            android:id="@+id/imageDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_baseline_calendar_month_24"
+            android:backgroundTint="@color/teal_700"
+            app:layout_constraintBottom_toBottomOf="@+id/tiDate"
+            app:layout_constraintStart_toEndOf="@+id/tiDate"
+            app:layout_constraintTop_toTopOf="@+id/tiDate" />
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tiTime"
         app:boxBackgroundColor="@android:color/transparent"
@@ -66,15 +90,32 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginTop="5dp"
-        android:layout_marginEnd="40dp"
+        android:layout_marginEnd="80dp"
         android:layout_marginBottom="10dp"
-        android:hint="@string/time_event_add_schedule">
+        android:hint="@string/time_event_add_schedule"
+        android:focusableInTouchMode="false"
+        android:clickable="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.AppCompatEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textNoSuggestions|number" />
+            android:clickable="false"
+            android:focusableInTouchMode="false" />
     </com.google.android.material.textfield.TextInputLayout>
 
+
+        <ImageButton
+            android:id="@+id/imageTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_baseline_access_time_24"
+            android:backgroundTint="@color/teal_700"
+            app:layout_constraintBottom_toBottomOf="@+id/tiTime"
+            app:layout_constraintStart_toEndOf="@+id/tiTime"
+            app:layout_constraintTop_toTopOf="@+id/tiTime" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
 </layout>

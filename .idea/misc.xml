@@ -9,12 +9,16 @@
         <entry key="..\:/TestTask/app/src/main/res/drawable-v24/shape_bottom_sheet_pull.xml" value="0.33229166666666665" />
         <entry key="..\:/TestTask/app/src/main/res/drawable/add_dialog_shape.xml" value="0.30416666666666664" />
         <entry key="..\:/TestTask/app/src/main/res/drawable/bottom_sheet_shape.xml" value="0.35208333333333336" />
+        <entry key="..\:/TestTask/app/src/main/res/drawable/custom_button_green.xml" value="0.1" />
         <entry key="..\:/TestTask/app/src/main/res/drawable/ic_action_overflow.xml" value="0.33229166666666665" />
         <entry key="..\:/TestTask/app/src/main/res/drawable/ic_action_overflowwi_with_primaryColor.xml" value="0.3452502553626149" />
         <entry key="..\:/TestTask/app/src/main/res/drawable/ic_action_with_primary_color.xml" value="0.35208333333333336" />
         <entry key="..\:/TestTask/app/src/main/res/drawable/ic_arrow_dropdown.xml" value="0.1" />
+        <entry key="..\:/TestTask/app/src/main/res/drawable/ic_baseline_access_time_24.xml" value="0.35208333333333336" />
+        <entry key="..\:/TestTask/app/src/main/res/drawable/ic_baseline_notifications_active_24.xml" value="0.35208333333333336" />
         <entry key="..\:/TestTask/app/src/main/res/drawable/ic_baseline_playlist_add_24.xml" value="0.33229166666666665" />
         <entry key="..\:/TestTask/app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.35208333333333336" />
+        <entry key="..\:/TestTask/app/src/main/res/drawable/ic_button_background.xml" value="0.1" />
         <entry key="..\:/TestTask/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.35208333333333336" />
         <entry key="..\:/TestTask/app/src/main/res/layout/achievements_list_item.xml" value="0.33" />
         <entry key="..\:/TestTask/app/src/main/res/layout/activity_green_toolbar.xml" value="0.33177083333333335" />
@@ -22,10 +26,10 @@
         <entry key="..\:/TestTask/app/src/main/res/layout/activity_navigtion.xml" value="0.5" />
         <entry key="..\:/TestTask/app/src/main/res/layout/activity_search.xml" value="0.31197916666666664" />
         <entry key="..\:/TestTask/app/src/main/res/layout/add_counselor.xml" value="0.20555555555555555" />
-        <entry key="..\:/TestTask/app/src/main/res/layout/add_daily_schedule.xml" value="0.33" />
+        <entry key="..\:/TestTask/app/src/main/res/layout/add_daily_schedule.xml" value="0.5" />
         <entry key="..\:/TestTask/app/src/main/res/layout/add_edit_achievements.xml" value="0.20241691842900303" />
         <entry key="..\:/TestTask/app/src/main/res/layout/add_edit_child.xml" value="0.33" />
-        <entry key="..\:/TestTask/app/src/main/res/layout/add_edit_room.xml" value="0.5" />
+        <entry key="..\:/TestTask/app/src/main/res/layout/add_edit_room.xml" value="0.48877374784110533" />
         <entry key="..\:/TestTask/app/src/main/res/layout/add_edit_squads.xml" value="0.3359375" />
         <entry key="..\:/TestTask/app/src/main/res/layout/bottom_dialog_rates.xml" value="0.5" />
         <entry key="..\:/TestTask/app/src/main/res/layout/child_list_list_item.xml" value="0.5" />
@@ -33,6 +37,7 @@
         <entry key="..\:/TestTask/app/src/main/res/layout/counselor_list_item.xml" value="0.67" />
         <entry key="..\:/TestTask/app/src/main/res/layout/daily_scedule_list_item.xml" value="0.67" />
         <entry key="..\:/TestTask/app/src/main/res/layout/daily_schedule_bottom_heet_dialog.xml" value="0.31197916666666664" />
+        <entry key="..\:/TestTask/app/src/main/res/layout/drop_down_child_item.xml" value="0.33177083333333335" />
         <entry key="..\:/TestTask/app/src/main/res/layout/fragment_achievements.xml" value="0.1" />
         <entry key="..\:/TestTask/app/src/main/res/layout/fragment_child_list.xml" value="0.23703703703703705" />
         <entry key="..\:/TestTask/app/src/main/res/layout/fragment_counselor.xml" value="0.44854368932038835" />
@@ -48,12 +53,13 @@
         <entry key="..\:/TestTask/app/src/main/res/layout/navigation_header.xml" value="0.31614583333333335" />
         <entry key="..\:/TestTask/app/src/main/res/layout/partial_empty_list.xml" value="0.33177083333333335" />
         <entry key="..\:/TestTask/app/src/main/res/layout/progress_dialog.xml" value="0.31197916666666664" />
-        <entry key="..\:/TestTask/app/src/main/res/layout/room_list_item.xml" value="0.5" />
+        <entry key="..\:/TestTask/app/src/main/res/layout/room_list_item.xml" value="0.67" />
         <entry key="..\:/TestTask/app/src/main/res/layout/search_layout.xml" value="0.25" />
         <entry key="..\:/TestTask/app/src/main/res/layout/selection_arguments_layout.xml" value="0.67" />
         <entry key="..\:/TestTask/app/src/main/res/layout/squada_list_item.xml" value="0.6568123393316195" />
         <entry key="..\:/TestTask/app/src/main/res/menu-v26/navigation_menu.xml" value="0.275" />
         <entry key="..\:/TestTask/app/src/main/res/menu-v26/search_parameters_menu.xml" value="0.31197916666666664" />
+        <entry key="..\:/TestTask/app/src/main/res/menu/app_menu.xml" value="0.33177083333333335" />
         <entry key="..\:/TestTask/app/src/main/res/menu/choice_action_profile_image.xml" value="0.28888888888888886" />
         <entry key="..\:/TestTask/app/src/main/res/menu/navigation_menu.xml" value="0.33" />
         <entry key="..\:/TestTask/app/src/main/res/menu/points.xml" value="0.31197916666666664" />
@@ -76,6 +82,8 @@
         <entry key="..\:/Users/vaslavenok_e/Camp/app/src/main/res/layout/partial_empty_list.xml" value="0.33061594202898553" />
         <entry key="..\:/Users/vaslavenok_e/StudioProjects/SingUpActivity/app/src/main/res/layout/fragment_login.xml" value="0.2826086956521739" />
         <entry key="..\:/Users/vaslavenok_e/StudioProjects/SingUpActivity/app/src/main/res/layout/fragment_signup.xml" value="0.36666666666666664" />
+        <entry key="..\:/Vasla/.gradle/caches/transforms-3/7c35e9ced6058ee9ee419dce8130dd8e/transformed/appcompat-1.4.1/res/drawable/abc_btn_default_mtrl_shape.xml" value="0.35208333333333336" />
+        <entry key="..\:/Vasla/.gradle/caches/transforms-3/7c35e9ced6058ee9ee419dce8130dd8e/transformed/appcompat-1.4.1/res/drawable/abc_text_cursor_material.xml" value="0.35208333333333336" />
       </map>
     </option>
   </component>

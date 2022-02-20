@@ -25,6 +25,7 @@
     <string name="child">Дети</string>
     <string name="child_spinner">Ребёнок</string>
     <string name="childList">Список детей</string>
+    <string name="child_list_empty">Список детей пуст. Добавьте детей, чтобы добавить комнату.</string>
     <string name="room">Комнаты</string>
     <string name="rooms">Комната</string>
     <string name="events">Мероприятия</string>
@@ -43,6 +44,7 @@
     <string name="enter_floor">Введите этаж.</string>
     <string name="enter_number_room">Введите номер комнаты.</string>
     <string name="enter_quantity_child">Введите кол-во детей.</string>
+    <string name="select_FIO_child">Выберите ребёнка.</string>
     <string name="name">Имя: </string>
     <string name="name_search">Имя ребёнка</string>
     <string name="surname_search">Фамилия ребёнка</string>
@@ -136,5 +138,8 @@
     <string name="enter_child_patronymic">Введите отчество ребёнка.</string>
     <string name="enter_child_birthday">Введите дату рождения ребёнка.</string>
     <string name="enter_parent_phone_number">Введите номер телефона родителей.</string>
+    <string name="FIO">Фамилия Имя Отчество</string>
+    <string name="FIO_Child">Ф.И.О. ребёнка</string>
+    <string name="select_time">Выберите время: </string>
 
 </resources>
