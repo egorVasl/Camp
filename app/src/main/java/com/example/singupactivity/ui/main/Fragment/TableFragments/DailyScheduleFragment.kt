@@ -221,7 +221,6 @@ class DailyScheduleFragment : Fragment() {
         val alertDialogBuilderUserInput: AlertDialog.Builder =
             AlertDialog.Builder(act)
         alertDialogBuilderUserInput.setView(binding.root)
-        createNotificationChannel()
         with(binding) {
 
             imageTime.setOnClickListener {
@@ -293,9 +292,11 @@ class DailyScheduleFragment : Fragment() {
                                 nameEventUpdatePosition = etNameUpdate,
                                 position = position
                             )
-                            setAlarm(tiDate.editText?.text.toString() , tiTime.editText?.text.toString())
+                            createNotificationChannel()
                             ArgumentsNotification.nameEvent = tiName.editText?.text.toString()
                             ArgumentsNotification.timeEvent = tiTime.editText?.text.toString()
+                            setAlarm(tiDate.editText?.text.toString() , tiTime.editText?.text.toString())
+
 
                         }
 
@@ -305,10 +306,10 @@ class DailyScheduleFragment : Fragment() {
                             dateEventCreate = tiDate.editText?.text.toString(),
                             timeEventCreate = tiTime.editText?.text.toString()
                         )
-                        setAlarm(tiDate.editText?.text.toString() , tiTime.editText?.text.toString())
+                        createNotificationChannel()
                         ArgumentsNotification.nameEvent = tiName.editText?.text.toString()
                         ArgumentsNotification.timeEvent = tiTime.editText?.text.toString()
-
+                        setAlarm(tiDate.editText?.text.toString() , tiTime.editText?.text.toString())
                     }
                 })
         }
@@ -319,8 +320,10 @@ class DailyScheduleFragment : Fragment() {
         val alarmManager = ctx.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val alarmShowIntent = Intent(ctx, AlarmReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(ctx, 0, alarmShowIntent, 0)
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis,
-        AlarmManager.INTERVAL_DAY, pendingIntent)
+        alarmManager.setInexactRepeating(
+            AlarmManager.RTC_WAKEUP, calendar.timeInMillis,
+            AlarmManager.INTERVAL_DAY, pendingIntent
+        )
     }
 
     @SuppressLint("SetTextI18n")
@@ -333,7 +336,8 @@ class DailyScheduleFragment : Fragment() {
             ctx,
             { _, year, month, dayOfMonth ->
                 binding.tiDate.editText?.setText(
-                    "$dayOfMonth.${String.format("%02d", (month + 1))}.$year")
+                    "$dayOfMonth.${String.format("%02d", (month + 1))}.$year"
+                )
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
                 calendar.set(Calendar.MONTH, month + 1)
                 calendar.set(Calendar.YEAR, year)
@@ -354,22 +358,23 @@ class DailyScheduleFragment : Fragment() {
             .build()
         picker.show(act.supportFragmentManager, CHANNEL_ID)
         picker.addOnPositiveButtonClickListener {
-            if (picker.hour > 12) {
+            if (picker.hour >= 12) {
                 binding.tiTime.editText?.setText(
                     "${
                         String.format(
                             "%02d",
-                            (picker.hour - 12)
+                            (picker.hour)
                         )
                     } : ${String.format("%02d", picker.minute)} ПП"
                 )
             } else {
-                binding.tiTime.editText?.setText( "${
-                    String.format(
-                        "%02d",
-                        (picker.hour )
-                    )
-                } : ${String.format("%02d", picker.minute)} ДП"
+                binding.tiTime.editText?.setText(
+                    "${
+                        String.format(
+                            "%02d",
+                            (picker.hour)
+                        )
+                    } : ${String.format("%02d", picker.minute)} ДП"
                 )
             }
 
