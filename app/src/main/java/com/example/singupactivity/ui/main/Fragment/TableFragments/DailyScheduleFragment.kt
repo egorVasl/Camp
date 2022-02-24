@@ -11,7 +11,6 @@ import android.text.TextUtils
 import com.example.singupactivity.R
 import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.app.DatePickerDialog.OnDateSetListener
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.icu.text.SimpleDateFormat
@@ -26,7 +25,6 @@ import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_D
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_NAME_EVENT
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_TIME_EVENT
 import android.widget.Toast
-import androidx.core.content.ContextCompat.getSystemService
 import com.example.singupactivity.databinding.AddDailyScheduleBinding
 import com.example.singupactivity.ui.main.Fragment.*
 import com.example.singupactivity.ui.main.Fragment.BottomSheet.RATES_BOTTOM_REQUEST_KEY
@@ -44,19 +42,19 @@ import com.example.singupactivity.ui.main.Fragment.BottomSheet.DSBottomSheetDial
 import com.example.singupactivity.ui.main.Notification.AlarmReceiver.Companion.CHANNEL_ID
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
-import android.widget.DatePicker
 import android.app.AlarmManager
 
 import android.app.PendingIntent
 
-import android.content.BroadcastReceiver
 import android.content.Context
 
 import android.content.Intent
-import androidx.core.content.ContextCompat
 
-import androidx.core.content.ContextCompat.getSystemService
 import com.example.singupactivity.ui.main.Notification.AlarmReceiver
+import com.example.singupactivity.ui.main.Notification.AlarmReceiver.Companion.DATE_EVENT_EXTRA
+import com.example.singupactivity.ui.main.Notification.AlarmReceiver.Companion.NAME_EVENT_EXTRA
+import com.example.singupactivity.ui.main.Notification.AlarmReceiver.Companion.NOTIFICATION_ID
+import com.example.singupactivity.ui.main.Notification.AlarmReceiver.Companion.TIME_EVENT_EXTRA
 import com.example.singupactivity.ui.main.Objects.Notification.ArgumentsNotification
 
 
@@ -68,6 +66,7 @@ class DailyScheduleFragment : Fragment() {
 
     lateinit var picker: MaterialTimePicker
     lateinit var calendar: Calendar
+    lateinit var datePickerDialog: DatePickerDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -226,6 +225,14 @@ class DailyScheduleFragment : Fragment() {
             imageTime.setOnClickListener {
                 showTimePicker(binding)
             }
+            tiTimeEditText.setOnClickListener {
+                showTimePicker(binding)
+            }
+
+
+            tiDateEditText.setOnClickListener {
+                showDatePicker(binding)
+            }
             imageDate.setOnClickListener {
                 showDatePicker(binding)
             }
@@ -233,8 +240,8 @@ class DailyScheduleFragment : Fragment() {
 
             if (isUpdate && dailyScheduleDataClass != null) {
                 tiName.editText?.setText(dailyScheduleDataClass.nameEvent)
-                tiDate.editText?.setText(dailyScheduleDataClass.dateEvent)
-                tiTime.editText?.setText(dailyScheduleDataClass.timeEvent)
+//                tiDate.editText?.setText(dailyScheduleDataClass.dateEvent)
+//                tiTime.editText?.setText(dailyScheduleDataClass.timeEvent)
             }
             alertDialogBuilderUserInput
                 .setCancelable(false)
@@ -295,7 +302,7 @@ class DailyScheduleFragment : Fragment() {
                             createNotificationChannel()
                             ArgumentsNotification.nameEvent = tiName.editText?.text.toString()
                             ArgumentsNotification.timeEvent = tiTime.editText?.text.toString()
-                            setAlarm(tiDate.editText?.text.toString() , tiTime.editText?.text.toString())
+                            setNotification(binding)
 
 
                         }
@@ -309,21 +316,46 @@ class DailyScheduleFragment : Fragment() {
                         createNotificationChannel()
                         ArgumentsNotification.nameEvent = tiName.editText?.text.toString()
                         ArgumentsNotification.timeEvent = tiTime.editText?.text.toString()
-                        setAlarm(tiDate.editText?.text.toString() , tiTime.editText?.text.toString())
+                        setNotification(binding)
                     }
                 })
         }
     }
 
     @SuppressLint("UnspecifiedImmutableFlag")
-    private fun setAlarm(date: String, time: String) {
-        val alarmManager = ctx.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val alarmShowIntent = Intent(ctx, AlarmReceiver::class.java)
-        val pendingIntent = PendingIntent.getBroadcast(ctx, 0, alarmShowIntent, 0)
-        alarmManager.setInexactRepeating(
-            AlarmManager.RTC_WAKEUP, calendar.timeInMillis,
-            AlarmManager.INTERVAL_DAY, pendingIntent
-        )
+    private fun setNotification(binding: AddDailyScheduleBinding) {
+        val intent = Intent(act.applicationContext, AlarmReceiver::class.java)
+        with(binding) {
+            intent.putExtra(DATE_EVENT_EXTRA, tiDate.editText?.text.toString())
+            intent.putExtra(TIME_EVENT_EXTRA, tiTime.editText?.text.toString())
+            intent.putExtra(NAME_EVENT_EXTRA, tiName.editText?.text.toString())
+
+            val pendingIntent = PendingIntent.getBroadcast(
+                act.applicationContext,
+                NOTIFICATION_ID,
+                intent,
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+            )
+
+            val alarmManager = ctx.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            alarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                getTime(),
+                pendingIntent
+            )
+        }
+    }
+
+    private fun getTime(): Long {
+        val minute = picker.minute
+        val hour = picker.hour
+        val day = datePickerDialog.datePicker.dayOfMonth
+        val month = datePickerDialog.datePicker.month
+        val year = datePickerDialog.datePicker.year
+
+        val calendarSave = Calendar.getInstance()
+        calendarSave.set(year, month, day, hour-1, minute)
+        return calendarSave.timeInMillis
     }
 
     @SuppressLint("SetTextI18n")
@@ -332,7 +364,7 @@ class DailyScheduleFragment : Fragment() {
         val mDay = calendar.get(Calendar.DAY_OF_MONTH)
         val mMonth = calendar.get(Calendar.MONTH)
         val mYear = calendar.get(Calendar.YEAR)
-        val datePickerDialog = DatePickerDialog(
+        datePickerDialog = DatePickerDialog(
             ctx,
             { _, year, month, dayOfMonth ->
                 binding.tiDate.editText?.setText(
@@ -395,9 +427,9 @@ class DailyScheduleFragment : Fragment() {
             val importance = NotificationManager.IMPORTANCE_HIGH
             val channel = NotificationChannel(CHANNEL_ID, name, importance)
             channel.description = description
-            val notificationManager: NotificationManager? =
-                getSystemService(ctx, NotificationManager::class.java)
-            notificationManager?.createNotificationChannel(channel)
+            val notificationManager =
+                ctx.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
         }
     }
 

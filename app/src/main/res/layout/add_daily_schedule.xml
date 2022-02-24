@@ -41,6 +41,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:id="@+id/clDate"
         android:layout_height="match_parent">
 
         <com.google.android.material.textfield.TextInputLayout
@@ -61,6 +62,7 @@
 
         <androidx.appcompat.widget.AppCompatEditText
             android:layout_width="match_parent"
+            android:id="@+id/tiDateEditText"
             android:clickable="false"
             android:layout_height="wrap_content"
             android:focusableInTouchMode="false" />
@@ -81,6 +83,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:id="@+id/clTime"
         android:layout_height="match_parent">
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tiTime"
@@ -102,6 +105,7 @@
         <androidx.appcompat.widget.AppCompatEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/tiTimeEditText"
             android:clickable="false"
             android:focusableInTouchMode="false" />
     </com.google.android.material.textfield.TextInputLayout>
