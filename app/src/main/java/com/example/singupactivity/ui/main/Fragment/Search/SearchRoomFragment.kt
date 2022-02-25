@@ -205,9 +205,17 @@ class SearchRoomFragment : Fragment() {
                         dialogBox.cancel()
                     }
                 }
-            if (getDataForMaterialSpinner().isNullOrEmpty())
-                alert(getString(R.string.notification), getString(R.string.child_list_empty))
-            else
+            spChildAutoCompleteTextView.setOnClickListener {
+                if (getDataForMaterialSpinner().isNullOrEmpty()) {
+                    binding.spChild.error = getString(R.string.child_list_empty)
+                    binding.spChild.defaultHintTextColor =
+                        ctx.getColorStateList(R.color.errorColor)
+                    if (spChild.isFocused) {
+                        spChild.endIconMode = R.color.errorColor
+                    }
+                }
+            }
+            if (!getDataForMaterialSpinner().isNullOrEmpty())
                 spChildAutoCompleteTextView.setAdapter(
                     ArrayAdapter(
                         ctx,

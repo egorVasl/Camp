@@ -1,7 +1,10 @@
 package com.example.singupactivity.ui.main.Fragment.Search
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
+import android.app.*
+import android.content.Context
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -25,11 +28,16 @@ import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_E
 import com.example.singupactivity.ui.main.DataBase.CampDbNameClass.COLUMN_NAME_TIME
 import com.example.singupactivity.ui.main.Fragment.act
 import com.example.singupactivity.ui.main.Fragment.ctx
+import com.example.singupactivity.ui.main.Notification.AlarmReceiver
 import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentDSDataClass
 import com.example.singupactivity.ui.main.Objects.Arguments
 import com.example.singupactivity.ui.main.Objects.DailySchedule.ArgumentsDSFlag
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
+import java.util.*
+import kotlin.collections.ArrayList
 
 class SearchEventsFragment : Fragment() {
 
@@ -38,8 +46,9 @@ class SearchEventsFragment : Fragment() {
 
     lateinit var rv: RecyclerView
     lateinit var etCardSearch: EditText
-
-
+    lateinit var picker: MaterialTimePicker
+    lateinit var calendar: Calendar
+    lateinit var datePickerDialog: DatePickerDialog
 
     companion object {
         @JvmStatic
@@ -55,7 +64,7 @@ class SearchEventsFragment : Fragment() {
     }
 
     private fun getData(const: String, searchText: String): ArrayList<String> {
-        return  campDbManager.selectToTableWeekEvent(
+        return campDbManager.selectToTableWeekEvent(
             const,
             searchText,
             Arguments.arg
@@ -102,7 +111,8 @@ class SearchEventsFragment : Fragment() {
 
                     for ((i, _) in eventTimeList.withIndex()) {
                         adapter.addEvents(
-                            EventsDataClass(eventDateList[i],
+                            EventsDataClass(
+                                eventDateList[i],
                                 eventTimeList[i],
                                 eventNameList[i]
 
@@ -159,19 +169,36 @@ class SearchEventsFragment : Fragment() {
 
         with(binding) {
 
+            imageTime.setOnClickListener {
+                showTimePicker(binding)
+            }
+            tiTimeEditText.setOnClickListener {
+                showTimePicker(binding)
+            }
+
+
+            tiDateEditText.setOnClickListener {
+                showDatePicker(binding)
+            }
+            imageDate.setOnClickListener {
+                showDatePicker(binding)
+            }
+
+
             newDayTitle.text = if (!isUpdate) getString(R.string.add) else getString(R.string.edit)
 
             if (isUpdate && eventsDataClass != null) {
                 tiName.editText?.setText(eventsDataClass.eventName)
-                tiDate.editText?.setText(eventsDataClass.date)
-                tiTime.editText?.setText(eventsDataClass.time)
+//                tiDate.editText?.setText(eventsDataClass.date)
+//                tiTime.editText?.setText(eventsDataClass.time)
             }
             alertDialogBuilderUserInput
                 .setCancelable(false)
                 .setPositiveButton(
                     if (isUpdate) getString(R.string.update) else getString(R.string.save)
                 ) { _, _ -> }
-                .setNegativeButton(if (isUpdate) getString(R.string.delete) else getString(R.string.close)
+                .setNegativeButton(
+                    if (isUpdate) getString(R.string.delete) else getString(R.string.close)
                 ) { dialogBox, _ ->
                     if (isUpdate) {
                         ArgumentsDSFlag.isUpdate = false
@@ -195,17 +222,20 @@ class SearchEventsFragment : Fragment() {
                     when {
                         TextUtils.isEmpty(tiName.editText?.text.toString()) -> {
                             binding.tiName.error = getString(R.string.enter_name_event)
-                            binding.tiName.defaultHintTextColor = ctx.getColorStateList(R.color.errorColor)
+                            binding.tiName.defaultHintTextColor =
+                                ctx.getColorStateList(R.color.errorColor)
                             return@OnClickListener
                         }
                         TextUtils.isEmpty(tiDate.editText?.text.toString()) -> {
                             binding.tiDate.error = getString(R.string.enter_data_event)
-                            binding.tiDate.defaultHintTextColor = ctx.getColorStateList(R.color.errorColor)
+                            binding.tiDate.defaultHintTextColor =
+                                ctx.getColorStateList(R.color.errorColor)
                             return@OnClickListener
                         }
                         TextUtils.isEmpty(tiTime.editText?.text.toString()) -> {
                             binding.tiTime.error = getString(R.string.enter_time_event)
-                            binding.tiTime.defaultHintTextColor = ctx.getColorStateList(R.color.errorColor)
+                            binding.tiTime.defaultHintTextColor =
+                                ctx.getColorStateList(R.color.errorColor)
                             return@OnClickListener
                         }
                         else -> {
@@ -228,53 +258,169 @@ class SearchEventsFragment : Fragment() {
                                 eventNameUpdatePosition = etNameUpdate,
                                 position = position
                             )
+                            createNotificationChannel()
+                            setNotification(binding)
                         }
                     }
                 })
 
-    }
-    }
-        @SuppressLint("NotifyDataSetChanged")
-        private fun deleteEvents(const: String, position: Int) {
-
-            runBlocking {
-                async {
-                    campDbManager.deleteRawToTableWeekEvents(const)
-                }.await()
-            }
-
-            adapter.removeEvents(position)
-
         }
-
-        private fun updateEvents(
-            timeUpdate: String,
-            eventNameUpdate: String,
-            dateUpdate: String,
-            eventNameUpdatePosition: String,
-            position: Int
-        ) {
-            runBlocking {
-                async {
-                    campDbManager.updateRawToTableWeekEvents(
-                        nameEvent = eventNameUpdate,
-                        dateEvent = dateUpdate,
-                        timeEvent = timeUpdate,
-                        nameEventUpdatePosition = eventNameUpdatePosition
-                    )
-                }.await()
-            }
+    }
 
 
-            val eventsDataClassUpdate = EventsDataClass(
-                time = timeUpdate,
-                eventName = eventNameUpdate,
-                date = dateUpdate
+    @SuppressLint("UnspecifiedImmutableFlag")
+    private fun setNotification(binding: AddDailyScheduleBinding) {
+        val intent = Intent(act.applicationContext, AlarmReceiver::class.java)
+        with(binding) {
+            intent.putExtra(AlarmReceiver.DATE_EVENT_EXTRA, tiDate.editText?.text.toString())
+            intent.putExtra(AlarmReceiver.TIME_EVENT_EXTRA, tiTime.editText?.text.toString())
+            intent.putExtra(AlarmReceiver.NAME_EVENT_EXTRA, tiName.editText?.text.toString())
+            intent.putExtra(AlarmReceiver.IS_EVENT, true)
+
+            val pendingIntent = PendingIntent.getBroadcast(
+                act.applicationContext,
+                AlarmReceiver.NOTIFICATION_ID,
+                intent,
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
             )
 
-            adapter.updateEvents(position,eventsDataClassUpdate)
-
+            val alarmManager = ctx.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            alarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                getTime(),
+                pendingIntent
+            )
         }
+    }
+
+    private fun getTime(): Long {
+        val minute = picker.minute
+        val hour = picker.hour
+        val day = datePickerDialog.datePicker.dayOfMonth
+        val month = datePickerDialog.datePicker.month
+        val year = datePickerDialog.datePicker.year
+
+        val calendarSave = Calendar.getInstance()
+        calendarSave.set(year, month, day, hour - 1, minute)
+        return calendarSave.timeInMillis
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun showDatePicker(binding: AddDailyScheduleBinding) {
+        calendar = Calendar.getInstance()
+        val mDay = calendar.get(Calendar.DAY_OF_MONTH)
+        val mMonth = calendar.get(Calendar.MONTH)
+        val mYear = calendar.get(Calendar.YEAR)
+        datePickerDialog = DatePickerDialog(
+            ctx,
+            { _, year, month, dayOfMonth ->
+                binding.tiDate.editText?.setText(
+                    "$dayOfMonth.${String.format("%02d", (month + 1))}.$year"
+                )
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                calendar.set(Calendar.MONTH, month + 1)
+                calendar.set(Calendar.YEAR, year)
+            }, mYear, mMonth, mDay
+        )
+        datePickerDialog.show()
+
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun showTimePicker(binding: AddDailyScheduleBinding) {
+
+        picker = MaterialTimePicker.Builder()
+            .setTimeFormat(TimeFormat.CLOCK_12H)
+            .setHour(12)
+            .setMinute(0)
+            .setTitleText(R.string.select_time)
+            .build()
+        picker.show(act.supportFragmentManager, AlarmReceiver.CHANNEL_ID)
+        picker.addOnPositiveButtonClickListener {
+            if (picker.hour >= 12) {
+                binding.tiTime.editText?.setText(
+                    "${
+                        String.format(
+                            "%02d",
+                            (picker.hour)
+                        )
+                    } : ${String.format("%02d", picker.minute)} ПП"
+                )
+            } else {
+                binding.tiTime.editText?.setText(
+                    "${
+                        String.format(
+                            "%02d",
+                            (picker.hour)
+                        )
+                    } : ${String.format("%02d", picker.minute)} ДП"
+                )
+            }
+
+
+            calendar = Calendar.getInstance()
+            calendar.set(Calendar.HOUR_OF_DAY, picker.hour)
+            calendar.set(Calendar.MINUTE, picker.minute)
+            calendar.set(Calendar.SECOND, 0)
+            calendar.set(Calendar.MILLISECOND, 0)
+        }
+    }
+
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "channelIDRemainderChannel"
+            val description = "Channel for Alarm Manager"
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val channel = NotificationChannel(AlarmReceiver.CHANNEL_ID, name, importance)
+            channel.description = description
+            val notificationManager =
+                ctx.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun deleteEvents(const: String, position: Int) {
+
+        runBlocking {
+            async {
+                campDbManager.deleteRawToTableWeekEvents(const)
+            }.await()
+        }
+
+        adapter.removeEvents(position)
+
+    }
+
+    private fun updateEvents(
+        timeUpdate: String,
+        eventNameUpdate: String,
+        dateUpdate: String,
+        eventNameUpdatePosition: String,
+        position: Int
+    ) {
+        runBlocking {
+            async {
+                campDbManager.updateRawToTableWeekEvents(
+                    nameEvent = eventNameUpdate,
+                    dateEvent = dateUpdate,
+                    timeEvent = timeUpdate,
+                    nameEventUpdatePosition = eventNameUpdatePosition
+                )
+            }.await()
+        }
+
+
+        val eventsDataClassUpdate = EventsDataClass(
+            time = timeUpdate,
+            eventName = eventNameUpdate,
+            date = dateUpdate
+        )
+
+        adapter.updateEvents(position, eventsDataClassUpdate)
+
+    }
 
     private fun alert(title: String, massage: String) {
         val builder = AlertDialog.Builder(act)

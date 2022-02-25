@@ -25,11 +25,14 @@ class AlarmReceiver(
 ) : BroadcastReceiver() {
 
     companion object {
-        const val NOTIFICATION_ID = 101
+        var NOTIFICATION_ID = 101
         const val CHANNEL_ID = "CHANNEL_ID"
         const val DATE_EVENT_EXTRA = "DATE_EVENT_EXTRA"
         const val TIME_EVENT_EXTRA = "TIME_EVENT_EXTRA"
         const val NAME_EVENT_EXTRA = "NAME_EVENT_EXTRA"
+        const val IS_EVENT = "IS_EVENT"
+        const val GROUP_KEY = "GROUP_KEY"
+
 
     }
 
@@ -42,30 +45,41 @@ class AlarmReceiver(
         }
         val pendingIntent = PendingIntent.getActivity(context, 0, intentNotification, 0)
 
-        val bigText = "Мероприятие \"${intent.getStringExtra(NAME_EVENT_EXTRA)}\" " +
+        val text = (if(intent.getBooleanExtra(IS_EVENT, false)) "Мероприятие" else "Событие") +
+                " \"${intent.getStringExtra(NAME_EVENT_EXTRA)}\" " +
                 "состоится ${intent.getStringExtra(DATE_EVENT_EXTRA)} в" +
                 " ${intent.getStringExtra(TIME_EVENT_EXTRA)}"
 
+        val title = if (intent.getBooleanExtra(IS_EVENT, false))
+
+            context.getString(R.string.notificationEvent)
+        else
+            context.getString(R.string.notificationDS)
+
         val builder = context.let {
             NotificationCompat.Builder(it, CHANNEL_ID)
-                .setLargeIcon(BitmapFactory.decodeResource(context.resources,
-                    R.drawable.logo_img))
+                .setLargeIcon(
+                    BitmapFactory.decodeResource(
+                        context.resources,
+                        R.drawable.logo_img
+                    )
+                )
                 .setSmallIcon(R.drawable.ic_baseline_notifications_active_24)
-                .setContentTitle(context.getString(R.string.notification))
-                .setContentText("Мероприятие \"${intent.getStringExtra(NAME_EVENT_EXTRA)}\" " +
-                        "состоится ${intent.getStringExtra(DATE_EVENT_EXTRA)} в" +
-                        " ${intent.getStringExtra(TIME_EVENT_EXTRA)}")
-                .setStyle(NotificationCompat.BigTextStyle().bigText(bigText))
+                .setContentTitle(title)
+                .setStyle(NotificationCompat.BigTextStyle().bigText(title))
+                .setContentText(text)
+                .setStyle(NotificationCompat.BigTextStyle().bigText(text))
                 .setAutoCancel(true)
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setContentIntent(pendingIntent)
                 .setDefaults(
                     Notification.DEFAULT_SOUND or
-                            Notification.DEFAULT_VIBRATE)
+                            Notification.DEFAULT_VIBRATE
+                )
         }
         val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        manager.notify(NOTIFICATION_ID, builder.build())
+        manager.notify(NOTIFICATION_ID++, builder.build())
     }
 
 }

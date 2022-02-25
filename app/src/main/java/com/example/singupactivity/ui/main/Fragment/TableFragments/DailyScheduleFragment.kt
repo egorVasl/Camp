@@ -52,6 +52,7 @@ import android.content.Intent
 
 import com.example.singupactivity.ui.main.Notification.AlarmReceiver
 import com.example.singupactivity.ui.main.Notification.AlarmReceiver.Companion.DATE_EVENT_EXTRA
+import com.example.singupactivity.ui.main.Notification.AlarmReceiver.Companion.IS_EVENT
 import com.example.singupactivity.ui.main.Notification.AlarmReceiver.Companion.NAME_EVENT_EXTRA
 import com.example.singupactivity.ui.main.Notification.AlarmReceiver.Companion.NOTIFICATION_ID
 import com.example.singupactivity.ui.main.Notification.AlarmReceiver.Companion.TIME_EVENT_EXTRA
@@ -300,8 +301,6 @@ class DailyScheduleFragment : Fragment() {
                                 position = position
                             )
                             createNotificationChannel()
-                            ArgumentsNotification.nameEvent = tiName.editText?.text.toString()
-                            ArgumentsNotification.timeEvent = tiTime.editText?.text.toString()
                             setNotification(binding)
 
 
@@ -314,8 +313,6 @@ class DailyScheduleFragment : Fragment() {
                             timeEventCreate = tiTime.editText?.text.toString()
                         )
                         createNotificationChannel()
-                        ArgumentsNotification.nameEvent = tiName.editText?.text.toString()
-                        ArgumentsNotification.timeEvent = tiTime.editText?.text.toString()
                         setNotification(binding)
                     }
                 })
@@ -329,6 +326,7 @@ class DailyScheduleFragment : Fragment() {
             intent.putExtra(DATE_EVENT_EXTRA, tiDate.editText?.text.toString())
             intent.putExtra(TIME_EVENT_EXTRA, tiTime.editText?.text.toString())
             intent.putExtra(NAME_EVENT_EXTRA, tiName.editText?.text.toString())
+            intent.putExtra(IS_EVENT, false)
 
             val pendingIntent = PendingIntent.getBroadcast(
                 act.applicationContext,

@@ -10,6 +10,9 @@
     <string name="phone">Телефон</string>
     <string name="squad">Номер отряда</string>
     <string name="notification">Уведомление</string>
+    <string name="notificationDS">Уведомление расписания дня</string>
+    <string name="notificationEvent">Уведомление мероприятий</string>
+
     <string name="no_data_massage">Вы не ввели данные для авторизации.</string>
     <string name="close">Закрыть</string>
     <string name="cancellation">Отмена</string>

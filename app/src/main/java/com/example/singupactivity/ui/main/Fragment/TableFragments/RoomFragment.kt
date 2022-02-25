@@ -265,9 +265,17 @@ class RoomFragment : Fragment() {
                     }
                 }
 
-            if (getDataForMaterialSpinner().isNullOrEmpty())
-                alert(getString(R.string.notification), getString(R.string.child_list_empty))
-            else
+            spChildAutoCompleteTextView.setOnClickListener {
+                if (getDataForMaterialSpinner().isNullOrEmpty()) {
+                    binding.spChild.error = getString(R.string.child_list_empty)
+                    binding.spChild.defaultHintTextColor =
+                        ctx.getColorStateList(R.color.errorColor)
+                    if (spChild.isFocused) {
+                        spChild.endIconMode = R.color.errorColor
+                    }
+                }
+            }
+            if (!getDataForMaterialSpinner().isNullOrEmpty())
                 spChildAutoCompleteTextView.setAdapter(
                     ArrayAdapter(
                         ctx,
@@ -279,7 +287,7 @@ class RoomFragment : Fragment() {
                 selectedFIO = spChildAutoCompleteTextView.text.toString()
             }
 
-            if(spChild.isFocused) {
+            if (spChild.isFocused) {
                 spChild.endIconMode = R.color.teal_700
             }
             val alertDialog: AlertDialog = alertDialogBuilderUserInput.create()
